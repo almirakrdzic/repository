@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bef1d84882f4449a9af47f741cbd9d93" Name="Diagram1">
+        <EntityTypeShape EntityType="digital_libraryModel.authors" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="digital_libraryModel.books" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="digital_libraryModel.genre" Width="1.5" PointX="7.5" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="digital_libraryModel.user_types" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="digital_libraryModel.users" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="digital_libraryModel.FK_books_added" ManuallyRouted="false" />
+        <AssociationConnector Association="digital_libraryModel.FK_user_type" ManuallyRouted="false" />
+        <AssociationConnector Association="digital_libraryModel.book_author" ManuallyRouted="false" />
+        <AssociationConnector Association="digital_libraryModel.book_genre" ManuallyRouted="false" />
+        <AssociationConnector Association="digital_libraryModel.downloaded_books" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

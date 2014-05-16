@@ -1,0 +1,21 @@
+﻿
+   
+    <li data-ng-hide="authenticated" class="dropdown">
+    <a href="#" style="color:black" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
+       <i class="fa fa-user fa-fw"></i>
+         @User.Identity.Name <i class="caret"></i></a>
+    <ul class="dropdown-menu dropdown-user">
+    <li><a style="color:gray" href="javascript:editprofile()" id="EditProfile"><i class="fa fa-user fa-fw"></i> User profile</a></li>
+    <li>
+         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+            @Html.AntiForgeryToken()            
+        }
+        <a style="color:gray" tabindex="-1"href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i>Log off</a>
+    </li>   
+    </ul>
+    </li>  
+    
+          
+  <li data-ng-hide="authenticated" data-ng-class="{active : activeViewPath==='/login'}"><a href='#/login'>Login</a></li>
+                          
+ 

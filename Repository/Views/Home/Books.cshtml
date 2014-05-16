@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+
+ <div class="col-lg-12">
+     
+         <div class="row">           
+        <div class="col-lg-8">                           
+       <div class="input-group custom-search-form">           
+          <input type="text" data-ng-model="query" class="form-control" placeholder="{{field}}">
+          <span class="input-group-btn">
+             <button class="btn btn-default" data-ng-click="search()" type="button">
+                 <i class="fa fa-search"></i>
+              </button></span>         
+        </div>
+                                     
+                                      
+        </div>
+             <div class="col-lg-4">
+               <div class="form-group">
+                   Search by: 
+           <select data-ng-model="field"  class="btn btn-default dropdown-toggle">
+                                                <option>Title</option>
+                                                <option>Data</option>
+                                                <option>ISBN</option>
+                                                <option>Description</option>                                               
+                                            </select>            
+            </div> 
+                 </div>   
+   </div>                   
+</div>
+<div class="col-lg-12"><br /></div> 
+<div class="col-lg-12">
+
+   <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
+    <div class="thumbnail">
+        <a id="{{book._id}}" data-ng-class="{active : activeViewPath==='/book/details/{{book._id}}'}"  href="#/book/details/{{book._id}}" class="thumbnail">
+<img data-src="holder.js/300x200" alt="..." src="~/Images/book.png">
+        </a> 
+        <h4 style="text-align:center">{{book._source.title}}</h4>
+        <rating ng-model="rate" max="10" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
+          
+        <p><a href="#" class="btn btn-primary" role="button"><i class="fa fa-download fa-fw"></i></a></p>
+     
+    </div>
+  </div>
+ </div>
+<div class="col-lg-12">
+<pagination  total-items="booksSize" max-size="maxSize" items-per-page="itemsPerPage" data-ng-model="currentPage" class="pagination-sm" boundary-links="true" rotate="true" ></pagination>
+ </div>

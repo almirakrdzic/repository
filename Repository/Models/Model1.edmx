@@ -1,0 +1,505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="digital_libraryModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="digital_libraryModelStoreContainer">
+          <EntitySet Name="authors" EntityType="digital_libraryModel.Store.authors" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="book_author" EntityType="digital_libraryModel.Store.book_author" store:Type="Tables" store:Schema="dbo" store:Name="book_author">
+            <DefiningQuery>SELECT 
+      [book_author].[book_id] AS [book_id], 
+      [book_author].[author_id] AS [author_id]
+      FROM [dbo].[book_author] AS [book_author]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="book_genre" EntityType="digital_libraryModel.Store.book_genre" store:Type="Tables" store:Schema="dbo" store:Name="book_genre">
+            <DefiningQuery>SELECT 
+      [book_genre].[book_id] AS [book_id], 
+      [book_genre].[genre_id] AS [genre_id]
+      FROM [dbo].[book_genre] AS [book_genre]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="books" EntityType="digital_libraryModel.Store.books" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="downloaded_books" EntityType="digital_libraryModel.Store.downloaded_books" store:Type="Tables" store:Schema="dbo" store:Name="downloaded_books">
+            <DefiningQuery>SELECT 
+      [downloaded_books].[book_id] AS [book_id], 
+      [downloaded_books].[user_id] AS [user_id]
+      FROM [dbo].[downloaded_books] AS [downloaded_books]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="genre" EntityType="digital_libraryModel.Store.genre" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="user_types" EntityType="digital_libraryModel.Store.user_types" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="users" EntityType="digital_libraryModel.Store.users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_author_id" Association="digital_libraryModel.Store.FK_author_id">
+            <End Role="authors" EntitySet="authors" />
+            <End Role="book_author" EntitySet="book_author" />
+          </AssociationSet>
+          <AssociationSet Name="FK_book_genre_books" Association="digital_libraryModel.Store.FK_book_genre_books">
+            <End Role="books" EntitySet="books" />
+            <End Role="book_genre" EntitySet="book_genre" />
+          </AssociationSet>
+          <AssociationSet Name="FK_book_genre_genres" Association="digital_libraryModel.Store.FK_book_genre_genres">
+            <End Role="genre" EntitySet="genre" />
+            <End Role="book_genre" EntitySet="book_genre" />
+          </AssociationSet>
+          <AssociationSet Name="FK_book_id" Association="digital_libraryModel.Store.FK_book_id">
+            <End Role="books" EntitySet="books" />
+            <End Role="book_author" EntitySet="book_author" />
+          </AssociationSet>
+          <AssociationSet Name="FK_books_added" Association="digital_libraryModel.Store.FK_books_added">
+            <End Role="users" EntitySet="users" />
+            <End Role="books" EntitySet="books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_downloaded_books_books" Association="digital_libraryModel.Store.FK_downloaded_books_books">
+            <End Role="books" EntitySet="books" />
+            <End Role="downloaded_books" EntitySet="downloaded_books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_downloaded_books_users" Association="digital_libraryModel.Store.FK_downloaded_books_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="downloaded_books" EntitySet="downloaded_books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_type" Association="digital_libraryModel.Store.FK_user_type">
+            <End Role="user_types" EntitySet="user_types" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="authors">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="last_name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="biography" Type="ntext" />
+          <Property Name="birth_date" Type="date" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'digital_library.dbo.book_author' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="book_author">
+          <Key>
+            <PropertyRef Name="book_id" />
+            <PropertyRef Name="author_id" />
+          </Key>
+          <Property Name="book_id" Type="int" Nullable="false" />
+          <Property Name="author_id" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'digital_library.dbo.book_genre' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="book_genre">
+          <Key>
+            <PropertyRef Name="book_id" />
+            <PropertyRef Name="genre_id" />
+          </Key>
+          <Property Name="book_id" Type="int" Nullable="false" />
+          <Property Name="genre_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="books">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="isbn" Type="varchar" MaxLength="13" />
+          <Property Name="edition" Type="varchar" MaxLength="10" />
+          <Property Name="description" Type="varchar(max)" />
+          <Property Name="data" Type="varbinary(max)" />
+          <Property Name="added_by" Type="int" Nullable="false" />
+          <Property Name="active" Type="bit" />
+          <Property Name="date" Type="date" />
+          <Property Name="rating" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'digital_library.dbo.downloaded_books' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="downloaded_books">
+          <Key>
+            <PropertyRef Name="book_id" />
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="book_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="genre">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="user_types">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="salt" Type="varbinary" MaxLength="10" />
+          <Property Name="first_name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="last_name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="email" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="active" Type="bit" />
+          <Property Name="image" Type="varbinary(max)" />
+          <Property Name="isConfirmed" Type="bit" />
+          <Property Name="confirmationToken" Type="varchar" MaxLength="64" />
+        </EntityType>
+        <Association Name="FK_author_id">
+          <End Role="authors" Type="digital_libraryModel.Store.authors" Multiplicity="1" />
+          <End Role="book_author" Type="digital_libraryModel.Store.book_author" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="authors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="book_author">
+              <PropertyRef Name="author_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_book_genre_books">
+          <End Role="books" Type="digital_libraryModel.Store.books" Multiplicity="1" />
+          <End Role="book_genre" Type="digital_libraryModel.Store.book_genre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="books">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="book_genre">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_book_genre_genres">
+          <End Role="genre" Type="digital_libraryModel.Store.genre" Multiplicity="1" />
+          <End Role="book_genre" Type="digital_libraryModel.Store.book_genre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genre">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="book_genre">
+              <PropertyRef Name="genre_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_book_id">
+          <End Role="books" Type="digital_libraryModel.Store.books" Multiplicity="1" />
+          <End Role="book_author" Type="digital_libraryModel.Store.book_author" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="books">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="book_author">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_books_added">
+          <End Role="users" Type="digital_libraryModel.Store.users" Multiplicity="1" />
+          <End Role="books" Type="digital_libraryModel.Store.books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="books">
+              <PropertyRef Name="added_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_downloaded_books_books">
+          <End Role="books" Type="digital_libraryModel.Store.books" Multiplicity="1" />
+          <End Role="downloaded_books" Type="digital_libraryModel.Store.downloaded_books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="books">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="downloaded_books">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_downloaded_books_users">
+          <End Role="users" Type="digital_libraryModel.Store.users" Multiplicity="1" />
+          <End Role="downloaded_books" Type="digital_libraryModel.Store.downloaded_books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="downloaded_books">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_type">
+          <End Role="user_types" Type="digital_libraryModel.Store.user_types" Multiplicity="1" />
+          <End Role="users" Type="digital_libraryModel.Store.users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_types">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="digital_libraryModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="digital_libraryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="authors" EntityType="digital_libraryModel.authors" />
+          <EntitySet Name="books" EntityType="digital_libraryModel.books" />
+          <EntitySet Name="genre" EntityType="digital_libraryModel.genre" />
+          <EntitySet Name="user_types" EntityType="digital_libraryModel.user_types" />
+          <EntitySet Name="users" EntityType="digital_libraryModel.users" />
+          <AssociationSet Name="FK_books_added" Association="digital_libraryModel.FK_books_added">
+            <End Role="users" EntitySet="users" />
+            <End Role="books" EntitySet="books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_type" Association="digital_libraryModel.FK_user_type">
+            <End Role="user_types" EntitySet="user_types" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="book_author" Association="digital_libraryModel.book_author">
+            <End Role="authors" EntitySet="authors" />
+            <End Role="books" EntitySet="books" />
+          </AssociationSet>
+          <AssociationSet Name="book_genre" Association="digital_libraryModel.book_genre">
+            <End Role="books" EntitySet="books" />
+            <End Role="genre" EntitySet="genre" />
+          </AssociationSet>
+          <AssociationSet Name="downloaded_books" Association="digital_libraryModel.downloaded_books">
+            <End Role="books" EntitySet="books" />
+            <End Role="users" EntitySet="users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="authors">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="biography" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="birth_date" Type="DateTime" Precision="0" />
+          <Property Name="active" Type="Boolean" />
+          <NavigationProperty Name="books" Relationship="digital_libraryModel.book_author" FromRole="authors" ToRole="books" />
+        </EntityType>
+        <EntityType Name="books">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="isbn" Type="String" MaxLength="13" Unicode="false" FixedLength="false" />
+          <Property Name="edition" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="description" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="data" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="added_by" Type="Int32" Nullable="false" />
+          <Property Name="active" Type="Boolean" />
+          <NavigationProperty Name="users" Relationship="digital_libraryModel.FK_books_added" FromRole="books" ToRole="users" />
+          <NavigationProperty Name="authors" Relationship="digital_libraryModel.book_author" FromRole="books" ToRole="authors" />
+          <NavigationProperty Name="genre" Relationship="digital_libraryModel.book_genre" FromRole="books" ToRole="genre" />
+          <NavigationProperty Name="users1" Relationship="digital_libraryModel.downloaded_books" FromRole="books" ToRole="users" />
+          <Property Type="DateTime" Name="date" Precision="0" />
+          <Property Type="Double" Name="rating" />
+        </EntityType>
+        <EntityType Name="genre">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="active" Type="Boolean" />
+          <NavigationProperty Name="books" Relationship="digital_libraryModel.book_genre" FromRole="genre" ToRole="books" />
+        </EntityType>
+        <EntityType Name="user_types">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="active" Type="Boolean" />
+          <NavigationProperty Name="users" Relationship="digital_libraryModel.FK_user_type" FromRole="user_types" ToRole="users" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="password" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="salt" Type="Binary" MaxLength="10" FixedLength="false" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="type" Type="Int32" Nullable="false" />
+          <Property Name="active" Type="Boolean" />
+          <Property Name="image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="isConfirmed" Type="Boolean" />
+          <Property Name="confirmationToken" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="books" Relationship="digital_libraryModel.FK_books_added" FromRole="users" ToRole="books" />
+          <NavigationProperty Name="user_types" Relationship="digital_libraryModel.FK_user_type" FromRole="users" ToRole="user_types" />
+          <NavigationProperty Name="books1" Relationship="digital_libraryModel.downloaded_books" FromRole="users" ToRole="books" />
+        </EntityType>
+        <Association Name="FK_books_added">
+          <End Role="users" Type="digital_libraryModel.users" Multiplicity="1" />
+          <End Role="books" Type="digital_libraryModel.books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="books">
+              <PropertyRef Name="added_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_type">
+          <End Role="user_types" Type="digital_libraryModel.user_types" Multiplicity="1" />
+          <End Role="users" Type="digital_libraryModel.users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_types">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="book_author">
+          <End Role="authors" Type="digital_libraryModel.authors" Multiplicity="*" />
+          <End Role="books" Type="digital_libraryModel.books" Multiplicity="*" />
+        </Association>
+        <Association Name="book_genre">
+          <End Role="books" Type="digital_libraryModel.books" Multiplicity="*" />
+          <End Role="genre" Type="digital_libraryModel.genre" Multiplicity="*" />
+        </Association>
+        <Association Name="downloaded_books">
+          <End Role="books" Type="digital_libraryModel.books" Multiplicity="*" />
+          <End Role="users" Type="digital_libraryModel.users" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="digital_libraryModelStoreContainer" CdmEntityContainer="digital_libraryEntities">
+          <EntitySetMapping Name="authors">
+            <EntityTypeMapping TypeName="digital_libraryModel.authors">
+              <MappingFragment StoreEntitySet="authors">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="biography" ColumnName="biography" />
+                <ScalarProperty Name="birth_date" ColumnName="birth_date" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="books">
+            <EntityTypeMapping TypeName="digital_libraryModel.books">
+              <MappingFragment StoreEntitySet="books">
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="isbn" ColumnName="isbn" />
+                <ScalarProperty Name="edition" ColumnName="edition" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="data" ColumnName="data" />
+                <ScalarProperty Name="added_by" ColumnName="added_by" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="genre">
+            <EntityTypeMapping TypeName="digital_libraryModel.genre">
+              <MappingFragment StoreEntitySet="genre">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_types">
+            <EntityTypeMapping TypeName="digital_libraryModel.user_types">
+              <MappingFragment StoreEntitySet="user_types">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="digital_libraryModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="isConfirmed" ColumnName="isConfirmed" />
+                <ScalarProperty Name="confirmationToken" ColumnName="confirmationToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="book_author" TypeName="digital_libraryModel.book_author" StoreEntitySet="book_author">
+            <EndProperty Name="authors">
+              <ScalarProperty Name="id" ColumnName="author_id" />
+            </EndProperty>
+            <EndProperty Name="books">
+              <ScalarProperty Name="id" ColumnName="book_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="book_genre" TypeName="digital_libraryModel.book_genre" StoreEntitySet="book_genre">
+            <EndProperty Name="books">
+              <ScalarProperty Name="id" ColumnName="book_id" />
+            </EndProperty>
+            <EndProperty Name="genre">
+              <ScalarProperty Name="id" ColumnName="genre_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="downloaded_books" TypeName="digital_libraryModel.downloaded_books" StoreEntitySet="downloaded_books">
+            <EndProperty Name="books">
+              <ScalarProperty Name="id" ColumnName="book_id" />
+            </EndProperty>
+            <EndProperty Name="users">
+              <ScalarProperty Name="id" ColumnName="user_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

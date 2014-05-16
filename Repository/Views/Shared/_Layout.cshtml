@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<head>
+    <title>Repository</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/sb-admin.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.css" rel="stylesheet" />
+</head>
+<body data-ng-app="main" data-ng-controller="RootController">
+    <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+    <div id="wrapper">
+        <nav  class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="navbar-header">               
+                <a style="color:black" class="navbar-brand" href="#">Digital repository</a>
+            </div>           
+            <ul class="nav navbar-top-links navbar-right">
+                <li data-ng-class="{active : activeViewPath==='/books'}"><a href='#/books'>Books</a></li>             
+               <li class="dropdown">
+                <a href="#" style="color:black" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
+                <i class="fa fa-user fa-fw"></i>
+                  {{username}} <i class="caret"></i></a>
+                <ul class="dropdown-menu dropdown-user">
+                <li data-ng-class="{active : activeViewPath==='/userprofile/{{username}}'}"><a style="color:gray" href="#/userprofile/akrdzic1"><i class="fa fa-user fa-fw"></i> User profile</a></li>
+                <li class="divider"></li>
+                <li ><a style="color:gray" data-ng-click ="signout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>        
+              </ul>
+             </li>   
+            <li data-ng-hide="authenticated"><div class="form-group"><input class="form-control" placeholder="Username" name="username" data-ng-model="login.Username" autofocus></div></li>
+            <li data-ng-hide="authenticated"><div class="form-group"><input class="form-control" placeholder="Password" name="password" data-ng-model="login.Password" type="password" value=""></div></li>
+            <li data-ng-hide="authenticated"><div class="form-group"><input type="button" class="btn btn-default" data-ng-click ="signin(login)" value="Log in" /></div> </li>                              
+            </ul>          
+        </nav>       
+            <div style="background-color:white" class="col-md-12">               
+                  @RenderBody()                  
+            </div>          
+    </div>      
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/app")
+    <script src="~/Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/app/sb-admin.js"></script>
+    <script src="~/Scripts/ui-bootstrap-tpls-0.11.0.min.js"></script>
+    <script src="~/Scripts/app/elasticsearch.angular.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>   
+    @RenderSection("scripts", required: false)
+</body>
+</html>

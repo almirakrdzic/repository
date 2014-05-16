@@ -1,0 +1,31 @@
+﻿@model Repository.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+}
+
+<section style="align-items:center" id="loginForm">
+<form role="form">
+<fieldset>
+<div class="form-group">
+<input class="form-control" placeholder="Username" name="username" data-ng-model="login.Username" autofocus>
+</div>
+<div class="form-group">
+<input class="form-control" placeholder="Password" name="password" data-ng-model="login.Password" type="password" value="">
+</div>
+<div class="checkbox">
+<label>
+<input name="remember" data-ng-model="login.RememberMe" type="checkbox" value="Remember Me">Remember Me
+</label>
+</div>
+<div class="form-group">
+<input type="button" class="btn btn-default" data-ng-click ="signin(login)" value="Log in" />
+</div> 
+</fieldset>
+</form>
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
