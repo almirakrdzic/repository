@@ -6,10 +6,26 @@ appRoot
     .config(['$routeProvider', function ($routeProvider) {
         //Setup routes to load partial templates from server. TemplateUrl is the location for the server view (Razor .cshtml view)
         $routeProvider
-            .when('/home', { templateUrl: '/home/main', controller: 'MainController' })           
-            .when('/userprofile/:username', { templateUrl: '/home/userprofile', controller: 'UserProfileController' })
-            .when('/books', { templateUrl: '/home/books', controller: 'BooksController' })
-            .when('/book/details/:id', { templateUrl: '/home/bookdetalis', controller: 'BookDetailsController' })           
+            .when('/home', {
+                templateUrl: '/home/main',
+                controller: 'MainController',
+                access: { isPublic: true }
+            })
+            .when('/userprofile/:username', {
+                templateUrl: '/home/userprofile',
+                controller: 'UserProfileController',
+                access: { isPublic: false }
+            })
+            .when('/books', {
+                templateUrl: '/home/books',
+                controller: 'BooksController',
+                access: { isPublic: false }
+            })
+            .when('/book/details/:id', {
+                templateUrl: '/home/bookdetalis',
+                controller: 'BookDetailsController',
+                access: { isPublic: false }
+            })
             .otherwise({ redirectTo: '/home' });
     }])
     .factory('bookRepository', function ($http) {       
@@ -53,11 +69,20 @@ appRoot
            .error(callbackError);
         };
 
+        user.isLogged = function (callbackSuccess, callbackError) {
+            $http.get('api/user/islogged')
+           .success(callbackSuccess)
+           .error(callbackError);
+        };
+
         return user;
     })
-    .controller('RootController', ['$scope', '$route', '$routeParams', '$location','aut', function ($scope, $route, $routeParams, $location,aut) {
+    .controller('RootController', ['$scope', '$route', '$routeParams', '$location', 'aut', function ($scope, $route, $routeParams, $location, aut) {
+
         $scope.authenticated = false;
         $scope.username = '';
+        $scope.error = '';
+        $scope.seeError = false;
         $scope.login =
         {
            Username: '',
@@ -65,14 +90,29 @@ appRoot
            RememberMe: false
         }
 
-        $scope.signin = function (login) {
-            aut.loginUser(login, function (results) {
+        aut.isLogged(function (results) {
+            $scope.authenticated = true;
+            results = results.replace('"', '');
+            $scope.username = results.replace('"','');
+
+        },
+             function (results) {
+                 $scope.authenticated = false;
+                 $scope.username = '';          
+                
+             });
+
+        $scope.signin = function (isValid) {
+            aut.loginUser($scope.login, function (results) {               
                 $scope.authenticated = true;
-                $scope.username = login.Username;
+                $scope.username = $scope.login.Username;
                 $scope.login.Username = '';
                 $scope.login.Password = '';
+                $scope.seeError = false;
             },
-            function (results) {              
+            function (results) {
+                $scope.error = "Username or password are incorrect";
+                $scope.seeError = true;
             });
             $location.path('/');
         };
@@ -86,6 +126,20 @@ appRoot
              });
             $location.path('/');
         };
+
+        $scope.$on('$routeChangeStart', function (e, current, previous) {
+            if (current.access.isPublic == true) { return; }
+            aut.isLogged(function (results) {
+               
+            },
+             function (results) {
+                 $scope.authenticated = false;
+                 $scope.username = '';
+                 $scope.seeError = true;
+                 $location.path('/home');
+             });           
+        });
+
         $scope.$on('$routeChangeSuccess', function (e, current, previous) {
             $scope.activeViewPath = $location.path();
         });

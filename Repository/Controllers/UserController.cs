@@ -39,7 +39,7 @@ namespace Repository.Controllers
             if (authenticated)
             {
                 var response = this.Request.CreateResponse(HttpStatusCode.Created, true);
-                FormsAuthentication.SetAuthCookie(user.Username, false);
+                FormsAuthentication.SetAuthCookie(user.Username, false);               
                 return response;
             }
             return this.Request.CreateErrorResponse(HttpStatusCode.Forbidden,"");
@@ -49,9 +49,19 @@ namespace Repository.Controllers
         [HttpPost]
         public HttpResponseMessage SignOut()
         {           
-                var response = this.Request.CreateResponse(HttpStatusCode.Created, true);
-                FormsAuthentication.SignOut();
+                var response = this.Request.CreateResponse(HttpStatusCode.Created, true);              
+                FormsAuthentication.SignOut();               
                 return response;           
+        }
+
+        [HttpGet]
+        public HttpResponseMessage IsLogged()
+        {
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated) {
+                return this.Request.CreateResponse(HttpStatusCode.Created, System.Web.HttpContext.Current.User.Identity.Name);
+            }
+            else return this.Request.CreateResponse(HttpStatusCode.Forbidden, "");
+
         }
 
         [HttpGet]
