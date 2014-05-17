@@ -12,6 +12,7 @@
         $scope.rate = function rate() {
             bookRepository.rateBook($scope.Userrate,$scope.book.id, function (results) {
                 $scope.book = results;
+                $scope.Userrate = 0;
             })
         };
     }]);

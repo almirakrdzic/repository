@@ -26,6 +26,8 @@ namespace Repository.Controllers
         [DataMember]
         public Double Rating { get; set; }
         [DataMember]
+        public int People { get; set; }
+        [DataMember]
         public DateTime Datum { get; set; }
 
     }

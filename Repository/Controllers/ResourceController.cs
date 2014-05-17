@@ -28,11 +28,13 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
-        public Book Rate(double rate,int id)
+        public Book Rate(int rate,int id)
         {
             var db = new Models.digital_libraryEntities();
             var book = db.books.Where(boo => boo.id == id).FirstOrDefault();
-            book.rating = rate;
+            book.ratingpeople = book.ratingpeople + 1;
+            book.ratingscore = book.ratingscore + rate;
+            book.rating = book.ratingscore/book.ratingpeople;
             db.SaveChanges();
             var newBook = book.ToContract();
             return newBook;

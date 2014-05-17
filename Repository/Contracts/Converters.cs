@@ -22,7 +22,8 @@ namespace Repository.Controllers
                 Title = book.title,
                 Content = book.data,
                 Rating = (double)book.rating,
-                Datum = (DateTime)book.date
+                Datum = (DateTime)book.date,
+                People = (int)book.ratingpeople
             };
             return newBook;
         }

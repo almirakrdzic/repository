@@ -2,10 +2,11 @@
     Layout = null;
 }
 
-<div class="col-lg-12">
-     
-<div class="col-lg-12"><br /></div> 
-<div class="col-lg-12">
+<div class="panel panel-default">     
+<div class="panel-heading">
+<i class="fa fa-book fa-fw"></i> New books                         
+</div>
+<div class="panel-body">
 
    <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
     <div class="thumbnail">
@@ -13,7 +14,7 @@
 <img data-src="holder.js/300x200" alt="..." src="~/Images/book.png">
         </a> 
         <h4 style="text-align:center">{{book.title}}</h4>
-        <rating ng-model="rate" max="10" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
+        <rating ng-model="book.rating" max="10" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
           
         <p><a href="#" class="btn btn-primary" role="button"><i class="fa fa-download fa-fw"></i></a></p>
      

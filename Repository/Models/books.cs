@@ -31,6 +31,8 @@ namespace Repository.Models
         public Nullable<bool> active { get; set; }
         public Nullable<System.DateTime> date { get; set; }
         public Nullable<double> rating { get; set; }
+        public Nullable<int> ratingscore { get; set; }
+        public Nullable<int> ratingpeople { get; set; }
     
         public virtual users users { get; set; }
         public virtual ICollection<authors> authors { get; set; }

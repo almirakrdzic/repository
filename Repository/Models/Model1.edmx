@@ -109,6 +109,8 @@
           <Property Name="active" Type="bit" />
           <Property Name="date" Type="date" />
           <Property Name="rating" Type="float" />
+          <Property Name="ratingscore" Type="int" />
+          <Property Name="ratingpeople" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'digital_library.dbo.downloaded_books' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -311,6 +313,8 @@
           <NavigationProperty Name="users1" Relationship="digital_libraryModel.downloaded_books" FromRole="books" ToRole="users" />
           <Property Type="DateTime" Name="date" Precision="0" />
           <Property Type="Double" Name="rating" />
+          <Property Type="Int32" Name="ratingscore" />
+          <Property Type="Int32" Name="ratingpeople" />
         </EntityType>
         <EntityType Name="genre">
           <Key>
@@ -407,6 +411,8 @@
           <EntitySetMapping Name="books">
             <EntityTypeMapping TypeName="digital_libraryModel.books">
               <MappingFragment StoreEntitySet="books">
+                <ScalarProperty Name="ratingpeople" ColumnName="ratingpeople" />
+                <ScalarProperty Name="ratingscore" ColumnName="ratingscore" />
                 <ScalarProperty Name="rating" ColumnName="rating" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="id" ColumnName="id" />
