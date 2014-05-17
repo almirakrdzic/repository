@@ -26,12 +26,12 @@
             </div>           
             <ul class="nav navbar-top-links navbar-right">
                 <li data-ng-class="{active : activeViewPath==='/books'}"><a href='#/books'>Books</a></li>             
-               <li class="dropdown">
+               <li data-ng-show="authenticated" class="dropdown">
                 <a href="#" style="color:black" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
                 <i class="fa fa-user fa-fw"></i>
                   {{username}} <i class="caret"></i></a>
                 <ul class="dropdown-menu dropdown-user">
-                <li data-ng-class="{active : activeViewPath==='/userprofile/{{username}}'}"><a style="color:gray" href="#/userprofile/akrdzic1"><i class="fa fa-user fa-fw"></i> User profile</a></li>
+                <li data-ng-class="{active : activeViewPath==='/userprofile/{{username}}'}"><a style="color:gray" href="#/userprofile/{{username}}"><i class="fa fa-user fa-fw"></i> User profile</a></li>
                 <li class="divider"></li>
                 <li ><a style="color:gray" data-ng-click ="signout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>        
               </ul>

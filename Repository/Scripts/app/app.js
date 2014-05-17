@@ -1,11 +1,5 @@
 ﻿// Main configuration file. Sets up AngularJS module and routes and any other config objects
 
-var user =
-       {
-           username: '',
-           authenticated: false
-       };
-
 var appRoot = angular.module('main', ['ngRoute','ui.bootstrap', 'ngResource','elasticsearch', 'angularStart.services', 'angularStart.directives']);     //Define the main module
 
 appRoot
@@ -44,37 +38,26 @@ appRoot
     .service('es', function (esFactory) {
         return esFactory({ host: 'localhost:9200' });
     })
-    .service('aut', function ($http) {
-       
-        return {
-            loginUser: function (login) {
-                $http.post('api/user/login', login)
-               .success(function (data, status, headers, config) {
-                   user.username = 'akrdzic1';                  
-                   user.authenticated = true;                  
-               })
-               .error(function (data, status, headers, config) {
-                  user.authenticated = false;
-               });
-            },
-            logoutUser: function () {
-                $http.post('api/user/signout')
-               .success(function (data, status, headers, config) {
-                   user.username = '';
-                   user.authenticated = false;
-               })               
-            },
-            isAuthenticated: function () {
-                return user.authenticated;
-            },
-            username: function () {
-                return user.username;
-            }
-        }
+    .factory('aut', function ($http) {
+        var user = {};       
+
+        user.loginUser = function (login, callbackSuccess, callbackError) {
+            $http.post('api/user/login', login)
+           .success(callbackSuccess)
+           .error(callbackError);
+        };
+
+        user.logoutUser = function (callbackSuccess, callbackError) {
+            $http.post('api/user/signout')
+           .success(callbackSuccess)
+           .error(callbackError);
+        };
+
+        return user;
     })
     .controller('RootController', ['$scope', '$route', '$routeParams', '$location','aut', function ($scope, $route, $routeParams, $location,aut) {
-        $scope.authenticated = user.authenticated;
-        $scope.username = user.username;
+        $scope.authenticated = false;
+        $scope.username = '';
         $scope.login =
         {
            Username: '',
@@ -83,16 +66,24 @@ appRoot
         }
 
         $scope.signin = function (login) {
-            aut.loginUser(login);
-            $scope.authenticated = true;
-            $scope.username = login.username;
-            $location.path('/books');
+            aut.loginUser(login, function (results) {
+                $scope.authenticated = true;
+                $scope.username = login.Username;
+                $scope.login.Username = '';
+                $scope.login.Password = '';
+            },
+            function (results) {              
+            });
+            $location.path('/');
         };
 
         $scope.signout = function () {
-            aut.logoutUser();
-            $scope.authenticated = false;
-            $scope.username = '';
+            aut.logoutUser(function (results) {
+                $scope.authenticated = false;
+                $scope.username = '';
+            },
+             function (results) {               
+             });
             $location.path('/');
         };
         $scope.$on('$routeChangeSuccess', function (e, current, previous) {
