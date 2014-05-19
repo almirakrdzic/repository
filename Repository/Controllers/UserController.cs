@@ -17,6 +17,7 @@ using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Repository.Controllers
 {
@@ -65,13 +66,74 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
-        public User UserDetails(string username)
+        public UserProfileModel UserDetails(string username)
         {
-            User u = new User();
             var database = new Models.digital_libraryEntities();
             var user = database.users.Where(us => us.username == username).FirstOrDefault();
-            u = user.ToContract();
-            return u;
+          
+            UserProfileModel profile = new UserProfileModel();
+            profile.Username = username;
+            profile.FirstName = user.first_name;
+            profile.LastName = user.last_name;
+            profile.Email = user.email;
+            profile.AboutMe = "";
+
+
+            return profile;
         }
+
+      
+        [HttpPost]
+        public async Task<HttpResponseMessage> PostPicture()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            var root = HttpContext.Current.Server.MapPath("~/Content");
+            var provider = new MultipartFormDataStreamProvider(root);
+            var result = await Request.Content.ReadAsMultipartAsync(provider);
+            if (result.FormData["profile"] == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            var data = result.FormData["profile"];
+            System.Web.Script.Serialization.JavaScriptSerializer js = new System.Web.Script.Serialization.JavaScriptSerializer();
+            UserProfileModel profile = js.Deserialize<UserProfileModel>(data);           
+            //TODO: Do something with the json model which is currently a string
+
+            var file = result.FileData[0];           
+
+            var database = new Models.digital_libraryEntities();
+            var user = database.users.Where(us => us.username == profile.Username).FirstOrDefault();
+            MemoryStream stream = new MemoryStream();
+            Image im = Image.FromFile(file.LocalFileName);
+            im.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+            user.image = stream.ToArray();          
+            database.SaveChanges();
+
+            return Request.CreateResponse(HttpStatusCode.OK, "success!");
+        }
+
+        [HttpPost]
+        public HttpResponseMessage EditProfile(UserProfileModel profile)
+        {          
+           
+            //TODO: Do something with the json model which is currently a string                 
+
+            var database = new Models.digital_libraryEntities();
+            var user = database.users.Where(us => us.username == profile.Username).FirstOrDefault();
+            MemoryStream stream = new MemoryStream();           
+            user.first_name = profile.FirstName;
+            user.last_name = profile.LastName;
+            user.email = profile.Email;
+            database.SaveChanges();
+
+            return Request.CreateResponse(HttpStatusCode.OK, "success!");
+        }
+
+       
  }    
 }

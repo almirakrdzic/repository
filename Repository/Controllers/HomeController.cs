@@ -33,5 +33,11 @@ namespace Repository.Controllers
         {
             return View();
         }
+
+        public ActionResult EditUserProfile()
+        {
+            return View();
+        }
+
     }
 }

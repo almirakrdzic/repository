@@ -48,6 +48,9 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="AsyncBridge">
+      <HintPath>..\packages\AsyncBridge.0.1.1\lib\net40-Client\AsyncBridge.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetOpenAuth.AspNet">
       <HintPath>..\packages\DotNetOpenAuth.AspNet.4.0.4.12182\lib\net40-full\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>
@@ -228,6 +231,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Models\users.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -335,6 +339,7 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\bookdetails.js" />
     <Content Include="Scripts\app\app.js" />
+    <Content Include="Scripts\app\editprofile.js" />
     <Content Include="Scripts\app\userprofile.js" />
     <Content Include="Scripts\app\books.js" />
     <Content Include="Scripts\app\directives.js" />
@@ -470,6 +475,7 @@
     <Content Include="Views\Home\Books.cshtml" />
     <Content Include="Views\Home\BookDetalis.cshtml" />
     <Content Include="Views\Home\UserProfile.cshtml" />
+    <Content Include="Views\Home\EditUserProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Repository.Controllers
 {
     [DataContract]
+    [Serializable]
     public class User
     {
         [DataMember]

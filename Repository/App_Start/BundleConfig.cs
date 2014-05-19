@@ -33,7 +33,8 @@ namespace Repository
                         "~/Scripts/app/main.js",
                         "~/Scripts/app/userprofile.js",
                         "~/Scripts/app/bookdetails.js",
-                        "~/Scripts/app/books.js"
+                        "~/Scripts/app/books.js",
+                        "~/Scripts/app/editprofile.js"
                         ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're

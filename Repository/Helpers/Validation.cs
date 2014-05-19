@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
+using DotNetOpenAuth.AspNet;
+using Microsoft.Web.WebPages.OAuth;
+using WebMatrix.WebData;
 using Repository.Filters;
 using Repository.Models;
 using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 using System.Net;
+using System.Drawing;
+using System.IO;
+
 namespace Repository.Helpers
 {
     public class Validation
@@ -37,7 +46,9 @@ namespace Repository.Helpers
                     break;
                 }
                 var database = new Models.digital_libraryEntities();
-                var user = new Models.users();
+                var user = database.users.Where(u => u.username == userName).FirstOrDefault();
+                if (user != null) return true;
+                user = new Models.users();
                 user.active = true;
                 user.email = Email;
                 user.first_name = Firstname;
@@ -53,6 +64,23 @@ namespace Repository.Helpers
                 validation = false;
             }
             return validation;
+        }
+
+        public byte[] GetProfilePic(string username)
+        {
+            var userImage = new byte[] { };
+            var database = new Models.digital_libraryEntities();
+            var user = database.users.Where(us => us.username == username).FirstOrDefault();
+            if (user.image == null)
+            {
+                MemoryStream stream = new MemoryStream();
+                Image im = Image.FromFile("C:/Users/almira/Source/Repos/repository/Repository/Content/images/user.png");
+                im.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                byte[] bytes = stream.ToArray();
+                return bytes;
+            }
+
+            return user.image;
         }
     }
 }

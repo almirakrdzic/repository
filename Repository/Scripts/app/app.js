@@ -28,6 +28,7 @@ appRoot
             })
             .otherwise({ redirectTo: '/home' });
     }])
+    
     .factory('bookRepository', function ($http) {       
         return {           
             getBooks: function (callback) {
@@ -48,14 +49,86 @@ appRoot
              getUser: function (username, callback) {
 
                  $http.get("api/user/userdetails/?username=" + username).success(callback);
+             },
+             editProfile: function (profile, callback) {                
+                 $http.post("api/user/editprofile", profile)
+                 .success(function () {
+                 })
+                 .error(function () {
+                 });
+             },
+             postPicture: function (file, profile, callback) {
+
+                 var fd = new FormData();
+                 fd.append('file', file);
+                 fd.append('profile', angular.toJson(profile));
+                 $http.post("api/user/postpicture", fd, {
+                     transformRequest: angular.identity,
+                     headers: { 'Content-Type': undefined }
+                 })
+                 .success(function () {
+                 })
+                 .error(function () {
+                 });
              }
          }
      })
     .service('es', function (esFactory) {
         return esFactory({ host: 'localhost:9200' });
     })
+     .service('fileReader', function ($q, $log) {
+         
+         var onLoad = function (reader, deferred, scope) {
+             return function () {
+                 scope.$apply(function () {
+                     deferred.resolve(reader.result);
+                 });
+             };
+         };
+
+         var onError = function (reader, deferred, scope) {
+             return function () {
+                 scope.$apply(function () {
+                     deferred.reject(reader.result);
+                 });
+             };
+         };
+
+         var onProgress = function (reader, scope) {
+             return function (event) {
+                 scope.$broadcast("fileProgress",
+                     {
+                         total: event.total,
+                         loaded: event.loaded
+                     });
+             };
+         };
+
+         var getReader = function (deferred, scope) {
+             var reader = new FileReader();
+             reader.onload = onLoad(reader, deferred, scope);
+             reader.onerror = onError(reader, deferred, scope);
+             reader.onprogress = onProgress(reader, scope);
+             return reader;
+         };
+
+         var readAsDataURL = function (file, scope) {
+             var deferred = $q.defer();
+
+             var reader = getReader(deferred, scope);
+             reader.readAsDataURL(file);
+
+             return deferred.promise;
+         };
+
+         return {
+             readAsDataUrl: readAsDataURL
+         };
+     })
     .factory('aut', function ($http) {
         var user = {};       
+
+        user.username = '';
 
         user.loginUser = function (login, callbackSuccess, callbackError) {
             $http.post('api/user/login', login)
@@ -77,7 +150,7 @@ appRoot
 
         return user;
     })
-    .controller('RootController', ['$scope', '$route', '$routeParams', '$location', 'aut', function ($scope, $route, $routeParams, $location, aut) {
+    .controller('RootController', ['$scope', '$route', '$routeParams', '$location', 'aut', '$modal', function ($scope, $route, $routeParams, $location, aut, $modal) {
 
         $scope.authenticated = false;
         $scope.username = '';
@@ -93,7 +166,8 @@ appRoot
         aut.isLogged(function (results) {
             $scope.authenticated = true;
             results = results.replace('"', '');
-            $scope.username = results.replace('"','');
+            $scope.username = results.replace('"', '');
+            aut.username = $scope.username;
 
         },
              function (results) {
@@ -109,6 +183,20 @@ appRoot
                 $scope.login.Username = '';
                 $scope.login.Password = '';
                 $scope.seeError = false;
+                aut.username = $scope.username;
+
+                var modalInstance = $modal.open({
+                    templateUrl: '/home/edituserprofile',
+                    controller: 'EditProfileController',
+                    size: 'sm'                   
+                });
+
+                modalInstance.result.then(function (selectedItem) {
+                    
+                }, function () {
+                   
+                });            
+
             },
             function (results) {
                 $scope.error = "Username or password are incorrect";
@@ -117,10 +205,26 @@ appRoot
             $location.path('/');
         };
 
+        $scope.editProfile = function () {     
+
+                var modalInstance = $modal.open({
+                    templateUrl: '/home/edituserprofile',
+                    controller: 'EditProfileController',
+                    size: 'sm'
+                });
+
+                modalInstance.result.then(function (selectedItem) {
+
+                }, function () {
+
+                });         
+        };
+
         $scope.signout = function () {
             aut.logoutUser(function (results) {
                 $scope.authenticated = false;
                 $scope.username = '';
+                aut.username = $scope.username;
             },
              function (results) {               
              });

@@ -32,8 +32,9 @@
                   {{username}} <i class="caret"></i></a>
                 <ul class="dropdown-menu dropdown-user">
                 <li data-ng-class="{active : activeViewPath==='/userprofile/{{username}}'}"><a style="color:gray" href="#/userprofile/{{username}}"><i class="fa fa-user fa-fw"></i> User profile</a></li>
+                <li><a style="color:gray" href="#" data-ng-click ="editProfile()" ><i class="fa fa-user fa-fw"></i> Edit profile</a></li>
                 <li class="divider"></li>
-                <li ><a style="color:gray" data-ng-click ="signout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>        
+                <li ><a style="color:gray" href="#" data-ng-click ="signout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>        
               </ul>
              </li>
               <li>
