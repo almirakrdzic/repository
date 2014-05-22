@@ -21,6 +21,11 @@ appRoot
                 controller: 'BooksController',
                 access: { isPublic: false }
             })
+            .when('/useruploads/:username', {
+                templateUrl: '/home/useruploads',
+                controller: 'UserUploadsController',
+                access: { isPublic: false }
+            })
             .when('/book/details/:id', {
                 templateUrl: '/home/bookdetalis',
                 controller: 'BookDetailsController',
@@ -38,6 +43,10 @@ appRoot
             getBook: function (id, callback) {
 
                 $http.get("api/resource/get/?id=" + id).success(callback);
+            },
+            getUploads: function (id, callback) {
+
+                $http.get("api/resource/getuploads/?username=" + id).success(callback);
             },
             rateBook: function (rate,id,callback) {
                 $http.get("api/resource/rate/?rate=" + rate+"&id="+id).success(callback);

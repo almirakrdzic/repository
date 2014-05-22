@@ -347,6 +347,7 @@
     <Content Include="Scripts\app\main.js" />
     <Content Include="Scripts\app\sb-admin.js" />
     <Content Include="Scripts\app\services.js" />
+    <Content Include="Scripts\app\useruploads.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\errors.json" />
@@ -476,6 +477,7 @@
     <Content Include="Views\Home\BookDetalis.cshtml" />
     <Content Include="Views\Home\UserProfile.cshtml" />
     <Content Include="Views\Home\EditUserProfile.cshtml" />
+    <Content Include="Views\Home\UserUploads.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

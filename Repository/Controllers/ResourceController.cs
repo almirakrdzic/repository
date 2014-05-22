@@ -27,6 +27,23 @@ namespace Repository.Controllers
             return books;
         }
 
+        public IEnumerable<Book> GetUploads(string username)
+        {
+            var db = new Models.digital_libraryEntities();
+            var _user = db.users.Where(user => user.username==username ).FirstOrDefault();
+            var id = _user.id;
+            List<Book> books = new List<Book>();
+            
+            var _books = db.books.ToList().Where(book => book.added_by==id).ToList();
+            if (_books == null)
+            {
+                throw new Exception("There are no books present!");
+            }
+            books = _books.ToList().Select(boo => boo.ToContract()).ToList();
+
+            return books;
+        }
+
         [HttpGet]
         public Book Rate(int rate,int id)
         {

@@ -39,5 +39,10 @@ namespace Repository.Controllers
             return View();
         }
 
+        public ActionResult UserUploads()
+        {
+            return View();
+        }
+
     }
 }
