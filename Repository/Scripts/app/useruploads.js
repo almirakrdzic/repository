@@ -1,10 +1,10 @@
 ﻿angular.module('main')
-    .controller('UserUploadsController', ['$scope', 'aut', '$location', 'bookRepository', function ($scope, aut, $location, bookRepository) {
+    .controller('UserUploadsController', ['$scope', 'aut', '$location', 'bookRepository', '$routeParams', function ($scope, aut, $location, bookRepository, $routeParams) {
 
         $scope.books = [];
         $scope.booksSize = 0;
         function getUploads() {
-            bookRepository.getUploads($routeParams.id, function (results) {
+            bookRepository.getUploads($routeParams.username, function (results) {
                 data = results;
                 data1 = data;
                 $scope.books = data1.slice(0, $scope.itemsPerPage);
