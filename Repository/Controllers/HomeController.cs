@@ -44,5 +44,10 @@ namespace Repository.Controllers
             return View();
         }
 
+        public ActionResult UserDownloads()
+        {
+            return View();
+        }
+
     }
 }

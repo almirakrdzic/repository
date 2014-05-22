@@ -44,6 +44,22 @@ namespace Repository.Controllers
             return books;
         }
 
+        public IEnumerable<Book> GetDownloads(string username)
+        {
+            List<Book> downloadedBooks = new List<Book>();
+            var db = new Models.digital_libraryEntities();
+
+            var _user = db.users.Where(user => user.username == username).FirstOrDefault();
+            var id = _user.id;
+            if (_user == null)
+            {
+                throw new Exception("User with selected username does not exist!");
+            }
+            downloadedBooks = _user.books1.Select(book => book.ToContract()).ToList();
+            return downloadedBooks;
+        }
+        
+
         [HttpGet]
         public Book Rate(int rate,int id)
         {

@@ -340,6 +340,7 @@
     <Content Include="Scripts\app\bookdetails.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\editprofile.js" />
+    <Content Include="Scripts\app\userdownloads.js" />
     <Content Include="Scripts\app\userprofile.js" />
     <Content Include="Scripts\app\books.js" />
     <Content Include="Scripts\app\directives.js" />
@@ -478,6 +479,7 @@
     <Content Include="Views\Home\UserProfile.cshtml" />
     <Content Include="Views\Home\EditUserProfile.cshtml" />
     <Content Include="Views\Home\UserUploads.cshtml" />
+    <Content Include="Views\Home\UserDownloads.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

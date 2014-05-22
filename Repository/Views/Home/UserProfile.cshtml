@@ -35,7 +35,7 @@
           <ul class="nav nav-tabs" id="myTab">
             <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
             <li data-ng-class="{active : activeViewPath==='/useruploads/{{username}}'}"><a href="#/useruploads/{{username}}" data-toggle="tab">Uploaded books </a></li>
-            <li><a href="#settings" data-toggle="tab">Downloaded books </a></li>
+            <li data-ng-class="{active : activeViewPath==='/userdownloads/{{username}}'}"><a href="#/userdownloads/{{username}}" data-toggle="tab">Downloaded books </a></li>
           </ul>
               
           <div class="tab-content">
