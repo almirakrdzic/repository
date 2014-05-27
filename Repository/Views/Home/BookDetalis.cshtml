@@ -8,28 +8,49 @@
      <button type="button" class="btn btn-primary btn-lg btn-block"><i class="fa fa-download fa-fw"></i>Download</button>
      <br />
       <p class="text-muted">Rate this book:<br/>   
-     <rating ng-model="Userrate" max="10" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="false"></rating>
-     <div class="form-group"><input type="button" class="btn btn-default" data-ng-click ="rate()" value="Rate" /></div>                            
+     <rating ng-model="Userrate" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="false"></rating>
+     <div class="form-group"><input type="button" class="btn btn-default" data-ng-click ="rate()" value="Rate" />
+         <button class="btn btn-sm btn-danger" ng-click="Userrate = 0" ng-disabled="isReadonly">Clear</button>
+     </div>                            
+     
       </p>
  </div>  
 
 <div class="col-lg-6">     
-    <h3>{{book.title}}
+    <h3>{{book.title}} 
+        <small>by </small>     
+        <div data-ng-repeat ="author in authors" class="col-sm-3 col-md-3"> 
+             <small>{{author.id}}</small> 
+        </div>   
+        
       <br />
-      <small>by</small>            
+         
       </h3>   
-     <rating ng-model="book.rating" max="10" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
+     <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
      <p>Rated:{{book.people}}</p> 
-     <br /><br />
-    <p>
+     
+    @*<p>
         {{book.description}}
-    </p>
+    </p>*@
+    <p style="text-align: right">This book is added by: {{book.addedBy.firstName}} {{book.addedBy.lastName}}</p>
     <br />
     <hr />
-    <dl class="dl-horizontal">
-    <dt>Edition:</dt><dd> {{book.edition}}</dd>
-    <dt>ISBN:</dt><dd> {{book.isbn}}</dd>
-    </dl>
-    <br />
+    <h3><center>Book Description</center></h3>
+  
+    ISBN: <b>{{book.isbn}} </b>  | 
+    Edition: <b>{{book.edition}}</b>
+ 
+    <br /><br />
+    
+        <b>About this Book</b>
+        <p>{{book.description}}</p>
+        
     <hr />
+    <h3><center>Costumer reviews</center></h3>
+    <ul class="nav nav-tabs" id="myTab">
+            <li data-ng-class="{active : activeViewPath==='/comments'}"><a href='#/comments' data-toggle="tab">Comments </a></li>
+          </ul>
+
  </div>
+
+

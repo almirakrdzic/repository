@@ -30,5 +30,6 @@ namespace Repository.Models
         public DbSet<genre> genre { get; set; }
         public DbSet<user_types> user_types { get; set; }
         public DbSet<users> users { get; set; }
+        public DbSet<comments> comments { get; set; }
     }
 }

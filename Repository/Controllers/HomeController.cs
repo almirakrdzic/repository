@@ -49,5 +49,12 @@ namespace Repository.Controllers
             return View();
         }
 
+        public ActionResult Comments()
+        {
+            return View();
+        }
+
+
+
     }
 }

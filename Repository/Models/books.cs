@@ -19,6 +19,7 @@ namespace Repository.Models
             this.authors = new HashSet<authors>();
             this.genre = new HashSet<genre>();
             this.users1 = new HashSet<users>();
+            this.comments = new HashSet<comments>();
         }
     
         public int id { get; set; }
@@ -38,5 +39,6 @@ namespace Repository.Models
         public virtual ICollection<authors> authors { get; set; }
         public virtual ICollection<genre> genre { get; set; }
         public virtual ICollection<users> users1 { get; set; }
+        public virtual ICollection<comments> comments { get; set; }
     }
 }

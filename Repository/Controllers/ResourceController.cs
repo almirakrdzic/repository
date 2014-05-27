@@ -27,6 +27,37 @@ namespace Repository.Controllers
             return books;
         }
 
+        [HttpGet]
+        public IEnumerable<Comment> GetComments()
+        {
+            List<Comment> comments = new List<Comment>();
+            var db = new Models.digital_libraryEntities();
+            var _comments = db.comments;
+            if (_comments == null)
+            {
+                throw new Exception("There are no books present!");
+            }
+            comments = _comments.ToList().Select(com => com.ToContract()).ToList();
+            return comments;
+        }
+
+
+        [HttpGet]
+        public IEnumerable<Author> GetAuthorsForBook(int id)
+        {
+            List<Author> authors = new List<Author>();
+            var db = new Models.digital_libraryEntities();
+
+            var book = db.books.Where(boo => boo.id == id).FirstOrDefault();
+            if (book == null)
+            {
+                throw new Exception("Book with selected ID does not exist!");
+            }
+            authors = book.authors.Select(author => author.ToContract()).ToList();
+            return authors;
+        }
+
+
         public IEnumerable<Book> GetUploads(string username)
         {
             var db = new Models.digital_libraryEntities();
@@ -81,6 +112,26 @@ namespace Repository.Controllers
             var book = db.books.Where(boo => boo.id == id).FirstOrDefault();
             var newBook = book.ToContract();
             return newBook;
+        }
+
+        [HttpGet]
+        public User GetU(int id)
+        {
+            var db = new Models.digital_libraryEntities();          
+            var book = db.books.Where(boo => boo.id == id).FirstOrDefault();
+            var idAB = book.added_by;
+            var user1 = db.users.Where(us=> us.id==idAB).FirstOrDefault();
+            var newUser = user1.ToContract();
+            return newUser;
+        }
+
+        [HttpGet]
+        public User GetUser(int id)
+        {
+            var db = new Models.digital_libraryEntities();
+            var user = db.users.Where(us => us.id == id).FirstOrDefault();
+            var newUser = user.ToContract();
+            return newUser;
         }
 
         // POST api/resource

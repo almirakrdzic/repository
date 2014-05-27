@@ -21,6 +21,12 @@ appRoot
                 controller: 'BooksController',
                 access: { isPublic: false }
             })
+            .when('/comments', {
+                templateUrl: '/home/comments',
+                controller: 'CommentsController',
+                access: { isPublic: false }
+            })
+
             .when('/useruploads/:username', {
                 templateUrl: '/home/useruploads',
                 controller: 'UserUploadsController',
@@ -59,6 +65,25 @@ appRoot
             },
             rateBook: function (rate,id,callback) {
                 $http.get("api/resource/rate/?rate=" + rate+"&id="+id).success(callback);
+            },
+            getuser: function (id, callback) {
+                $http.get("api/resource/getuser/?id=" + id).success(callback);
+            },
+            getAuthorsForBook: function (id, callback) {
+                $http.get("api/resource/getauthorsforbook/?id=" + id).success(callback);
+            }
+        }
+    })
+
+    .factory('commentRepository', function ($http) {
+        return {
+            getComments: function (callback) {
+
+                $http.get("api/resource/getcomments").success(callback);
+            },
+            getu: function (id, callback) {
+
+                $http.get("api/resource/getu").success(callback);
             }
         }
     })

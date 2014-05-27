@@ -36,6 +36,7 @@ namespace Repository
                         "~/Scripts/app/books.js",
                         "~/Scripts/app/useruploads.js",
                         "~/Scripts/app/userdownloads.js",
+                        "~/Scripts/app/comments.js",
                         "~/Scripts/app/editprofile.js"
                         ));
 

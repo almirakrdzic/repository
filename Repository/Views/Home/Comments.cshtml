@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"> <!-- load bootstrap via cdn -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+	
+@*<div class="col-lg-12">
+
+   <div data-ng-repeat ="comment in comments" class="col-sm-3 col-md-3">
+    <div class="thumbnail">
+        <a id="{{comment.id}}" data-ng-class="{active : activeViewPath==='/book/details/{{comment.id}}'}"  href="#/book/details/{{comment.id}}" class="thumbnail">
+
+        </a> 
+        <h4 style="text-align:center">{{comment.text}}</h4>
+        <rating ng-model="rate" max="10" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
+          
+        <p><a href="#" class="btn btn-primary" role="button"><i class="fa fa-download fa-fw"></i></a></p>
+     
+    </div>
+  </div>
+  </div>*@
+
+<div class="comment"  ng-repeat="comment in comments">
+		<h3>Comment #{{ comment.id }} <small>by {{ user.firstName }}</h3>
+		<p>{{ comment.text }}</p>
+
+		<p><a href="#" ng-click="deleteComment(comment.id)" class="text-muted">Reply</a></p>
+	</div>

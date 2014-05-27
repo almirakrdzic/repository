@@ -15,6 +15,9 @@
         <AssociationConnector Association="digital_libraryModel.book_author" ManuallyRouted="false" />
         <AssociationConnector Association="digital_libraryModel.book_genre" ManuallyRouted="false" />
         <AssociationConnector Association="digital_libraryModel.downloaded_books" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="digital_libraryModel.comments" Width="1.5" PointX="6.4851274706819684" PointY="2.940188245354308" />
+        <AssociationConnector Association="digital_libraryModel.FK_comments_books" />
+        <AssociationConnector Association="digital_libraryModel.FK_comments_users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

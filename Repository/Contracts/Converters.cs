@@ -14,7 +14,9 @@ namespace Repository.Controllers
                 Id = book.id,
                 AddedBy = new User()
                 {
-                    Id = book.added_by
+                    Id = book.added_by,
+                    FirstName = book.users.first_name,
+                    LastName = book.users.last_name
                 },
                 Description = book.description,
                 Edition = book.edition,
@@ -38,6 +40,16 @@ namespace Repository.Controllers
                 LastName = author.last_name
             };
             return newAuthor;
+        }
+
+        public static Comment ToContract(this comments comment)
+        {
+            Comment newComment = new Comment()
+            {
+                Id = comment.id,
+                Text = comment.text
+            };
+            return newComment;
         }
 
         public static User ToContract(this users user)

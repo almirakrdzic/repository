@@ -20,6 +20,7 @@
       FROM [dbo].[book_genre] AS [book_genre]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="books" EntityType="digital_libraryModel.Store.books" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="comments" EntityType="digital_libraryModel.Store.comments" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="downloaded_books" EntityType="digital_libraryModel.Store.downloaded_books" store:Type="Tables" store:Schema="dbo" store:Name="downloaded_books">
             <DefiningQuery>SELECT 
       [downloaded_books].[book_id] AS [book_id], 
@@ -49,6 +50,14 @@
             <End Role="users" EntitySet="users" />
             <End Role="books" EntitySet="books" />
           </AssociationSet>
+          <AssociationSet Name="FK_comments_books" Association="digital_libraryModel.Store.FK_comments_books">
+            <End Role="books" EntitySet="books" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comments_users" Association="digital_libraryModel.Store.FK_comments_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
           <AssociationSet Name="FK_downloaded_books_books" Association="digital_libraryModel.Store.FK_downloaded_books_books">
             <End Role="books" EntitySet="books" />
             <End Role="downloaded_books" EntitySet="downloaded_books" />
@@ -74,7 +83,7 @@
           <Property Name="active" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'digital_library.dbo.book_author' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'DB_9B081B_digitallibrary.dbo.book_author' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="book_author">
           <Key>
@@ -85,7 +94,7 @@
           <Property Name="author_id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'digital_library.dbo.book_genre' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'DB_9B081B_digitallibrary.dbo.book_genre' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="book_genre">
           <Key>
@@ -112,8 +121,18 @@
           <Property Name="ratingscore" Type="int" />
           <Property Name="ratingpeople" Type="int" />
         </EntityType>
+        <EntityType Name="comments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="active" Type="bit" />
+          <Property Name="text" Type="nchar" MaxLength="100" />
+          <Property Name="idUser" Type="int" Nullable="false" />
+          <Property Name="idBook" Type="int" Nullable="false" />
+        </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'digital_library.dbo.downloaded_books' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'DB_9B081B_digitallibrary.dbo.downloaded_books' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="downloaded_books">
           <Key>
@@ -216,6 +235,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_comments_books">
+          <End Role="books" Type="digital_libraryModel.Store.books" Multiplicity="1" />
+          <End Role="comments" Type="digital_libraryModel.Store.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="books">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="idBook" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comments_users">
+          <End Role="users" Type="digital_libraryModel.Store.users" Multiplicity="1" />
+          <End Role="comments" Type="digital_libraryModel.Store.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_downloaded_books_books">
           <End Role="books" Type="digital_libraryModel.Store.books" Multiplicity="1" />
           <End Role="downloaded_books" Type="digital_libraryModel.Store.downloaded_books" Multiplicity="*" />
@@ -282,6 +325,15 @@
             <End Role="books" EntitySet="books" />
             <End Role="users" EntitySet="users" />
           </AssociationSet>
+          <EntitySet Name="comments" EntityType="digital_libraryModel.comments" />
+          <AssociationSet Name="FK_comments_books" Association="digital_libraryModel.FK_comments_books">
+            <End Role="books" EntitySet="books" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comments_users" Association="digital_libraryModel.FK_comments_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="authors">
           <Key>
@@ -315,6 +367,7 @@
           <Property Type="Double" Name="rating" />
           <Property Type="Int32" Name="ratingscore" />
           <Property Type="Int32" Name="ratingpeople" />
+          <NavigationProperty Name="comments" Relationship="digital_libraryModel.FK_comments_books" FromRole="books" ToRole="comments" />
         </EntityType>
         <EntityType Name="genre">
           <Key>
@@ -353,6 +406,7 @@
           <NavigationProperty Name="books" Relationship="digital_libraryModel.FK_books_added" FromRole="users" ToRole="books" />
           <NavigationProperty Name="user_types" Relationship="digital_libraryModel.FK_user_type" FromRole="users" ToRole="user_types" />
           <NavigationProperty Name="books1" Relationship="digital_libraryModel.downloaded_books" FromRole="users" ToRole="books" />
+          <NavigationProperty Name="comments" Relationship="digital_libraryModel.FK_comments_users" FromRole="users" ToRole="comments" />
         </EntityType>
         <Association Name="FK_books_added">
           <End Role="users" Type="digital_libraryModel.users" Multiplicity="1" />
@@ -389,6 +443,42 @@
         <Association Name="downloaded_books">
           <End Role="books" Type="digital_libraryModel.books" Multiplicity="*" />
           <End Role="users" Type="digital_libraryModel.users" Multiplicity="*" />
+        </Association>
+        <EntityType Name="comments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Boolean" Name="active" />
+          <Property Type="String" Name="text" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Type="Int32" Name="idUser" Nullable="false" />
+          <Property Type="Int32" Name="idBook" Nullable="false" />
+          <NavigationProperty Name="books" Relationship="digital_libraryModel.FK_comments_books" FromRole="comments" ToRole="books" />
+          <NavigationProperty Name="users" Relationship="digital_libraryModel.FK_comments_users" FromRole="comments" ToRole="users" />
+        </EntityType>
+        <Association Name="FK_comments_books">
+          <End Type="digital_libraryModel.books" Role="books" Multiplicity="1" />
+          <End Type="digital_libraryModel.comments" Role="comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="books">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="idBook" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comments_users">
+          <End Type="digital_libraryModel.users" Role="users" Multiplicity="1" />
+          <End Type="digital_libraryModel.comments" Role="comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -486,6 +576,17 @@
               <ScalarProperty Name="id" ColumnName="user_id" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="comments">
+            <EntityTypeMapping TypeName="digital_libraryModel.comments">
+              <MappingFragment StoreEntitySet="comments">
+                <ScalarProperty Name="idBook" ColumnName="idBook" />
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

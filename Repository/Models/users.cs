@@ -18,6 +18,7 @@ namespace Repository.Models
         {
             this.books = new HashSet<books>();
             this.books1 = new HashSet<books>();
+            this.comments = new HashSet<comments>();
         }
     
         public int id { get; set; }
@@ -36,5 +37,6 @@ namespace Repository.Models
         public virtual ICollection<books> books { get; set; }
         public virtual user_types user_types { get; set; }
         public virtual ICollection<books> books1 { get; set; }
+        public virtual ICollection<comments> comments { get; set; }
     }
 }
