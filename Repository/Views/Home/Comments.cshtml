@@ -21,7 +21,7 @@
   </div>*@
 
 <div class="comment"  ng-repeat="comment in comments">
-		<h3>Comment #{{ comment.id }} <small>by {{ user.firstName }}</h3>
+		<h3>Comment #{{ comment.id }} <small>by {{comment.idUser}}</small></h3>
 		<p>{{ comment.text }}</p>
 
 		<p><a href="#" ng-click="deleteComment(comment.id)" class="text-muted">Reply</a></p>

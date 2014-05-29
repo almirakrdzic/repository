@@ -47,7 +47,18 @@ namespace Repository.Controllers
             Comment newComment = new Comment()
             {
                 Id = comment.id,
-                Text = comment.text
+                Text = comment.text,
+                IdUser = new User()
+                {
+                    Id = comment.idUser,
+                    FirstName = comment.users.first_name,
+                    LastName = comment.users.last_name
+                },
+                IdBook = new Book() 
+                { 
+                    Id=comment.idBook
+                }
+
             };
             return newComment;
         }

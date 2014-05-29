@@ -71,7 +71,10 @@ appRoot
             },
             getAuthorsForBook: function (id, callback) {
                 $http.get("api/resource/getauthorsforbook/?id=" + id).success(callback);
-            }
+            },
+            getCommentsForBook: function (id, callback) {
+            $http.get("api/resource/getcommentsforbook/?id=" + id).success(callback);
+        }
         }
     })
 
@@ -84,6 +87,14 @@ appRoot
             getu: function (id, callback) {
 
                 $http.get("api/resource/getu").success(callback);
+            },
+            kreirajKomentar: function (comment, callback) {
+                $http.post("api/resource/postkomentari", comment)
+                .success(function () {
+                })
+                 .error(function () {
+                 });
+
             }
         }
     })

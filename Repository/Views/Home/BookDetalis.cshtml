@@ -17,22 +17,25 @@
  </div>  
 
 <div class="col-lg-6">     
-    <h3>{{book.title}} 
-        <small>by </small>     
-        <div data-ng-repeat ="author in authors" class="col-sm-3 col-md-3"> 
-             <small>{{author.id}}</small> 
-        </div>   
-        
-      <br />
+    <h3>{{book.title}} <small data-ng-repeat="author in authors">by {{author.firstName}} {{author.lastName}}</small> </h3>  
+           
          
-      </h3>   
+ 
+        <br /> 
+       
      <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
      <p>Rated:{{book.people}}</p> 
      
     @*<p>
         {{book.description}}
     </p>*@
-    <p style="text-align: right">This book is added by: {{book.addedBy.firstName}} {{book.addedBy.lastName}}</p>
+    <p style="text-align: right">This book is added by:
+         
+             {{book.addedBy.id}}
+         
+              
+        
+    </p>
     <br />
     <hr />
     <h3><center>Book Description</center></h3>
@@ -47,10 +50,39 @@
         
     <hr />
     <h3><center>Costumer reviews</center></h3>
-    <ul class="nav nav-tabs" id="myTab">
-            <li data-ng-class="{active : activeViewPath==='/comments'}"><a href='#/comments' data-toggle="tab">Comments </a></li>
-          </ul>
+    
+    
+    <div class="comments row">
+                        <div class="comment row">
+                            <div class="col-sm-1">
+                                <img src="//placehold.it/50x50" class="">
+                            </div>
+                            <div class="col-md-11">
+                                <form data-ng-submit="kreirajKomentar()" enctype = "multipart/form-data">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="comment">Comment</label>
+                                        <textarea class="form-control" data-ng-model="komentar.text" rows="3" id="comment" placeholder="Comment..."></textarea>
+                                    </div>
+                                    <button data-ng-click="ok()" class="btn btn-sm" >Comment</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr class="">
+                        <div data-ng-repeat="comment in comments" class="comment row">
+                            <div class="col-sm-1">
+                                <img src="//placehold.it/50x50" class="">
+                            </div>
+                            <div class="col-md-11">
+                                <div class=""> <a href="#" class=""><span class="">{{comment.idUser.id}}<span class=""></span></span></a> 
+                                    <span class="comment-time pull-right">10-12 10:34</span>
+                                        <p class="">{{ comment.text }}</p>
+                                </div><br />
+                            </div>
+                        </div>
+
+
 
  </div>
+    </div>
 
 

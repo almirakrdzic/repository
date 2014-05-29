@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Repository.Models;
+using System.IO;
 
 
 namespace Repository.Controllers
@@ -35,7 +37,7 @@ namespace Repository.Controllers
             var _comments = db.comments;
             if (_comments == null)
             {
-                throw new Exception("There are no books present!");
+                throw new Exception("There are no comments present!");
             }
             comments = _comments.ToList().Select(com => com.ToContract()).ToList();
             return comments;
@@ -55,6 +57,21 @@ namespace Repository.Controllers
             }
             authors = book.authors.Select(author => author.ToContract()).ToList();
             return authors;
+        }
+
+        [HttpGet]
+        public IEnumerable<Comment> GetCommentsForBook(int id)
+        {
+            List<Comment> comments = new List<Comment>();
+            var db = new Models.digital_libraryEntities();
+
+            var book = db.books.Where(boo => boo.id == id).FirstOrDefault();
+            if (book == null)
+            {
+                throw new Exception("Book with selected ID does not exist!");
+            }
+            comments = book.comments.Select(comment => comment.ToContract()).ToList();
+            return comments;
         }
 
 
@@ -132,6 +149,22 @@ namespace Repository.Controllers
             var user = db.users.Where(us => us.id == id).FirstOrDefault();
             var newUser = user.ToContract();
             return newUser;
+        }
+
+        // POST api/resource/komentari
+        public HttpResponseMessage PostKomentari(comments komentar)
+        {
+            var db = new Models.digital_libraryEntities(); 
+            var comment = db.comments.Where(com => com.id == komentar.id).FirstOrDefault();
+            MemoryStream stream = new MemoryStream();
+            comment.id = komentar.id;
+            comment.idBook = komentar.idBook;
+            comment.idUser = komentar.idUser;
+            comment.text = komentar.text;
+            db.SaveChanges();
+
+            return Request.CreateResponse(HttpStatusCode.OK, "success!");
+
         }
 
         // POST api/resource

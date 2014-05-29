@@ -1,21 +1,45 @@
 ﻿angular.module('main')
-    .controller('CommentsController', ['$scope', '$routeParams', 'commentRepository', function ($scope, $routeParams, commentRepository) {
+    .controller('CommentsController', ['$scope', 'commentRepository', 'aut', 'fileReader', function ($scope, commentRepository, aut, fileReader) {
 
         $scope.comments = [];
-        $scope.booksSize = 0;
+
         function getComments() {
             commentRepository.getComments(function (results) {
-                data = results;
-                data1 = data;
-                $scope.comments = data1.slice(0, $scope.itemsPerPage);
-                $scope.booksSize = results.length;
+                $scope.comments = results;        
             })
         };
         getComments();
 
-        $scope.user = function getUser() {
-            commentRepository.getUser($scope.comment.userId, function (results) {
-                $scope.user = results;
-            })
+        $scope.komentar =
+        {
+            Text: '',
+            IdUser: '7',
+            IdBook: '5'
+
+        }
+
+        $scope.ok = function () {
+            commentRepository.kreirajKomentar($scope.komentar, function (results) {
+
+            });
+           
         };
+
+
+        //$scope.kreirajKomentar = function () {
+        //    var comment = {
+        //        "Text": $scope.text,
+        //        "IdUser": 1, 
+        //        "IdBook": 1 
+        //    };
+        //    commentRepository.kreirajKomentar(comment)
+
+        //    .success(function () {
+        //        $scope.comments.push(comment);
+        //    });
+
+        //    $scope.text = '';
+        //};
+
+       
     }])

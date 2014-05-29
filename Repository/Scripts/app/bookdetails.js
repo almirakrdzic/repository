@@ -11,17 +11,22 @@
         getBook();
 
         $scope.authors = [];
-        $scope.getAuthorsForBook = function getAuthorsForBook() {
+        function getAuthorsForBook() {
             bookRepository.getAuthorsForBook($routeParams.id, function (results) {
                 $scope.authors = results;
             })
         };
-        
+        getAuthorsForBook();
 
-       
+        $scope.comments = [];
+        function getCommentsForBook() {
+            bookRepository.getCommentsForBook($routeParams.id, function (results) {
+                $scope.comments = results;
+            })
+        };
+        getCommentsForBook();
 
-
-   
+               
         $scope.Userrate =0 ;      
         $scope.max = 5;
         $scope.isReadonly = false;

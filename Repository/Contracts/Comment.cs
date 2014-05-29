@@ -15,8 +15,8 @@ namespace Repository.Controllers
         [DataMember]
         public string Text { get; set; }
         [DataMember]
-        public int IdUser { get; set; }
+        public User IdUser { get; set; }
         [DataMember]
-        public int IdBook { get; set; }
+        public Book IdBook { get; set; }
     }
 }
