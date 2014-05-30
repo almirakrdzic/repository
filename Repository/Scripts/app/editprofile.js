@@ -17,7 +17,7 @@
             })
         };
         getUser();
-        $scope.imageSrc = "http://localhost:4416/Account/GetProfilePic/?username=akrdzic1";
+        $scope.imageSrc = "http://localhost:4416/Account/GetProfilePic/?username=" + $scope.profile.Username;
 
         $scope.ok = function (file) {
             userRepository.editProfile($scope.profile, function (results) {
