@@ -31,7 +31,7 @@
     </p>*@
     <p style="text-align: right">This book is added by:
          
-             {{book.addedBy.id}}
+             {{book.addedBy.firstName}}  {{book.addedBy.lastName}}
          
               
         
@@ -55,7 +55,7 @@
     <div class="comments row">
                         <div class="comment row">
                             <div class="col-sm-1">
-                                <img src="//placehold.it/50x50" class="">
+                                <img data-ng-src="//placehold.it/50x50" class="">
                             </div>
                             <div class="col-md-11">
                                 <form data-ng-submit="kreirajKomentar()" enctype = "multipart/form-data">
@@ -73,7 +73,7 @@
                                 <img src="//placehold.it/50x50" class="">
                             </div>
                             <div class="col-md-11">
-                                <div class=""> <a href="#" class=""><span class="">{{comment.idUser.id}}<span class=""></span></span></a> 
+                                <div class=""> <a href="#" class=""><span class="">{{comment.idUser.firstName}} {{comment.idUser.lastName}}<span class=""></span></span></a> 
                                     <span class="comment-time pull-right">10-12 10:34</span>
                                         <p class="">{{ comment.text }}</p>
                                 </div><br />

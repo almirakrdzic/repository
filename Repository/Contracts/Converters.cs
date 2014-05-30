@@ -16,7 +16,8 @@ namespace Repository.Controllers
                 {
                     Id = book.added_by,
                     FirstName = book.users.first_name,
-                    LastName = book.users.last_name
+                    LastName = book.users.last_name,
+                    Username = book.users.username
                 },
                 Description = book.description,
                 Edition = book.edition,
