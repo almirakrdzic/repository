@@ -53,7 +53,8 @@ namespace Repository.Controllers
                 {
                     Id = comment.idUser,
                     FirstName = comment.users.first_name,
-                    LastName = comment.users.last_name
+                    LastName = comment.users.last_name,
+                    Image = System.Convert.ToBase64String(comment.users.image)
                 },
                 IdBook = new Book() 
                 { 
@@ -73,8 +74,8 @@ namespace Repository.Controllers
                 FirstName = user.first_name,
                 LastName = user.last_name,
                 Email = user.email,
-                Image = user.image,
-                Password = user.password
+                Image = System.Convert.ToBase64String(user.image),
+                Password = user.password              
 
             };
             return newUser;

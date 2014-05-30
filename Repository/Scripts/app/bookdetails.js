@@ -19,9 +19,12 @@
         getAuthorsForBook();
 
         $scope.comments = [];
+        $scope.imageData = [];
         function getCommentsForBook() {
             bookRepository.getCommentsForBook($routeParams.id, function (results) {
                 $scope.comments = results;
+                for (i = 0; i < results.length; i++)
+                    $scope.imageData[(results[i]).idUser.id] = "data:image/png;base64," + (results[i]).idUser.image;               
             })
         };
         getCommentsForBook();

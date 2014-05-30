@@ -45,7 +45,7 @@ namespace Repository.Controllers
         public bool IsActive { get; set; }
 
         [DataMember]
-        public byte[] Image { get; set; }
+        public String Image { get; set; }
 
         [DataMember]
         public bool IsConfirmed { get; set; }

@@ -4,7 +4,7 @@
         function getUser() {
             userRepository.getUser($routeParams.username, function (results) {
                 $scope.userDetails = results;
-                $scope.imageSrc = "http://localhost:4416/Account/GetProfilePic/?username=" + results.username;
+                $scope.imageSrc = "data:image/png;base64," + results.image;
             })
         };
         getUser();
