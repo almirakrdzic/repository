@@ -12,7 +12,23 @@ namespace Repository.Controllers
 {
     public class ResourceController : ApiController
     {
-        // GET api/resource
+        [HttpGet]
+        public HttpResponseMessage AddKomentar(string text,int idBook )
+        {
+            var db = new Models.digital_libraryEntities();
+            var user = db.users.Where(us => us.username == User.Identity.Name).FirstOrDefault();
+            var comment = new comments();
+            comment.active = true;
+            comment.idBook = idBook;
+            comment.idUser = user.id;
+            comment.text = text;
+            db.comments.Add(comment);
+            db.SaveChanges();
+
+            return Request.CreateResponse(HttpStatusCode.OK, "success!");
+
+        }
+       
         [HttpGet]
         public IEnumerable<Book> Get()
         {
@@ -75,6 +91,7 @@ namespace Repository.Controllers
         }
 
 
+        [HttpGet]
         public IEnumerable<Book> GetUploads(string username)
         {
             var db = new Models.digital_libraryEntities();
@@ -92,6 +109,7 @@ namespace Repository.Controllers
             return books;
         }
 
+        [HttpGet]
         public IEnumerable<Book> GetDownloads(string username)
         {
             List<Book> downloadedBooks = new List<Book>();
@@ -150,22 +168,8 @@ namespace Repository.Controllers
             var newUser = user.ToContract();
             return newUser;
         }
-
-        // POST api/resource/komentari
-        public HttpResponseMessage PostKomentari(comments komentar)
-        {
-            var db = new Models.digital_libraryEntities(); 
-            var comment = db.comments.Where(com => com.id == komentar.id).FirstOrDefault();
-            MemoryStream stream = new MemoryStream();
-            comment.id = komentar.id;
-            comment.idBook = komentar.idBook;
-            comment.idUser = komentar.idUser;
-            comment.text = komentar.text;
-            db.SaveChanges();
-
-            return Request.CreateResponse(HttpStatusCode.OK, "success!");
-
-        }
+       
+        
 
         // POST api/resource
         public void Post([FromBody]string value)

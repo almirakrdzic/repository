@@ -1,5 +1,5 @@
 ﻿angular.module('main')
-    .controller('BookDetailsController', ['$scope','$routeParams','bookRepository', function ($scope, $routeParams, bookRepository) {
+    .controller('BookDetailsController', ['$scope', '$routeParams', 'bookRepository', 'commentRepository', function ($scope, $routeParams, bookRepository, commentRepository) {
         function getBook() {
             bookRepository.getBook($routeParams.id, function (results) {
                 $scope.book = results;
@@ -29,6 +29,15 @@
         };
         getCommentsForBook();
 
+        $scope.tekstKomentara = '';
+
+        $scope.kreirajKomentar = function (id) {
+           
+            commentRepository.kreirajKomentar($scope.tekstKomentara,$scope.book.id, function (results) {
+                getCommentsForBook();
+                $scope.tekstKomentara = '';
+            })
+        };
                
         $scope.Userrate =0 ;      
         $scope.max = 5;

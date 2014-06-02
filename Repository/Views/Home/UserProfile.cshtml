@@ -31,35 +31,42 @@
 
     </tab>
     <tab heading="Uploaded books" data-ng-click="getUploads()">
-       
+       <br />
          <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
     <div class="thumbnail">
         <a id="{{book.id}}" data-ng-class="{active : activeViewPath==='/book/details/{{book.id}}'}"  href="#/book/details/{{book.id}}" class="thumbnail">
 <img data-src="holder.js/300x200" alt="..." src="~/Images/book.png">
         </a> 
         <h4 style="text-align:center">{{book.title}}</h4>
-        <rating ng-model="book.rating" max="10" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
+        <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
           
         <p><a href="#" class="btn btn-primary" role="button"><i class="fa fa-download fa-fw"></i></a></p>
      
     </div>
   </div>
- 
+ <div class="col-lg-12">
+<pagination  total-items="booksSize" max-size="maxSize" items-per-page="itemsPerPage" data-ng-model="currentPage" class="pagination-sm" boundary-links="true" rotate="true" ></pagination>
+
+ </div>
     </tab>
     <tab heading="Downloaded books" data-ng-click="getDownloads()">
+        <br />
           <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
     <div class="thumbnail">
         <a id="{{book.id}}" data-ng-class="{active : activeViewPath==='/book/details/{{book.id}}'}"  href="#/book/details/{{book.id}}" class="thumbnail">
 <img data-src="holder.js/300x200" alt="..." src="~/Images/book.png">
         </a> 
         <h4 style="text-align:center">{{book.title}}</h4>
-        <rating ng-model="book.rating" max="10" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
+        <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
           
         <p><a href="#" class="btn btn-primary" role="button"><i class="fa fa-download fa-fw"></i></a></p>
      
     </div>
   </div>
+<div class="col-lg-12">
+<pagination  total-items="booksSize" max-size="maxSize" items-per-page="itemsPerPage" data-ng-model="currentPage" class="pagination-sm" boundary-links="true" rotate="true" ></pagination>
 
+ </div>
     </tab>
  
                </tabset>

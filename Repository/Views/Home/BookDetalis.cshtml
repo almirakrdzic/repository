@@ -37,8 +37,7 @@
         
     </p>
     <br />
-    <hr />
-    <h3><center>Book Description</center></h3>
+    <hr /> 
   
     ISBN: <b>{{book.isbn}} </b>  | 
     Edition: <b>{{book.edition}}</b>
@@ -48,8 +47,7 @@
         <b>About this Book</b>
         <p>{{book.description}}</p>
         
-    <hr />
-    <h3><center>Costumer reviews</center></h3>  
+    <hr />  
     
     <div class="comments row">
                         <div class="comment row">                           
@@ -57,7 +55,7 @@
                                 <form data-ng-submit="kreirajKomentar()" enctype = "multipart/form-data">
                                     <div class="form-group">
                                         <label class="sr-only" for="comment">Comment</label>
-                                        <textarea class="form-control" data-ng-model="komentar.text" rows="3" id="comment" placeholder="Comment..."></textarea>
+                                        <textarea class="form-control" data-ng-model="tekstKomentara" rows="3" id="comment" placeholder="Comment..."></textarea>
                                     </div>
                                     <button data-ng-click="ok()" class="btn btn-sm" >Comment</button>
                                 </form>
@@ -69,8 +67,7 @@
                                 <img data-ng-src="{{imageData[comment.idUser.id]}}" width="50" height="50">
                             </div>
                             <div class="col-md-11">
-                                <div class=""> <a href="#" class=""><span class="">{{comment.idUser.firstName}} {{comment.idUser.lastName}}<span class=""></span></span></a> 
-                                    <span class="comment-time pull-right">10-12 10:34</span>
+                                <div class=""> <a href="#" class=""><span class="">{{comment.idUser.firstName}} {{comment.idUser.lastName}}<span class=""></span></span></a>                                   
                                         <p class="">{{ comment.text }}</p>
                                 </div><br />
                             </div>

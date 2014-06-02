@@ -88,10 +88,9 @@ appRoot
 
                 $http.get("api/resource/getu").success(callback);
             },
-            kreirajKomentar: function (comment, callback) {
-                $http.post("api/resource/postkomentari", comment)
-                .success(function () {
-                })
+            kreirajKomentar: function (text,idBook, callback) {
+                $http.get("api/resource/addkomentar/?text="+text+"&idBook="+idBook)
+                .success(callback)
                  .error(function () {
                  });
 

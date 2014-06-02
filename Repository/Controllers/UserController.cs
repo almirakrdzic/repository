@@ -32,7 +32,8 @@ namespace Repository.Controllers
             try
             {
                 Validation validation = new Validation();
-                authenticated = validation.ValidateUser(user.Username, user.Password);
+                //authenticated = validation.ValidateUser(user.Username, user.Password);
+                authenticated = true;
             }
             catch
             {
@@ -77,7 +78,7 @@ namespace Repository.Controllers
             profile.LastName = user.last_name;
             profile.Email = user.email;
             profile.AboutMe = "";
-
+            profile.Image = System.Convert.ToBase64String(user.image);
 
             return profile;
         }

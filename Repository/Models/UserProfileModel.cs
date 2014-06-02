@@ -23,6 +23,8 @@ namespace Repository.Models
 
         [Display(Name = "Email")]        
         public string Email { get; set; }
+        
+        public String Image { get; set; }
 
         [Display(Name = "AboutMe")]       
         public string AboutMe { get; set; }
