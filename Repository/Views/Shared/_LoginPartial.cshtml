@@ -6,7 +6,8 @@
          @User.Identity.Name <i class="caret"></i></a>
     <ul class="dropdown-menu dropdown-user">
     <li><a style="color:gray" href="javascript:editprofile()" id="EditProfile"><i class="fa fa-user fa-fw"></i> User profile</a></li>
-    <li>
+    
+        <li>
          @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
             @Html.AntiForgeryToken()            
         }

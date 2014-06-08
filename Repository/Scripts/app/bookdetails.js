@@ -2,7 +2,7 @@
     .controller('BookDetailsController', ['$scope', '$routeParams', 'bookRepository', 'commentRepository', function ($scope, $routeParams, bookRepository, commentRepository) {
         function getBook() {
             bookRepository.getBook($routeParams.id, function (results) {
-                $scope.book = results;
+                $scope.book= results;
                 $scope.user1 = results.added_by;
      
 

@@ -4,11 +4,11 @@
 
 <div class="panel panel-default">     
 <div class="panel-heading">
-<i class="fa fa-book fa-fw"></i> New books                         
+<i class="fa fa-book fa-fw" > </i> {{'NEWBOOKS' | translate}}
 </div>
 <div class="panel-body">
 
-   <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
+   <div data-ng-repeat ="book in books" span="12">
     <div class="thumbnail">
         <a id="{{book.id}}" data-ng-class="{active : activeViewPath==='/book/details/{{book.id}}'}"  href="#/book/details/{{book.id}}" class="thumbnail">
 <img data-src="holder.js/300x200" alt="..." src="~/Images/book.png">
@@ -26,3 +26,4 @@
 
  </div>
  </div>
+

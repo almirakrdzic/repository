@@ -1,6 +1,38 @@
 ﻿// Main configuration file. Sets up AngularJS module and routes and any other config objects
 
-var appRoot = angular.module('main', ['ngRoute','ui.bootstrap', 'ngResource','elasticsearch', 'angularStart.services', 'angularStart.directives']);     //Define the main module
+var appRoot = angular.module('main', ['ngRoute', 'ui.bootstrap', 'ngResource', 'elasticsearch', 'angularStart.services', 'angularStart.directives', 'pascalprecht.translate'], ['$translateProvider', function ($translateProvider) {
+
+    // register translation table
+    $translateProvider.translations('en', {
+        'NEWBOOKS': 'New resources',
+        'LOGIN': 'Login',
+        'DR': 'Digital repository',
+        'B': 'Resources',
+        'UN': 'Username',
+        'PASS': 'Password',
+        'UP': 'User profile',
+        'EP': 'Edit profile',
+        'LOGOUT': 'Logout',
+        'LOGIN': 'Login',
+        'kojiJezik': 'Choose language'
+    });
+
+    $translateProvider.translations('ba', {
+        'NEWBOOKS': 'Novi resursi',
+        'LOGIN': 'Prijava',
+        'DR': 'Digitalni repozitorij',
+        'B': 'Resursi',
+        'UN': 'Korisničko ime',
+        'PASS': 'Šifra',
+        'UP': 'Korisnički profil',
+        'EP': 'Edituj profil',
+        'LOGOUT': 'Odjavi se',
+        'LOGIN': 'Prijavi se',
+        'kojiJezik': 'Odaberi jezik'
+    }).preferredLanguage('ba');
+
+
+}]);     //Define the main module
 
 appRoot
     .config(['$routeProvider', function ($routeProvider) {
@@ -44,7 +76,7 @@ appRoot
             })
             .otherwise({ redirectTo: '/home' });
     }])
-    
+
     .factory('bookRepository', function ($http) {       
         return {           
             getBooks: function (callback) {
@@ -203,7 +235,11 @@ appRoot
 
         return user;
     })
-    .controller('RootController', ['$scope', '$route', '$routeParams', '$location', 'aut', '$modal', function ($scope, $route, $routeParams, $location, aut, $modal) {
+    .controller('RootController', ['$scope', '$route', '$routeParams', '$location', 'aut', '$modal', '$translate', function ($scope, $route, $routeParams, $location, aut, $modal, $translate) {
+
+        $scope.changeLanguage = function (key) {
+            $translate.use(key);
+        };
 
         $scope.authenticated = false;
         $scope.username = '';

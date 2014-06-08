@@ -22,28 +22,39 @@
     <div id="wrapper">
         <nav  class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="navbar-header">               
-                <a style="color:black" class="navbar-brand" href="#/">Digital repository</a>
+                <a style="color:black" class="navbar-brand" href="#/" translate="DR"></a>
             </div>           
             <ul class="nav navbar-top-links navbar-right">
-                <li data-ng-class="{active : activeViewPath==='/books'}"><a href='#/books'>Books</a></li>             
+                <li data-ng-class="{active : activeViewPath==='/books'}"><a href='#/books' translate="B"></a></li>             
                <li data-ng-show="authenticated" class="dropdown">
                 <a href="#" style="color:black" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
                 <i class="fa fa-user fa-fw"></i>
                   {{username}} <i class="caret"></i></a>
                 <ul class="dropdown-menu dropdown-user">
-                <li data-ng-class="{active : activeViewPath==='/userprofile/{{username}}'}"><a style="color:gray" href="#/userprofile/{{username}}"><i class="fa fa-user fa-fw"></i> User profile</a></li>
-                <li><a style="color:gray" href="#" data-ng-click ="editProfile()" ><i class="fa fa-user fa-fw"></i> Edit profile</a></li>
+                <li data-ng-class="{active : activeViewPath==='/userprofile/{{username}}'}"><a style="color:gray" href="#/userprofile/{{username}}"><i class="fa fa-user fa-fw"></i>{{'UP' | translate}}</a></li>
+                <li><a style="color:gray" href="#" data-ng-click ="editProfile()" ><i class="fa fa-user fa-fw"></i> {{'EP' | translate}}</a></li>
                 <li class="divider"></li>
-                <li ><a style="color:gray" href="#" data-ng-click ="signout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>        
+                <li ><a style="color:gray" href="#" data-ng-click ="signout()"><i class="fa fa-sign-out fa-fw"></i> {{'LOGOUT' | translate}}</a></li>        
               </ul>
              </li>
               <li>
              <form name="loginform" data-ng-submit="signin(loginform.$valid)" data-ng-hide="authenticated" role="form" novalidate>            
-            <li><div class="form-group" data-ng-class="{ 'has-error' : seeError }"><input class="form-control" placeholder="Username" name="username" data-ng-model="login.Username" type="username" autofocus></div></li>
-            <li><div class="form-group" ng-class="{ 'has-error' : seeError }"><input class="form-control" placeholder="Password" name="password" data-ng-model="login.Password" type="password" value=""></div></li>
-            <li><div class="form-group"><input type="submit" class="btn btn-default" value="Log in" /></div> </li>                              
+            <li><div class="form-group" data-ng-class="{ 'has-error' : seeError }"><input class="form-control" placeholder="{{'UN' | translate}}" name="username" data-ng-model="login.Username" type="username" autofocus></div></li>
+            <li><div class="form-group" ng-class="{ 'has-error' : seeError }"><input class="form-control" placeholder="{{'PASS' | translate}}" name="password" data-ng-model="login.Password" type="password" value=""></div></li>
+            <li><div class="form-group"><input type="submit" class="btn btn-default" value="{{'LOGIN' | translate}}" /></div> </li>                              
             </li>
              </form> 
+
+                <li class="dropdown">
+ 						<a class="dropdown-toggle" data-toggle="dropdown"  data-no-turbolink="true"> {{'kojiJezik' | translate}} <span class="caret"></span></a>
+  						<ul class="dropdown-menu" role="menu">
+  							<li>
+ 								<a href="#" ng-click="changeLanguage('ba')" data-no-turbolink="true">BA</a>
+ 								<a href="#" ng-click="changeLanguage('en')" data-no-turbolink="true">EN</a>
+                               </li>
+  						</ul>
+  					</li>
+
             </ul>          
         </nav>       
             <div style="background-color:white" class="col-md-12">               
@@ -57,7 +68,9 @@
     <script src="~/Scripts/app/sb-admin.js"></script>
     <script src="~/Scripts/ui-bootstrap-tpls-0.11.0.min.js"></script>
     <script src="~/Scripts/app/elasticsearch.angular.js"></script>
-    <script src="~/Scripts/jquery-1.10.2.js"></script>   
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/angular-translate.js"></script>
+    
     @RenderSection("scripts", required: false)
 </body>
 </html>
