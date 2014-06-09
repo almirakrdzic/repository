@@ -11,12 +11,12 @@
   		<div class="col-sm-3"><!--left col-->
               
           <ul class="list-group">
-            <li class="list-group-item text-muted">Profile</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> 2.13.2014</li>
+            <li class="list-group-item text-muted">{{'profile' | translate}}</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>{{'joined' | translate}}</strong></span> 2.13.2014</li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>Last seen</strong></span> Yesterday</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong >Firstname </strong></span> {{userDetails.firstName}}</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Lastname </strong></span> {{userDetails.lastName}}</li>
-            <li class="list-group-item text-right"><span class="pull-left"><strong>Email </strong></span> {{userDetails.email}}</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong >{{'first' | translate}} </strong></span> {{userDetails.firstName}}</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>{{'last' | translate}} </strong></span> {{userDetails.lastName}}</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Email</strong></span> {{userDetails.email}}</li>
           </ul>        
           
           
@@ -30,7 +30,7 @@
         
 
     </tab>
-    <tab heading="Uploaded books" data-ng-click="getUploads()">
+    <tab heading="{{'uploaded' | translate}}" data-ng-click="getUploads()">
        <br />
          <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
     <div class="thumbnail">
@@ -49,7 +49,7 @@
 
  </div>
     </tab>
-    <tab heading="Downloaded books" data-ng-click="getDownloads()">
+    <tab heading="{{'download' | translate}}" data-ng-click="getDownloads()">
         <br />
           <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
     <div class="thumbnail">

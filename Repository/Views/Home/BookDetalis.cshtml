@@ -7,10 +7,10 @@
      <br />
      <button type="button" class="btn btn-primary btn-lg btn-block"><i class="fa fa-download fa-fw"></i>Download</button>
      <br />
-      <p class="text-muted">Rate this book:<br/>   
+      <p class="text-muted">{{'Rate' | translate}}<br/>   
      <rating ng-model="Userrate" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="false"></rating>
      <div class="form-group"><input type="button" class="btn btn-default" data-ng-click ="rate()" value="Rate" />
-         <button class="btn btn-sm btn-danger" ng-click="Userrate = 0" ng-disabled="isReadonly">Clear</button>
+         <button class="btn btn-sm btn-danger" ng-click="Userrate = 0" ng-disabled="isReadonly">{{'clear' | translate}}</button>
      </div>                            
      
       </p>
@@ -24,12 +24,12 @@
         <br /> 
        
      <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
-     <p>Rated:{{book.people}}</p> 
+     <p>{{'rated' | translate}}{{book.people}}</p> 
      
     @*<p>
         {{book.description}}
     </p>*@
-    <p style="text-align: right">This book is added by:
+    <p style="text-align: right">{{'Dodano' | translate}}
          
              {{book.addedBy.firstName}}  {{book.addedBy.lastName}}
          
@@ -40,11 +40,11 @@
     <hr /> 
   
     ISBN: <b>{{book.isbn}} </b>  | 
-    Edition: <b>{{book.edition}}</b>
+     {{'edition' | translate}}<b>{{book.edition}}</b>
  
     <br /><br />
     
-        <b>About this Book</b>
+        <b>{{'about' | translate}}</b>
         <p>{{book.description}}</p>
         
     <hr />  
@@ -54,10 +54,10 @@
                             <div class="col-md-11">
                                 <form data-ng-submit="kreirajKomentar()" enctype = "multipart/form-data">
                                     <div class="form-group">
-                                        <label class="sr-only" for="comment">Comment</label>
+                                        <label class="sr-only" for="comment">{{'comment' | translate}}</label>
                                         <textarea class="form-control" data-ng-model="tekstKomentara" rows="3" id="comment" placeholder="Comment..."></textarea>
                                     </div>
-                                    <button data-ng-click="ok()" class="btn btn-sm" >Comment</button>
+                                    <button data-ng-click="ok()" class="btn btn-sm" >{{'comm' | translate}}</button>
                                 </form>
                             </div>
                         </div>

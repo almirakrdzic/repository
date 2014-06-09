@@ -14,7 +14,24 @@ var appRoot = angular.module('main', ['ngRoute', 'ui.bootstrap', 'ngResource', '
         'EP': 'Edit profile',
         'LOGOUT': 'Logout',
         'LOGIN': 'Login',
-        'kojiJezik': 'Choose language'
+        'kojiJezik': 'Choose language',
+        'EDIT': 'Edit profile',
+        'Rate': 'Rate this book:',
+        'clear': 'Clear',
+        'Dodano': 'This book is added by:',
+        'edition': 'Edition:',
+        'title': 'Title',
+        'Data': 'Data',
+        'Description': 'Description',
+        'rated': 'Rated:',
+        'about': 'About this book:',
+        'comment': 'Comment',
+        'comm': 'Comment',
+        'download': 'Downloaded books',
+        'profile': 'Profile',
+        'first': 'First Name',
+        'last': 'Lastname',
+        'uploaded': 'Uploaded books'
     });
 
     $translateProvider.translations('ba', {
@@ -28,7 +45,25 @@ var appRoot = angular.module('main', ['ngRoute', 'ui.bootstrap', 'ngResource', '
         'EP': 'Edituj profil',
         'LOGOUT': 'Odjavi se',
         'LOGIN': 'Prijavi se',
-        'kojiJezik': 'Odaberi jezik'
+        'kojiJezik': 'Odaberi jezik',
+        'EDIT': 'Izmjena profila',
+        'Rate': 'Ocijeni ovu knjigu:',
+        'clear': 'Obriši',
+        'Dodano': 'Knjigu je dodao:',
+        'edition': 'Izdanje:',
+        'title': 'Naslov',
+        'Data': 'Podaci',
+        'Description': 'Opis',
+        'rated': 'Ocijenilo:',
+        'about': 'O knjizi:',
+        'comment': 'Komentar',
+        'comm': 'Ostavi komentar',
+        'download': 'Preuzete knjige',
+        'profile': 'Profil',
+        'joined': 'Pridruzio',
+        'first': 'Ime',
+        'last': 'Prezime',
+        'uploaded': 'Dodane knjige'
     }).preferredLanguage('ba');
 
 
