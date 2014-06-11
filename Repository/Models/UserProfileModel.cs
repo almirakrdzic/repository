@@ -31,6 +31,9 @@ namespace Repository.Models
 
         [Display(Name = "Year")]
         public string Year { get; set; }
+
+        [Display(Name = "Department")]
+        public string Department { get; set; }
        
     }
 }

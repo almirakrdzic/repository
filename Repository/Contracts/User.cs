@@ -55,5 +55,8 @@ namespace Repository.Controllers
 
         [DataMember]
         public string Year { get; set; }
+
+        [DataMember]
+        public string Department { get; set; }
     }
 }

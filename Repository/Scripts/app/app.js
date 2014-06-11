@@ -33,7 +33,8 @@ var appRoot = angular.module('main', ['ngRoute', 'ui.bootstrap', 'ngResource', '
         'last': 'Lastname',
         'uploaded': 'Uploaded books',
         'aboutM': 'About me:',
-        'year': 'Year'
+        'year': 'Year',
+        'depart': 'Department'
     });
 
     $translateProvider.translations('ba', {
@@ -67,7 +68,8 @@ var appRoot = angular.module('main', ['ngRoute', 'ui.bootstrap', 'ngResource', '
         'last': 'Prezime',
         'uploaded': 'Dodane knjige',
         'aboutM': 'O meni:',
-        'year': 'Godina upisa studija'
+        'year': 'Godina upisa studija',
+        'depart': 'Odsjek'
     }).preferredLanguage('ba');
 
 

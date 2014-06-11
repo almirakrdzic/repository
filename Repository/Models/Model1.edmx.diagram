@@ -9,7 +9,7 @@
         <EntityTypeShape EntityType="digital_libraryModel.books" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="digital_libraryModel.genre" Width="1.5" PointX="7.5" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="digital_libraryModel.user_types" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="digital_libraryModel.users" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="digital_libraryModel.users" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="digital_libraryModel.FK_books_added" ManuallyRouted="false" />
         <AssociationConnector Association="digital_libraryModel.FK_user_type" ManuallyRouted="false" />
         <AssociationConnector Association="digital_libraryModel.book_author" ManuallyRouted="false" />

@@ -34,6 +34,7 @@ namespace Repository.Models
         public Nullable<bool> isConfirmed { get; set; }
         public string confirmationToken { get; set; }
         public string year { get; set; }
+        public string department { get; set; }
     
         public virtual ICollection<books> books { get; set; }
         public virtual user_types user_types { get; set; }

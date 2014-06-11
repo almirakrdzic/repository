@@ -8,6 +8,7 @@
             LastName: '',
             Email: '',
             Year: '',
+            Department: '',
             AbouteMe:''
 
         }
@@ -15,10 +16,13 @@
         function getUser() {
             userRepository.getUser(aut.username, function (results) {
                 $scope.profile = results;
+               
             })
         };
         getUser();
         $scope.imageSrc = "http://localhost:4416/Account/GetProfilePic/?username=" + $scope.profile.Username;
+        $scope.smjer;
+   
 
         $scope.ok = function (file) {
             userRepository.editProfile($scope.profile, function (results) {
