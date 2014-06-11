@@ -28,6 +28,9 @@ namespace Repository.Models
 
         [Display(Name = "AboutMe")]       
         public string AboutMe { get; set; }
+
+        [Display(Name = "Year")]
+        public string Year { get; set; }
        
     }
 }

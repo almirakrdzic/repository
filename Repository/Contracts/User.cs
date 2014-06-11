@@ -52,5 +52,8 @@ namespace Repository.Controllers
 
         [DataMember]
         public string ConfirmationToken { get; set; }
+
+        [DataMember]
+        public string Year { get; set; }
     }
 }

@@ -77,6 +77,7 @@ namespace Repository.Controllers
             profile.FirstName = user.first_name;
             profile.LastName = user.last_name;
             profile.Email = user.email;
+            profile.Year = user.year;
             profile.AboutMe = "";
             profile.Image = System.Convert.ToBase64String(user.image);
 
@@ -130,6 +131,7 @@ namespace Repository.Controllers
             user.first_name = profile.FirstName;
             user.last_name = profile.LastName;
             user.email = profile.Email;
+            user.year = profile.Year;
             database.SaveChanges();
 
             return Request.CreateResponse(HttpStatusCode.OK, "success!");
