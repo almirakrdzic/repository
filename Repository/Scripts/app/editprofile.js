@@ -21,7 +21,6 @@
         };
         getUser();
         $scope.imageSrc = "http://localhost:4416/Account/GetProfilePic/?username=" + $scope.profile.Username;
-        $scope.smjer;
    
 
         $scope.ok = function (file) {
