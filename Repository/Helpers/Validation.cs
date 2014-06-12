@@ -55,6 +55,12 @@ namespace Repository.Helpers
                 user.last_name = Lastname;
                 user.username = userName;
                 user.type = 2;
+                MemoryStream stream = new MemoryStream();
+                System.Drawing.Bitmap bitmap1 = Repository.Properties.Resources.user;
+                Image im = (Image)bitmap1;
+                im.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                byte[] bytes = stream.ToArray();
+                user.image = bytes;
                 database.users.Add(user);
                 database.SaveChanges();
                 validation = true;

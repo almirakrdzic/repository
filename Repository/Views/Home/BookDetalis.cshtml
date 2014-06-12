@@ -2,10 +2,15 @@
     Layout = null;
 }
 
- <div class="col-lg-3">     
-     <img src="~/Images/book.png" />
+ <div class="col-lg-3">
+     <div class="thumbnail">     
+     <img data-ng-src="{{book.details.imgurl}}" class="img-rounded img-responsive" />
+     </div>
      <br />
-     <button type="button" class="btn btn-primary btn-lg btn-block"><i class="fa fa-download fa-fw"></i>Download</button>
+     <a href="{{book.details.download}}" download="proposed_file_name.zip">
+         <button type="button" class="btn btn-primary btn-lg btn-block"><i class="fa fa-download fa-fw"></i>Download</button>
+     </a>
+     
      <br />
       <p class="text-muted">{{'Rate' | translate}}<br/>   
      <rating ng-model="Userrate" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="false"></rating>
@@ -17,21 +22,17 @@
  </div>  
 
 <div class="col-lg-6">     
-    <h3>{{book.title}} <small data-ng-repeat="author in authors">by {{author.firstName}} {{author.lastName}}</small> </h3>  
-           
-         
- 
-        <br /> 
-       
+    <h3>{{book.details.title}}</h3>         
+         <br />        
      <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
      <p>{{'rated' | translate}}{{book.people}}</p> 
      
     @*<p>
-        {{book.description}}
+        {{book.details.description}}
     </p>*@
     <p style="text-align: right">{{'Dodano' | translate}}
          
-             {{book.addedBy.firstName}}  {{book.addedBy.lastName}}
+             {{book.addedby}}  
          
               
         
@@ -39,13 +40,13 @@
     <br />
     <hr /> 
   
-    ISBN: <b>{{book.isbn}} </b>  | 
-     {{'edition' | translate}}<b>{{book.edition}}</b>
+    ISBN: <b>{{book.details.isbn}} </b>  | 
+     {{'edition' | translate}}<b>{{book.eresource.details.publisher}}</b>
  
     <br /><br />
     
         <b>{{'about' | translate}}</b>
-        <p>{{book.description}}</p>
+        <p>{{book.details.description}}</p>
         
     <hr />  
     
@@ -77,5 +78,6 @@
 
  </div>
     </div>
+
 
 

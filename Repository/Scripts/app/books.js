@@ -1,5 +1,5 @@
 ﻿
-appRoot.controller('BooksController', function ($scope, $location, $resource,es) {
+appRoot.controller('BooksController', function ($scope, $location, $resource, es, bookRepository) {
 
     $scope.books = []
     $scope.booksSize = 0;
@@ -9,20 +9,8 @@ appRoot.controller('BooksController', function ($scope, $location, $resource,es)
     $scope.rate = 7;
     $scope.field = "Title";
     function getAllBooks() {
-        es.search({
-            index: 'books',
-            size: 50,
-            body: {
-                "query": {
-                    "query_string": {
-                        "query": "*",
-                        "fields": ["title"]
-                    }
-                }
-            }
-
-        }).then(function (response) {
-            data = response.hits.hits;
+        bookRepository.searchBooks("", function (response) {
+            data = response.results;
             data1 = data;
             $scope.books = data1.slice(0, $scope.itemsPerPage);
             $scope.booksSize = data.length;
@@ -51,7 +39,13 @@ appRoot.controller('BooksController', function ($scope, $location, $resource,es)
             $scope.booksSize = data.length;
         });
     };
+    $scope.translateText = function () {
+        bookRepository.translateQuery($scope.query, function (response) {
+            $scope.translations = response;
+        });
+    };
 
+    $scope.translations = [""];
     $scope.$watch("currentPage", function (newValue, oldValue) {
         data1 = data;
         offset = (newValue - 1) * $scope.itemsPerPage;

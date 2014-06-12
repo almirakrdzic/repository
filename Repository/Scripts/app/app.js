@@ -1,6 +1,6 @@
 ﻿// Main configuration file. Sets up AngularJS module and routes and any other config objects
 
-var appRoot = angular.module('main', ['ngRoute', 'ui.bootstrap', 'ngResource', 'elasticsearch', 'angularStart.services', 'angularStart.directives', 'pascalprecht.translate'], ['$translateProvider', function ($translateProvider) {
+var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'ngResource', 'elasticsearch', 'angularStart.services', 'angularStart.directives', 'pascalprecht.translate'], ['$translateProvider', function ($translateProvider) {
 
     // register translation table
     $translateProvider.translations('en', {
@@ -32,7 +32,6 @@ var appRoot = angular.module('main', ['ngRoute', 'ui.bootstrap', 'ngResource', '
         'first': 'First Name',
         'last': 'Lastname',
         'uploaded': 'Uploaded books',
-        'aboutM': 'About me:',
         'year': 'Year',
         'depart': 'Department'
     });
@@ -67,7 +66,6 @@ var appRoot = angular.module('main', ['ngRoute', 'ui.bootstrap', 'ngResource', '
         'first': 'Ime',
         'last': 'Prezime',
         'uploaded': 'Dodane knjige',
-        'aboutM': 'O meni:',
         'year': 'Godina upisa studija',
         'depart': 'Odsjek'
     }).preferredLanguage('ba');
@@ -118,8 +116,8 @@ appRoot
             .otherwise({ redirectTo: '/home' });
     }])
 
-    .factory('bookRepository', function ($http) {       
-        return {           
+    .factory('bookRepository', function ($http) {
+        return {
             getBooks: function (callback) {
 
                 $http.get("api/resource/get").success(callback);
@@ -136,8 +134,8 @@ appRoot
 
                 $http.get("api/resource/getdownloads/?username=" + id).success(callback);
             },
-            rateBook: function (rate,id,callback) {
-                $http.get("api/resource/rate/?rate=" + rate+"&id="+id).success(callback);
+            rateBook: function (rate, id, callback) {
+                $http.get("api/resource/rate/?rate=" + rate + "&id=" + id).success(callback);
             },
             getuser: function (id, callback) {
                 $http.get("api/resource/getuser/?id=" + id).success(callback);
@@ -146,8 +144,14 @@ appRoot
                 $http.get("api/resource/getauthorsforbook/?id=" + id).success(callback);
             },
             getCommentsForBook: function (id, callback) {
-            $http.get("api/resource/getcommentsforbook/?id=" + id).success(callback);
-        }
+                $http.get("api/resource/getcommentsforbook/?id=" + id).success(callback);
+            },
+            searchBooks: function (query, callback) {
+                $http.get("api/resource/searchbooks/?query=*").success(callback);
+            },
+            translateQuery: function (query, callback) {
+                $http.get("api/resource/translatetext/?text=" + query).success(callback);
+            }
         }
     })
 
@@ -161,8 +165,8 @@ appRoot
 
                 $http.get("api/resource/getu").success(callback);
             },
-            kreirajKomentar: function (text,idBook, callback) {
-                $http.get("api/resource/addkomentar/?text="+text+"&idBook="+idBook)
+            kreirajKomentar: function (text, idBook, callback) {
+                $http.get("api/resource/addkomentar/?text=" + text + "&idBook=" + idBook)
                 .success(callback)
                  .error(function () {
                  });
@@ -171,12 +175,12 @@ appRoot
         }
     })
      .factory('userRepository', function ($http) {
-         return {           
+         return {
              getUser: function (username, callback) {
 
                  $http.get("api/user/userdetails/?username=" + username).success(callback);
              },
-             editProfile: function (profile, callback) {                
+             editProfile: function (profile, callback) {
                  $http.post("api/user/editprofile", profile)
                  .success(function () {
                  })
@@ -203,7 +207,7 @@ appRoot
         return esFactory({ host: 'localhost:9200' });
     })
      .service('fileReader', function ($q, $log) {
-         
+
          var onLoad = function (reader, deferred, scope) {
              return function () {
                  scope.$apply(function () {
@@ -252,7 +256,7 @@ appRoot
          };
      })
     .factory('aut', function ($http) {
-        var user = {};       
+        var user = {};
 
         user.username = '';
 
@@ -288,9 +292,9 @@ appRoot
         $scope.seeError = false;
         $scope.login =
         {
-           Username: '',
-           Password: '',
-           RememberMe: false
+            Username: '',
+            Password: '',
+            RememberMe: false
         }
 
         aut.isLogged(function (results) {
@@ -302,40 +306,18 @@ appRoot
         },
              function (results) {
                  $scope.authenticated = false;
-                 $scope.username = '';          
-                
+                 $scope.username = '';
+
              });
 
         $scope.signin = function (isValid) {
-            aut.loginUser($scope.login, function (results) {               
+            aut.loginUser($scope.login, function (results) {
                 $scope.authenticated = true;
                 $scope.username = $scope.login.Username;
                 $scope.login.Username = '';
                 $scope.login.Password = '';
                 $scope.seeError = false;
                 aut.username = $scope.username;
-
-                var modalInstance = $modal.open({
-                    templateUrl: '/home/edituserprofile',
-                    controller: 'EditProfileController',
-                    size: 'sm'                   
-                });
-
-                modalInstance.result.then(function (selectedItem) {
-                    
-                }, function () {
-                   
-                });            
-
-            },
-            function (results) {
-                $scope.error = "Username or password are incorrect";
-                $scope.seeError = true;
-            });
-            $location.path('/');
-        };
-
-        $scope.editProfile = function () {     
 
                 var modalInstance = $modal.open({
                     templateUrl: '/home/edituserprofile',
@@ -347,7 +329,29 @@ appRoot
 
                 }, function () {
 
-                });         
+                });
+
+            },
+            function (results) {
+                $scope.error = "Username or password are incorrect";
+                $scope.seeError = true;
+            });
+            $location.path('/');
+        };
+
+        $scope.editProfile = function () {
+
+            var modalInstance = $modal.open({
+                templateUrl: '/home/edituserprofile',
+                controller: 'EditProfileController',
+                size: 'sm'
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+
+            }, function () {
+
+            });
         };
 
         $scope.signout = function () {
@@ -356,7 +360,7 @@ appRoot
                 $scope.username = '';
                 aut.username = $scope.username;
             },
-             function (results) {               
+             function (results) {
              });
             $location.path('/');
         };
@@ -364,14 +368,14 @@ appRoot
         $scope.$on('$routeChangeStart', function (e, current, previous) {
             if (current.access.isPublic == true) { return; }
             aut.isLogged(function (results) {
-               
+
             },
              function (results) {
                  $scope.authenticated = false;
                  $scope.username = '';
                  $scope.seeError = true;
                  $location.path('/home');
-             });           
+             });
         });
 
         $scope.$on('$routeChangeSuccess', function (e, current, previous) {

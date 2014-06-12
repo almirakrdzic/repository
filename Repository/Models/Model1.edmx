@@ -120,6 +120,7 @@
           <Property Name="rating" Type="float" />
           <Property Name="ratingscore" Type="int" />
           <Property Name="ratingpeople" Type="int" />
+          <Property Name="elastic_id" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="comments">
           <Key>
@@ -176,6 +177,7 @@
           <Property Name="confirmationToken" Type="varchar" MaxLength="64" />
           <Property Name="year" Type="varchar" MaxLength="10" />
           <Property Name="department" Type="varchar" MaxLength="70" />
+          <Property Name="aboutme" Type="varchar(max)" />
         </EntityType>
         <Association Name="FK_author_id">
           <End Role="authors" Type="digital_libraryModel.Store.authors" Multiplicity="1" />
@@ -370,6 +372,7 @@
           <Property Type="Int32" Name="ratingscore" />
           <Property Type="Int32" Name="ratingpeople" />
           <NavigationProperty Name="comments" Relationship="digital_libraryModel.FK_comments_books" FromRole="books" ToRole="comments" />
+          <Property Type="String" Name="elastic_id" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="genre">
           <Key>
@@ -411,6 +414,7 @@
           <NavigationProperty Name="comments" Relationship="digital_libraryModel.FK_comments_users" FromRole="users" ToRole="comments" />
           <Property Type="String" Name="year" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="department" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="aboutme" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_books_added">
           <End Role="users" Type="digital_libraryModel.users" Multiplicity="1" />
@@ -505,6 +509,7 @@
           <EntitySetMapping Name="books">
             <EntityTypeMapping TypeName="digital_libraryModel.books">
               <MappingFragment StoreEntitySet="books">
+                <ScalarProperty Name="elastic_id" ColumnName="elastic_id" />
                 <ScalarProperty Name="ratingpeople" ColumnName="ratingpeople" />
                 <ScalarProperty Name="ratingscore" ColumnName="ratingscore" />
                 <ScalarProperty Name="rating" ColumnName="rating" />
@@ -541,6 +546,7 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="digital_libraryModel.users">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="aboutme" ColumnName="aboutme" />
                 <ScalarProperty Name="department" ColumnName="department" />
                 <ScalarProperty Name="year" ColumnName="year" />
                 <ScalarProperty Name="id" ColumnName="id" />

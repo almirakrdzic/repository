@@ -22,9 +22,11 @@ namespace Repository
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-ng-grid.js",
+                        "~/Scripts/angular-sanitize.js",
                         "~/Scripts/angular-resource.js",
                         "~/Scripts/angular-route.js",
                         "~/Scripts/angular-animate.js",
+                        "~/Scripts/app/ngAutocomplete.js",
                         "~/Scripts/angular-translate.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(

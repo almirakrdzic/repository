@@ -2,56 +2,69 @@
     Layout = null;
 }
 
-<div class="modal-header">
-    <p class="modal-title">{{'EDIT' | translate}}</p>
-</div>
-<div class="modal-body">
-    <form role="form" name="editprofileform" data-ng-submit="edit()" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group input-group">
-                    <a href="/users" class="pull-right">
-                        <img title="profile image" id="img" class="img-circle img-responsive" data-ng-src="{{imageSrc}}" />
-                    </a>
-                </div>
-                <div class="form-group input-group">
-                    <div file-input="file" on-change="readFile(file)" name="Image"></div>
-                </div>
-            </div>
+ <div class="modal-header">
+            <p class="modal-title">{{'EDIT' | translate}}</p>
         </div>
-        <div class="row">
-            <div class="col-sm-10">
-                <div class="form-group input-group">
-                    <input type="text" class="form-control" name="FirstName" data-ng-model="profile.firstName" placeholder="{{'first' | translate}}">
-                </div>
-                <div class="form-group input-group">
-                    <input type="text" name="LastName" class="form-control" data-ng-model="profile.lastName" placeholder="{{'last' | translate}}">
-                </div>
-                <div class="form-group input-group">
-                    <input type="text" name="Email" class="form-control" data-ng-model="profile.email" placeholder="Email">
-                </div>
-                <div class="form-group input-group">
-                    <input type="text" name="Year" class="form-control" data-ng-model="profile.year" placeholder="{{'year' | translate}}">
-                </div>
+        <div class="modal-body">
+             <form role="form" name="editprofileform" data-ng-submit="edit()" enctype = "multipart/form-data">
+                 <div class="row">
+                 <div class="col-sm-6">
                  <div class="form-group input-group">
-                      <input type="text" name="Department" class="form-control" data-ng-model="profile.department" placeholder="{{'depart' | translate}}">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
+                     <a href="/users" class="pull-right">
+                         <img title="profile image" id = "img" class="img-circle img-responsive" data-ng-src="{{imageSrc}}"/>
+                     </a>
+                 </div>     
                 <div class="form-group input-group">
-                    <label>{{'aboutM' | translate}} </label>
-                    <textarea class="form-control" name="AboutMe" rows="5"></textarea>
+                  <div file-input="file" on-change="readFile(file)" name="Image"></div>                                    
+                 </div>
+                 </div>
+                  </div>
+                 <div class="row">
+                 <div class="col-sm-10">     
+                 <div class="form-group input-group">
+                     <input type="text" class="form-control" name="FirstName" data-ng-model="profile.firstName" placeholder="Firstname">                                        
+                 </div> 
+                  <div class="form-group input-group">
+                     <input type="text" name="LastName" class="form-control" data-ng-model="profile.lastName" placeholder="Lastname">                                        
+                 </div>  
+                  <div class="form-group input-group">
+                     <input type="text" name="Email" class="form-control" data-ng-model="profile.email" placeholder="Email">                                        
+                 </div> 
+                 <div class="form-group input-group">
+                     {{'year' | translate}}:
+                     <select class="form-control" data-ng-model="profile.year">
+                         <option value="Prva">Prva</option>
+                         <option value="Druga">Druga</option>
+                         <option value="Treca">Treca</option>
+                         <option value="Četvrta">Četvrta</option>
+                         <option value="Peta">Peta</option>
+                     </select>                                                           
+                 </div> 
+               <div class="form-group input-group">
+                   {{'depart' | translate}}:
+                     <select class="form-control" data-ng-model="profile.department">
+                         <option value="Računarstvo i informatika">Računarstvo i informatika</option>
+                         <option value="Energetika">Energetika</option>
+                         <option value="Automatika i elektronika">Automatika i Elektronika</option>
+                         <option value="Telekomunikacije">Telekomunikacije</option>                         
+                     </select>                                                           
+                 </div> 
+                 </div>
                 </div>
-            </div>
+                 <div class="row">
+                 <div class="col-sm-12">
+                 <div class="form-group input-group">
+                     <label>About me:</label>
+                     <textarea class="form-control" data-ng-model="profile.aboutMe" name="AboutMe" rows="5"></textarea>                                        
+                 </div>
+                 </div> 
+                 </div>                                            
+              </form>           
+                                  
+                                    
+          
         </div>
-    </form>
-
-
-
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" data-ng-click="ok(file)">OK</button>
-    <button class="btn btn-warning" data-ng-click="cancel()">Cancel</button>
-</div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-ng-click="ok(file)">OK</button>
+            <button class="btn btn-warning" data-ng-click="cancel()">Cancel</button>
+        </div>

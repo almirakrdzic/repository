@@ -13,27 +13,27 @@ namespace Repository.Models
         [Display(Name = "Username")]
         public string Username { get; set; }
 
-        [Display(Name = "First Name")]       
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-       
+
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
 
-        [Display(Name = "Email")]        
+        [Display(Name = "Email")]
         public string Email { get; set; }
-        
+
         public String Image { get; set; }
 
-        [Display(Name = "AboutMe")]       
+        [Display(Name = "AboutMe")]
         public string AboutMe { get; set; }
 
-        [Display(Name = "Year")]
+
         public string Year { get; set; }
 
-        [Display(Name = "Department")]
         public string Department { get; set; }
-       
+
+
     }
 }

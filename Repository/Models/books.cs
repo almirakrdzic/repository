@@ -34,6 +34,7 @@ namespace Repository.Models
         public Nullable<double> rating { get; set; }
         public Nullable<int> ratingscore { get; set; }
         public Nullable<int> ratingpeople { get; set; }
+        public string elastic_id { get; set; }
     
         public virtual users users { get; set; }
         public virtual ICollection<authors> authors { get; set; }

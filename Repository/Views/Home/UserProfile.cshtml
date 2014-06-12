@@ -11,7 +11,7 @@
   		<div class="col-sm-3"><!--left col-->
               
           <ul class="list-group">
-            <li class="list-group-item text-muted">{{'profile' | translate}}</li>
+            <li class="list-group-item text-muted">{{'profile' | translate}}</li>            
             <li class="list-group-item text-right"><span class="pull-left"><strong >{{'first' | translate}} </strong></span> {{userDetails.firstName}}</li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>{{'last' | translate}} </strong></span> {{userDetails.lastName}}</li>
             <li class="list-group-item text-right"><span class="pull-left"><strong>Email</strong></span> {{userDetails.email}}</li>
@@ -27,7 +27,16 @@
           
     <tabset justified="true">
     <tab heading="Home">
-        
+        <br />
+        <br />
+    <div class="col-lg-12">
+                    <div class="well well-lg">
+                        <h4>About me</h4>
+                        <p>{{userDetails.aboutMe}}</p>
+                    </div>
+                </div>
+
+     
 
     </tab>
     <tab heading="{{'uploaded' | translate}}" data-ng-click="getUploads()">

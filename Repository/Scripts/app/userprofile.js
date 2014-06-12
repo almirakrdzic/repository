@@ -11,7 +11,7 @@
 
         $scope.books = [];
         $scope.booksSize = 0;
-        $scope.getUploads = function() {
+        $scope.getUploads = function () {
             bookRepository.getUploads($routeParams.username, function (results) {
                 data = results;
                 data1 = data;
@@ -19,7 +19,7 @@
                 $scope.booksSize = results.length;
             })
         };
-        $scope.getDownloads = function() {
+        $scope.getDownloads = function () {
             bookRepository.getDownloads($routeParams.username, function (results) {
                 data = results;
                 data1 = data;
