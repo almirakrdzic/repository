@@ -1,0 +1,358 @@
+<html>
+ 
+<head>   
+
+<script src="js/jquery.js"></script>
+ 
+ <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+ 
+<!-- 1 -->
+<link href="css/dropzone.css" type="text/css" rel="stylesheet" />
+ 
+<!-- 2 -->
+<script src="dropzone.min.js"></script>
+
+</head>
+
+<style>
+    .file-row{
+        padding: 3px;
+    }
+    .file-row:nth-child(even){
+        background: #fdfdfd;
+    }
+    .file-row:nth-child(odd){
+        background: #fcfcfc;
+    }
+
+.file-row.hover{
+    background: lightgray;
+    cursor: pointer;
+}
+
+.file-row.active{
+    border:1px solid black;
+    background: lightgray;
+}
+.form-control{
+    margin: 2px 0px;
+}
+</style>
+
+<body>
+
+
+<div>
+    <div style="margin:10px;border:1px solid black;width:300px;background:green;float:left;">
+
+        <form class="navbar-form" role="search">
+            <div>
+                <div class="form-group">
+                    <input id="titleBook" type="text" class="form-control" placeholder="Title">
+                    <input id="subtitleBook" type="text" class="form-control" placeholder="Subtitle">
+                    <input id="authorsBook" type="text" class="form-control" placeholder="Authors">
+                    <input id="publisherBook" type="text" class="form-control" placeholder="Publisher">
+                    <input id="publishedDateBook" type="text" class="form-control" placeholder="Published Date">
+                    <textarea id="descriptionBook" class="form-control" placeholder="Description"></textarea><br>
+                    <input id="submitBtnBook" type="button" class="form-control" value="Archive" disabled>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+
+    <div style="margin:10px;width:450px;height:500px;border:1px solid black;padding:10px;float:left;overflow: auto;">
+
+
+    <div id="actions" class="row">
+
+        <div class="col-lg-7">
+            <!-- The fileinput-button span is used to style the file input field as button -->
+            <span class="btn btn-success fileinput-button dz-clickable">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>Add files...</span>
+            </span><br>
+            <button type="submit" class="btn btn-primary start">
+                <i class="glyphicon glyphicon-upload"></i>
+                <span>Start upload</span>
+            </button>
+            <button type="reset" class="btn btn-warning cancel">
+                <i class="glyphicon glyphicon-ban-circle"></i>
+                <span>Cancel upload</span>
+            </button>
+            <button id="archiveAll" class="btn btn-default">
+                <i class="glyphicon"></i>
+                <span>Archive all</span>
+            </button>
+        </div>
+
+        <div class="col-lg-5">
+            <!-- The global file processing state -->
+        <span class="fileupload-process">
+          <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress=""></div>
+          </div>
+        </span>
+        </div>
+
+    </div>
+
+
+    <!-- HTML heavily inspired by http://blueimp.github.io/jQuery-File-Upload/ -->
+    <div class="table table-striped" class="files" id="previews">
+
+        <div id="template" class="file-row">
+            <!-- This is used as the file preview template -->
+            <div>
+                <span class="preview"><img data-dz-thumbnail /></span>
+            </div>
+            <div>
+                <p class="name" data-dz-name></p>
+                <strong class="error text-danger" data-dz-errormessage></strong>
+            </div>
+            <div>
+                <p class="size" data-dz-size></p>
+                <div class="progress active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary start">
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Start</span>
+                </button>
+                <button data-dz-remove class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+                <!--<button data-dz-remove class="btn btn-danger delete">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>-->
+                <button class="btn btn-default archive" disabled>
+                    <i class="glyphicon"></i>
+                    <span>Archive</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+<script>
+
+
+$(function(){
+    "use strict";
+
+    var allFiles = {};
+    var archiveAllFlag = false;
+
+    var previewNode = document.querySelector("#template");
+    previewNode.id = "";
+    var previewTemplate = previewNode.parentNode.innerHTML;
+    previewNode.parentNode.removeChild(previewNode);
+
+    document.querySelector("#archiveAll").onclick = function() {
+        archiveAllFlag = true;
+        dz.enqueueFiles(dz.getFilesWithStatus(Dropzone.ADDED));
+    };
+
+    var dz = new Dropzone(document.body, { // Make the whole body a dropzone
+        url: "upload.php", // Set the url
+        thumbnailWidth: 80,
+        thumbnailHeight: 80,
+        parallelUploads: 1,
+        previewTemplate: previewTemplate,
+        autoQueue: false, // Make sure the files aren't queued until manually added
+        previewsContainer: "#previews", // Define the container to display the previews
+        clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+    });
+
+    function setClass($elem, class_) {
+        $(".file-row").not($elem).removeClass("active");
+
+        if( $elem.hasClass(class_) )
+            $elem.removeClass(class_);
+        else
+            $elem.addClass(class_);
+    }
+
+    function resetForm(){
+        $("#titleBook").val("");
+        $("#subtitleBook").val("");
+        $("#authorsBook").val("");
+        $("#publisherBook").val("");
+        $("#publishedDateBook").val("");
+        $("#descriptionBook").text("");
+        $("#descriptionBook").val("");
+    }
+
+    dz.on("success", function(file, responseText) {
+
+        var $html = $(file.previewTemplate);
+
+        $html.mouseenter(function(){
+            $(this).addClass("hover");
+        }).mouseleave(function(){
+            $(this).removeClass("hover");
+        });
+
+        var bookName = "\"" + $html.find(".name").text() +"\"";
+
+        console.debug(responseText);
+
+        allFiles[bookName] = JSON.parse(responseText);
+
+        //console.debug(allFiles);
+        //console.debug(allFiles[bookName]);
+
+        $html.off().click(function(){
+            setClass($html, "active");
+
+            var $elem = $(".file-row.active");
+
+            resetForm();
+
+            if( $elem.length > 0 ) {
+
+                var orig_book = allFiles[bookName];
+                var meta = allFiles[bookName].metadata;
+                var book = {
+                    title: meta.title,
+                    authors: meta.authors,
+                    publisher: meta.publisher,
+                    publishedDate: meta.publishedDate,
+                    description: meta.description
+                };
+
+                $("#titleBook").val(book.title);
+                $("#authorsBook").val(book.authors);
+                $("#publisherBook").val(book.publisher);
+                $("#publishedDateBook").val(book.publishedDate);
+                $("#descriptionBook").text(book.description);
+                $("#descriptionBook").val(book.description);
+
+                //$("#submitBtnBook").off().removeAttr("disabled").click(function(){
+                $html.find(".archive").removeAttr("disabled").off().click(function(){
+
+                    if( !archiveAllFlag ) {
+                        orig_book.metadata.title = $("#titleBook").val();
+                        orig_book.metadata.authors = $("#authorsBook").val();
+                        orig_book.metadata.publisher = $("#publisherBook").val();
+                        orig_book.metadata.publishedDate = $("#publishedDateBook").val();
+                        orig_book.metadata.description = $("#descriptionBook").val();
+                    }
+
+                    var book_ = orig_book;
+                    //console.debug(book_);
+
+                    var data = JSON.stringify(book_);
+
+                    $.post("upload.php?archive", data, function(data) {
+                        console.log("resp:"+data);
+
+                        if( data === "success" )
+                        {
+                        }
+
+                    });
+
+                    resetForm();
+                    dz.removeFile(file);
+
+                });
+
+
+
+            } else {
+
+            }
+        });
+
+        if( archiveAllFlag )
+        {
+            $html.trigger("click");
+            $html.find(".archive").trigger("click");
+        }
+
+        if( archiveAllFlag )
+        {
+            if( dz.getFilesWithStatus(Dropzone.QUEUED).length === 0 )
+                archiveAllFlag = false;
+        }
+
+
+//        $html.find(".progress").hide();
+//        $html.find(".size").hide();
+
+//        $html.find(".btn.cancel").hide();
+//        $html.find(".btn.delete").hide();
+/*        $(file.previewTemplate).on("click", function(){
+            $(".file-row").css("background", "none");
+
+            $(this).css("background", "red");
+        });*/
+    });
+
+    dz.on("addedfile", function(file) {
+        // Hookup the start button
+        file.previewElement.querySelector(".start").onclick = function() { dz.enqueueFile(file); };
+    });
+
+    // Update the total progress bar
+    dz.on("totaluploadprogress", function(progress) {
+        document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+    });
+
+    dz.on("sending", function(file) {
+
+        // Show the total progress bar when upload starts
+        document.querySelector("#total-progress").style.opacity = "1";
+
+        // And disable the start button
+        file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+
+        var $html = $(file.previewTemplate);
+//        $html.find(".btn.start").hide();
+    });
+
+    // Hide the total progress bar when nothing's uploading anymore
+    dz.on("queuecomplete", function(progress) {
+        document.querySelector("#total-progress").style.opacity = "0";
+    });
+
+    // Setup the buttons for all transfers
+    // The "add files" button doesn't need to be setup because the config
+    // `clickable` has already been specified.
+    document.querySelector("#actions .start").onclick = function() {
+        dz.enqueueFiles(dz.getFilesWithStatus(Dropzone.ADDED));
+    };
+    document.querySelector("#actions .cancel").onclick = function() {
+        dz.removeAllFiles(true);
+    };
+
+});
+
+</script>
+ 
+ 
+<!-- 3 -->
+<!--<form action="upload.php" class="dropzone"></form>-->
+            
+   
+</body>
+ 
+</html>
