@@ -262,10 +262,11 @@ class MyAPI extends API
 		
 		$id = $this->request["id"];
 	
+	
 		$url = $ES_SERVER.$ES_BOOK_INDEX."/".$id."?fields=filename";
-		$result = @file_get_contents($url);
+		$result = file_get_contents($url);
 		$result = json_decode($result);
-		
+	
 		if( $result == NULL || isset($result->found) && $result->found === false )
 			throw new Exception("No id found", 404);
 		
@@ -285,13 +286,12 @@ class MyAPI extends API
 			$out = $tmpdir.$ds.$basename.$ds;
 			$zip->extractTo($out);
 			$zip->close();
-			
-			$metapath = $out.$ds."custom".$ds."plain.xml";
+			$metapath = $out."custom\\plain.xml";
 			if( !file_exists($metapath) )
 				throw new Exception("File not found", 404);
 			
 		} else {
-			throw new Exception("Unable to open file", 404);
+			throw new Exception("Unable to open file ll", 404);
 		}
 
 		$metaxml = file_get_contents($metapath);
@@ -346,7 +346,7 @@ class MyAPI extends API
 			$zip->extractTo($out);
 			$zip->close();
 			
-			$imagePath = $out.$ds."meta".$ds."cover.jpg";
+			$imagePath = $out."meta\\cover.jpg";
 			if( !file_exists($imagePath) )
 				$imagePath = getcwd().$ds."image".$ds."imagenotavailable_320.jpg";
 			
