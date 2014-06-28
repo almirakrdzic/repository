@@ -30,6 +30,7 @@ namespace Repository.Controllers
     public class EResource
     {
         public string id { get; set; }
+        public string title { get; set; }
         public string download { get; set; }
         public string imgurl { get; set; }
         public string detailurl { get; set; }

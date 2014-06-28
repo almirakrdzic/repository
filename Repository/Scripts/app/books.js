@@ -1,5 +1,5 @@
 ﻿
-appRoot.controller('BooksController', function ($scope, $location, $resource, es, bookRepository) {
+appRoot.controller('BooksController', function ($scope, $location, $resource, es, bookRepository,$translate) {
 
     $scope.books = []
     $scope.booksSize = 0;
@@ -7,7 +7,12 @@ appRoot.controller('BooksController', function ($scope, $location, $resource, es
     $scope.currentPage = 1;
     $scope.itemsPerPage = 4;
     $scope.rate = 7;
-    $scope.field = "Title";
+
+    $translate('title')
+         .then(function (translatedValue) {
+             $scope.field = translatedValue;
+         });
+
     function getAllBooks() {
         bookRepository.searchBooks("", function (response) {
             data = response.results;

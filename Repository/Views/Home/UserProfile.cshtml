@@ -26,30 +26,34 @@
     	<div class="col-sm-9">
           
     <tabset justified="true">
-    <tab heading="Home">
+    <tab heading="About me">
         <br />
         <br />
     <div class="col-lg-12">
-                    <div class="well well-lg">
-                        <h4>About me</h4>
+                    <div class="well well-lg">                        
                         <p>{{userDetails.aboutMe}}</p>
                     </div>
                 </div>
-
-     
-
     </tab>
+      <tab heading="Upload books">
+        <br />
+        <br />
+    <div class="col-lg-12">
+        <div class="col-lg-4">
+       <iframe src="http://10.102.216.70/form.html" style="width:1000px;height:800px;"></iframe>
+       </div>
+    </div> 
+
+    </tab>   
     <tab heading="{{'uploaded' | translate}}" data-ng-click="getUploads()">
        <br />
          <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
     <div class="thumbnail">
-        <a id="{{book.id}}" data-ng-class="{active : activeViewPath==='/book/details/{{book.id}}'}"  href="#/book/details/{{book.id}}" class="thumbnail">
+        <a id="{{book.details.elasticid}}" data-ng-class="{active : activeViewPath==='/book/details/{{book.details.elasticid}}'}"  href="#/book/details/{{book.details.elasticid}}" class="thumbnail">
 <img data-src="holder.js/300x200" alt="..." src="~/Images/book.png">
         </a> 
-        <h4 style="text-align:center">{{book.title}}</h4>
-        <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
-          
-        <p><a href="#" class="btn btn-primary" role="button"><i class="fa fa-download fa-fw"></i></a></p>
+        <h4 style="text-align:center">{{book.details.title}}</h4>
+        <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>      
      
     </div>
   </div>
@@ -60,15 +64,13 @@
     </tab>
     <tab heading="{{'download' | translate}}" data-ng-click="getDownloads()">
         <br />
-          <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
+           <div data-ng-repeat ="book in books" class="col-sm-3 col-md-3">
     <div class="thumbnail">
-        <a id="{{book.id}}" data-ng-class="{active : activeViewPath==='/book/details/{{book.id}}'}"  href="#/book/details/{{book.id}}" class="thumbnail">
+        <a id="{{book.details.elasticid}}" data-ng-class="{active : activeViewPath==='/book/details/{{book.details.elasticid}}'}"  href="#/book/details/{{book.details.elasticid}}" class="thumbnail">
 <img data-src="holder.js/300x200" alt="..." src="~/Images/book.png">
         </a> 
-        <h4 style="text-align:center">{{book.title}}</h4>
-        <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
-          
-        <p><a href="#" class="btn btn-primary" role="button"><i class="fa fa-download fa-fw"></i></a></p>
+        <h4 style="text-align:center">{{book.details.title}}</h4>
+        <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>      
      
     </div>
   </div>

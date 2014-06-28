@@ -47,8 +47,9 @@ namespace Repository.Controllers
             {
                 using (var wb = new WebClient())
                 {
-                    string response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=search&query=*");
-                    //string response = "{\"id\":\"ARV60YFERbmL-QgWnGVemg\",\"download\":\"http://10.102.216.70/elasticservice.php?request=getbook&id=ARV60YFERbmL-QgWnGVemg\",\"image\":\"http://localhost:4416/Account/getprofilepic/?username=akrdzic1\",\"score\":0.14958034,\"isbn\":\"04432234\",\"highlight\":\"I E E E TRANSACTIONS ON\r\n\r\n<b>WIRELESS</b> C O M M U N I C AT I O N S\r\nA PUBLICATION OF THE IEEE COMMUNICATIONS\",\"details\":{\"title\":\"Naslov knjige\",\"subtitle\":\"Pod naslov knjige\",\"publicationDate\":\"22.2.1998\",\"publisher\":\"izdavac\",\"description\":\"Opis knjige\",\"institution\":\"IEEE\"}}";
+                    //string response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=search&query=*");
+                    string response = "{\"id\":\"ARV60YFERbmL-QgWnGVemg\",\"title\":\"BookTitle\",\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"score\":0.1530751,\"isbn\":\"04432234\",\"highlight\":\"I E E E TRANSACTIONS ON\n\n<em>WIRELESS</em> C O M M U N I C AT I O N S\nA PUBLICATION OF THE IEEE COMMUNICATIONS\"}";
+                       
                     EResource result = new EResource();
                     System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
                     result = (EResource)converter.Deserialize(response, typeof(EResource));
@@ -63,7 +64,7 @@ namespace Repository.Controllers
 
         [HttpGet]
         public IEnumerable<Comment> GetCommentsForBook(string id)
-        {
+        {           
             List<Comment> comments = new List<Comment>();
             var db = new Models.digital_libraryEntities();
 
@@ -78,28 +79,48 @@ namespace Repository.Controllers
 
 
         [HttpGet]
-        public IEnumerable<Book> GetUploads(string username)
+        public IEnumerable<Resource> GetUploads(string username)
         {
             var db = new Models.digital_libraryEntities();
             var _user = db.users.Where(user => user.username == username).FirstOrDefault();
             var id = _user.id;
-            List<Book> books = new List<Book>();
+            List<Resource> resources = new List<Resource>();
 
             var _books = db.books.ToList().Where(book => book.added_by == id).ToList();
             if (_books == null)
             {
                 throw new Exception("There are no books present!");
             }
-            books = _books.ToList().Select(boo => boo.ToContract()).ToList();
+            List<string> elasticIds = (from e in _books
+                                       select e.elastic_id).ToList();
 
-            return books;
+            foreach (string eId in elasticIds)
+            {
+                using (var wb = new WebClient())
+                {
+                    Resource resource = new Resource();                   
+                    //response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=getdetail&id=" + id);
+                    string response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
+
+                    Details result = new Details();
+                    System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    result = (Details)converter.Deserialize(response, typeof(Details));
+                    resource.details = result;
+                    var book = db.books.Where(boo => boo.elastic_id == eId).FirstOrDefault();
+                    resource.rating = (double)book.rating;
+                    resources.Add(resource);
+                }
+            }
+
+            return resources;
         }
 
         [HttpGet]
-        public IEnumerable<Book> GetDownloads(string username)
-        {
-            List<Book> downloadedBooks = new List<Book>();
+        public IEnumerable<Resource> GetDownloads(string username)
+        {            
             var db = new Models.digital_libraryEntities();
+
+            List<Resource> resources = new List<Resource>();
 
             var _user = db.users.Where(user => user.username == username).FirstOrDefault();
             var id = _user.id;
@@ -107,8 +128,34 @@ namespace Repository.Controllers
             {
                 throw new Exception("User with selected username does not exist!");
             }
-            downloadedBooks = _user.books1.Select(book => book.ToContract()).ToList();
-            return downloadedBooks;
+            var _books = _user.books1.ToList();
+
+            if (_books == null)
+            {
+                throw new Exception("There are no books present!");
+            }
+            List<string> elasticIds = (from e in _books
+                                       select e.elastic_id).ToList();
+
+            foreach (string eId in elasticIds)
+            {
+                using (var wb = new WebClient())
+                {
+                    Resource resource = new Resource();
+                    //response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=getdetail&id=" + id);
+                    string response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
+
+                    Details result = new Details();
+                    System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    result = (Details)converter.Deserialize(response, typeof(Details));
+                    resource.details = result;
+                    var book = db.books.Where(boo => boo.elastic_id == eId).FirstOrDefault();
+                    resource.rating = (double)book.rating;
+                    resources.Add(resource);
+                }
+            }
+           
+            return resources;
         }
 
 
@@ -123,17 +170,17 @@ namespace Repository.Controllers
             db.SaveChanges();
             return (double)(book.ratingscore / book.ratingpeople);
         }
-
-        // GET api/resource/5
+        
         [HttpGet]
         public Resource Get(string id)
-        {
+        {           
             Resource resource = new Resource();
             string response;
             using (var wb = new WebClient())
             {
-                response = wb.DownloadString("http://192.168.0.108/nwt/elasticservice/elasticservice.php?request=getdetail&id=" + id);
-                //response = "{\"id\":\"ARV60YFERbmL-QgWnGVemg\",\"download\":\"http://10.102.216.70/elasticservice.php?request=getbook&id=ARV60YFERbmL-QgWnGVemg\",\"image\":\"http://localhost:4416/Account/getprofilepic/?username=akrdzic1\",\"score\":0.14958034,\"isbn\":\"04432234\",\"highlight\":\"I E E E TRANSACTIONS ON\r\n\r\n<b>WIRELESS</b> C O M M U N I C AT I O N S\r\nA PUBLICATION OF THE IEEE COMMUNICATIONS\",\"details\":{\"title\":\"Naslov knjige\",\"subtitle\":\"Pod naslov knjige\",\"publicationDate\":\"22.2.1998\",\"publisher\":\"izdavac\",\"description\":\"Opis knjige\",\"institution\":\"IEEE\"}}";
+                //response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=getdetail&id=" + id);
+                response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
+                   
                 Details result = new Details();
                 System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
                 result = (Details)converter.Deserialize(response, typeof(Details));
@@ -166,13 +213,31 @@ namespace Repository.Controllers
             string response;
             using (var wb = new WebClient())
             {
-                response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=search&query=*");
-                //response = "{\"took\":69,\"timed_out\":false,\"num_results\":103,\"results\":[{\"id\":\"ARV60YFERbmL-QgWnGVemg\",\"download\":\"http://10.102.216.70/elasticservice.php?request=getbook&id=ARV60YFERbmL-QgWnGVemg\",\"image\":\"http://localhost:4416/Account/getprofilepic/?username=akrdzic1\",\"score\":0.14958034,\"isbn\":\"04432234\",\"highlight\":\"I E E E TRANSACTIONS ON\r\n\r\n<b>WIRELESS</b> C O M M U N I C AT I O N S\r\nA PUBLICATION OF THE IEEE COMMUNICATIONS\",\"details\":{\"title\":\"Naslov knjige\",\"subtitle\":\"Pod naslov knjige\",\"publicationDate\":\"22.2.1998\",\"publisher\":\"izdavac\",\"description\":\"Opis knjige\",\"institution\":\"IEEE\"}},{\"id\":\"IMhdL94wT6akFvl-RU6g6Q\",\"download\":\"http://10.102.216.70/elasticservice.php?request=getbook&id=IMhdL94wT6akFvl-RU6g6Q\",\"image\":\"http://localhost:4416/Account/getprofilepic/?username=akrdzic1\",\"score\":0.10807292,\"isbn\":\"04432241\",\"highlight\":\"IEEE TRANSACTIONS ON <em>WIRELESS</em> COMMUNICATIONS, VOL. 7, NO. 1, JANUARY 2008\r\n\r\n37\r\n\r\nCross-Layer Congestion\",\"details\":{\"title\":\"Naslov knjige\",\"subtitle\":\"Pod naslov knjige\",\"publicationDate\":\"22.2.1998\",\"publisher\":\"izdavac\",\"description\":\"Opis knjige\",\"institution\":\"IEEE\"}},{\"id\":\"SjSKx3UwSzeOR7Hwo-bFlQ\",\"download\":\"http://10.102.216.70/elasticservice.php?request=getbook&id=SjSKx3UwSzeOR7Hwo-bFlQ\",\"image\":\"http://localhost:4416/Account/getprofilepic/?username=akrdzic1\",\"score\":0.10807292,\"isbn\":\"04432241\",\"highlight\":\"IEEE TRANSACTIONS ON <em>WIRELESS</em> COMMUNICATIONS, VOL. 7, NO. 1, JANUARY 2008\r\n\r\n37\r\n\r\nCross-Layer Congestion\",\"details\":{\"title\":\"Naslov knjige\",\"subtitle\":\"Pod naslov knjige\",\"publicationDate\":\"22.2.1998\",\"publisher\":\"izdavac\",\"description\":\"Opis knjige\",\"institution\":\"IEEE\"}},{\"id\":\"w9hRCYrQTOOWfYfTym5g4g\",\"download\":\"http://10.102.216.70/elasticservice.php?request=getbook&id=w9hRCYrQTOOWfYfTym5g4g\",\"image\":\"http://localhost:4416/Account/getprofilepic/?username=akrdzic1\",\"score\":0.10733522,\"isbn\":\"04432261\",\"highlight\":\"IEEE TRANSACTIONS ON <em>WIRELESS</em> COMMUNICATIONS, VOL. 7, NO. 1, JANUARY 2008\r\n\r\n193\r\n\r\nThroughput Analysis\",\"details\":{\"title\":\"Naslov knjige\",\"subtitle\":\"Pod naslov knjige\",\"publicationDate\":\"22.2.1998\",\"publisher\":\"izdavac\",\"description\":\"Opis knjige\",\"institution\":\"IEEE\"}},{\"id\":\"inOKGJ7wQeSgXuFfOOCrqg\",\"download\":\"http://10.102.216.70/elasticservice.php?request=getbook&id=inOKGJ7wQeSgXuFfOOCrqg\",\"image\":\"http://localhost:4416/Account/getprofilepic/?username=akrdzic1\",\"score\":0.10733522,\"isbn\":\"04432261\",\"highlight\":\"IEEE TRANSACTIONS ON <em>WIRELESS</em> COMMUNICATIONS, VOL. 7, NO. 1, JANUARY 2008\r\n\r\n193\r\n\r\nThroughput Analysis\",\"details\":{\"title\":\"Naslov knjige\",\"subtitle\":\"Pod naslov knjige\",\"publicationDate\":\"22.2.1998\",\"publisher\":\"izdavac\",\"description\":\"Opis knjige\",\"institution\":\"IEEE\"}},{\"id\":\"w316-6foSf2P5IdaF3oHWg\",\"download\":\"http://10.102.216.70/elasticservice.php?request=getbook&id=w316-6foSf2P5IdaF3oHWg\",\"image\":\"http://localhost:4416/Account/getprofilepic/?username=akrdzic1\",\"score\":0.10640588,\"isbn\":\"04432267\",\"highlight\":\"IEEE TRANSACTIONS ON <em>WIRELESS</em> COMMUNICATIONS, VOL. 7, NO. 1, JANUARY 2008\r\n\r\n251\r\n\r\nAsymptotic Bounds\",\"details\":{\"title\":\"Naslov knjige\",\"subtitle\":\"Pod naslov knjige\",\"publicationDate\":\"22.2.1998\",\"publisher\":\"izdavac\",\"description\":\"Opis knjige\",\"institution\":\"IEEE\"}}]}";
+                //response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=search&query=*");
+                response = "{\"took\":30,\"timed_out\":false,\"num_results\":17,\"results\":[{\"id\":\"ARV60YFERbmL-QgWnGVemg\",\"title\":\"BookTitle\",\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"score\":0.1530751,\"isbn\":\"04432234\",\"highlight\":\"I E E E TRANSACTIONS ON\n\n<em>WIRELESS</em> C O M M U N I C AT I O N S\nA PUBLICATION OF THE IEEE COMMUNICATIONS\"}]}";
+                  
                 System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
                 result = (EResult)converter.Deserialize(response, typeof(EResult));
             }
 
             return result;
+        }
+
+        [HttpGet]
+
+        public void insertBook(string id)
+        {
+            books book = new books();
+            book.elastic_id = id;
+            book.ratingpeople = 0;
+            book.ratingscore = 0;
+            book.rating = 0;
+           
+            var db = new digital_libraryEntities();
+            var user = db.users.Where(us => us.username == User.Identity.Name).FirstOrDefault();
+            book.added_by = user.id;
+            db.books.Add(book);
+            db.SaveChanges();
         }
 
         [HttpGet]

@@ -19,10 +19,10 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'Rate': 'Rate this book:',
         'clear': 'Clear',
         'Dodano': 'This book is added by:',
-        'edition': 'Edition:',
+        'edition': 'Year of publication:',
         'title': 'Title',
-        'Data': 'Data',
-        'Description': 'Description',
+        'data': 'Data',
+        'description': 'Description',
         'rated': 'Rated:',
         'about': 'About this book:',
         'comment': 'Comment',
@@ -33,7 +33,9 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'last': 'Lastname',
         'uploaded': 'Uploaded books',
         'year': 'Year',
-        'depart': 'Department'
+        'depart': 'Department',
+        'score': 'Score',
+        'searchby':'Search by:'
     });
 
     $translateProvider.translations('ba', {
@@ -52,10 +54,10 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'Rate': 'Ocijeni ovu knjigu:',
         'clear': 'Obriši',
         'Dodano': 'Knjigu je dodao:',
-        'edition': 'Izdanje:',
+        'edition': 'Godina izdavanja:',
         'title': 'Naslov',
-        'Data': 'Podaci',
-        'Description': 'Opis',
+        'data': 'Podaci',
+        'description': 'Opis',
         'rated': 'Ocijenilo:',
         'about': 'O knjizi:',
         'comment': 'Komentar',
@@ -66,8 +68,10 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'first': 'Ime',
         'last': 'Prezime',
         'uploaded': 'Dodane knjige',
-        'year': 'Godina upisa studija',
-        'depart': 'Odsjek'
+        'year': 'Godina studija',
+        'depart': 'Odsjek',
+        'score': 'Nivo bitnosti',
+        'searchby': 'Traži po:'
     }).preferredLanguage('ba');
 
 

@@ -14,7 +14,7 @@
         getBooks();
         $scope.maxSize = 5;
         $scope.currentPage = 1;
-        $scope.itemsPerPage = 4;
+        $scope.itemsPerPage = 2;
         $scope.$watch("currentPage", function (newValue, oldValue) {
             data1 = data;
             offset = (newValue - 1) * $scope.itemsPerPage;

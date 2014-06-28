@@ -34,10 +34,6 @@
             <End Role="authors" EntitySet="authors" />
             <End Role="book_author" EntitySet="book_author" />
           </AssociationSet>
-          <AssociationSet Name="FK_book_genre_books" Association="digital_libraryModel.Store.FK_book_genre_books">
-            <End Role="books" EntitySet="books" />
-            <End Role="book_genre" EntitySet="book_genre" />
-          </AssociationSet>
           <AssociationSet Name="FK_book_genre_genres" Association="digital_libraryModel.Store.FK_book_genre_genres">
             <End Role="genre" EntitySet="genre" />
             <End Role="book_genre" EntitySet="book_genre" />
@@ -45,10 +41,6 @@
           <AssociationSet Name="FK_book_id" Association="digital_libraryModel.Store.FK_book_id">
             <End Role="books" EntitySet="books" />
             <End Role="book_author" EntitySet="book_author" />
-          </AssociationSet>
-          <AssociationSet Name="FK_books_added" Association="digital_libraryModel.Store.FK_books_added">
-            <End Role="users" EntitySet="users" />
-            <End Role="books" EntitySet="books" />
           </AssociationSet>
           <AssociationSet Name="FK_comments_books" Association="digital_libraryModel.Store.FK_comments_books">
             <End Role="books" EntitySet="books" />
@@ -109,7 +101,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="title" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="title" Type="varchar" MaxLength="50" />
           <Property Name="isbn" Type="varchar" MaxLength="13" />
           <Property Name="edition" Type="varchar" MaxLength="10" />
           <Property Name="description" Type="varchar(max)" />
@@ -191,18 +183,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_book_genre_books">
-          <End Role="books" Type="digital_libraryModel.Store.books" Multiplicity="1" />
-          <End Role="book_genre" Type="digital_libraryModel.Store.book_genre" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="books">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="book_genre">
-              <PropertyRef Name="book_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_book_genre_genres">
           <End Role="genre" Type="digital_libraryModel.Store.genre" Multiplicity="1" />
           <End Role="book_genre" Type="digital_libraryModel.Store.book_genre" Multiplicity="*" />
@@ -224,18 +204,6 @@
             </Principal>
             <Dependent Role="book_author">
               <PropertyRef Name="book_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_books_added">
-          <End Role="users" Type="digital_libraryModel.Store.users" Multiplicity="1" />
-          <End Role="books" Type="digital_libraryModel.Store.books" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="books">
-              <PropertyRef Name="added_by" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -356,7 +324,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="title" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="title" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="isbn" Type="String" MaxLength="13" Unicode="false" FixedLength="false" />
           <Property Name="edition" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
           <Property Name="description" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />

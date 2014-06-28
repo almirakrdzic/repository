@@ -11,7 +11,7 @@
                  <div class="col-sm-6">
                  <div class="form-group input-group">
                      <a href="/users" class="pull-right">
-                         <img title="profile image" id = "img" class="img-circle img-responsive" data-ng-src="{{imageSrc}}"/>
+                         <img data-ng-model="profile.image" title="profile image" id = "img" class="img-circle img-responsive" data-ng-src="{{imageSrc}}"/>
                      </a>
                  </div>     
                 <div class="form-group input-group">
@@ -43,7 +43,7 @@
                <div class="form-group input-group">
                    {{'depart' | translate}}:
                      <select class="form-control" data-ng-model="profile.department">
-                         <option value="Računarstvo i informatika">Računarstvo i informatika</option>
+                         <option value="Racunarstvo i informatika">Racunarstvo i informatika</option>
                          <option value="Energetika">Energetika</option>
                          <option value="Automatika i elektronika">Automatika i Elektronika</option>
                          <option value="Telekomunikacije">Telekomunikacije</option>                         

@@ -1,25 +1,13 @@
 ﻿angular.module('main')
     .controller('EditProfileController', ['$scope', 'userRepository', '$modalInstance', 'userRepository', 'aut', 'fileReader', function ($scope, userRepository, $modalInstance, userRepository, aut, fileReader) {
 
-        $scope.profile =
-        {
-            Username: aut.username,
-            FirstName: '',
-            LastName: '',
-            Email: '',
-            AbouteMe: '',
-            Year: '',
-            Department: ''
-
-        }
-
-        function getUser() {
+       function getUser() {
             userRepository.getUser(aut.username, function (results) {
                 $scope.profile = results;
+                $scope.imageSrc = "data:image/png;base64," + results.image;
             })
         };
-        getUser();
-        $scope.imageSrc = "http://localhost:4416/Account/GetProfilePic/?username=" + $scope.profile.Username;
+        getUser();      
 
         $scope.ok = function (file) {
             userRepository.editProfile($scope.profile, function (results) {
@@ -32,13 +20,12 @@
             $modalInstance.dismiss('cancel');
         };
 
-        $scope.readFile = function (file) {
-            userRepository.postPicture(file, $scope.profile, function (results) {
-
-            });
+        $scope.readFile = function (file) {    
+           
             fileReader.readAsDataUrl(file, $scope)
                      .then(function (result) {
                          $scope.imageSrc = result;
+                         $scope.profile.image = result;
                      });
         };
 
