@@ -18,14 +18,19 @@ using System.DirectoryServices.Protocols;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
+using System.Web.Http.Filters;
 
 namespace Repository.Controllers
 {
+   [Authorize]
     public class UserController : ApiController
     {
-        [HttpPost]
+
+        [HttpPost]        
+        [AllowAnonymous]
         public HttpResponseMessage Login(LoginModel user)
-        {              
+        {            
+           
         if (this.ModelState.IsValid)
         {
             bool authenticated = false;
@@ -76,7 +81,7 @@ namespace Repository.Controllers
             profile.FirstName = user.first_name;
             profile.LastName = user.last_name;
             profile.Email = user.email;
-            profile.Year = user.year;
+            profile.Year = (int)user.year;
             profile.Department = user.department;
             profile.AboutMe = user.aboutme;
             profile.Image = Convert.ToBase64String(user.image);
@@ -87,23 +92,27 @@ namespace Repository.Controllers
       
         [HttpPost]
         public HttpResponseMessage EditProfile(UserProfileModel profile)
-        {                                               
+        {
+            if (ModelState.IsValid)
+            {
+                var database = new Models.digital_libraryEntities();
+                var user = database.users.Where(us => us.username == profile.Username).FirstOrDefault();
+                user.first_name = profile.FirstName;
+                user.last_name = profile.LastName;
+                user.email = profile.Email;
+                user.year = profile.Year;
+                user.department = profile.Department;
+                user.aboutme = profile.AboutMe;
 
-            var database = new Models.digital_libraryEntities();
-            var user = database.users.Where(us => us.username == profile.Username).FirstOrDefault();                  
-            user.first_name = profile.FirstName;
-            user.last_name = profile.LastName;
-            user.email = profile.Email;
-            user.year = profile.Year;
-            user.department = profile.Department;
-            user.aboutme = profile.AboutMe;
+                int comaPoint = profile.Image.IndexOf(",");
+                user.image = Convert.FromBase64String(profile.Image.Substring(comaPoint + 1));
 
-            int comaPoint = profile.Image.IndexOf(",");            
-            user.image = Convert.FromBase64String(profile.Image.Substring(comaPoint + 1));
+                database.SaveChanges();
 
-            database.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK, "success!");
+            }
 
-            return Request.CreateResponse(HttpStatusCode.OK, "success!");
+            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
         }
 
        

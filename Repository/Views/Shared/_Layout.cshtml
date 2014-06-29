@@ -25,7 +25,7 @@
                 <a style="color:black" class="navbar-brand" href="#/" translate="DR"></a>
             </div>           
             <ul class="nav navbar-top-links navbar-right">
-                <li data-ng-class="{active : activeViewPath==='/books'}"><a href='#/books' translate="B"></a></li>             
+                <li data-ng-show="authenticated" data-ng-class="{active : activeViewPath==='/books'}"><a href='#/books' translate="B"></a></li>             
                <li data-ng-show="authenticated" class="dropdown">
                 <a href="#" style="color:black" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
                 <i class="fa fa-user fa-fw"></i>
@@ -40,7 +40,7 @@
               <li>
              <form name="loginform" data-ng-submit="signin(loginform.$valid)" data-ng-hide="authenticated" role="form" novalidate>            
             <li><div class="form-group" data-ng-class="{ 'has-error' : seeError }"><input class="form-control" placeholder="{{'UN' | translate}}" name="username" data-ng-model="login.Username" type="username" autofocus></div></li>
-            <li><div class="form-group" ng-class="{ 'has-error' : seeError }"><input class="form-control" placeholder="{{'PASS' | translate}}" name="password" data-ng-model="login.Password" type="password" value=""></div></li>
+            <li><div class="form-group" data-ng-class="{ 'has-error' : seeError }"><input class="form-control" placeholder="{{'PASS' | translate}}" name="password" data-ng-model="login.Password" type="password" value=""></div></li>
             <li><div class="form-group"><input type="submit" class="btn btn-default" value="{{'LOGIN' | translate}}" /></div> </li>                              
             </li>
              </form> 

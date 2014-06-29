@@ -10,26 +10,32 @@ using System.IO;
 
 namespace Repository.Controllers
 {
+    [Authorize]
     public class ResourceController : ApiController
     {
-        [HttpGet]
-        public HttpResponseMessage AddKomentar(string text, int idBook)
+        [HttpPost]
+       
+        public HttpResponseMessage AddKomentar(Comment comment)
         {
-            var db = new Models.digital_libraryEntities();
-            var user = db.users.Where(us => us.username == User.Identity.Name).FirstOrDefault();
-            var comment = new comments();
-            comment.active = true;
-            comment.idBook = idBook;
-            comment.idUser = user.id;
-            comment.text = text;
-            db.comments.Add(comment);
-            db.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                var db = new Models.digital_libraryEntities();
+                var user = db.users.Where(us => us.username == User.Identity.Name).FirstOrDefault();
+                var _comment = new comments();
+                _comment.active = true;
+                _comment.idBook = comment.IdBook;
+                _comment.idUser = user.id;
+                _comment.text = comment.Text;
+                db.comments.Add(_comment);
+                db.SaveChanges();
 
-            return Request.CreateResponse(HttpStatusCode.OK, "success!");
-
+                return Request.CreateResponse(HttpStatusCode.OK, "success!");
+           }
+            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IEnumerable<EResource> Get()
         {
             DateTime today = DateTime.Now;

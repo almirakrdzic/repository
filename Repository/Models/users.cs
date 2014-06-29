@@ -33,7 +33,7 @@ namespace Repository.Models
         public byte[] image { get; set; }
         public Nullable<bool> isConfirmed { get; set; }
         public string confirmationToken { get; set; }
-        public string year { get; set; }
+        public Nullable<int> year { get; set; }
         public string department { get; set; }
         public string aboutme { get; set; }
     

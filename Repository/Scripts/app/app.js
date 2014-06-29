@@ -68,7 +68,7 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'first': 'Ime',
         'last': 'Prezime',
         'uploaded': 'Dodane knjige',
-        'year': 'Godina studija',
+        'year': 'Godina upisa studija',
         'depart': 'Odsjek',
         'score': 'Nivo bitnosti',
         'searchby': 'Traži po:'
@@ -170,7 +170,7 @@ appRoot
                 $http.get("api/resource/getu").success(callback);
             },
             kreirajKomentar: function (text, idBook, callback) {
-                $http.get("api/resource/addkomentar/?text=" + text + "&idBook=" + idBook)
+                $http.post("api/resource/addkomentar/",text,idBook)
                 .success(callback)
                  .error(function () {
                  });
@@ -184,12 +184,10 @@ appRoot
 
                  $http.get("api/user/userdetails/?username=" + username).success(callback);
              },
-             editProfile: function (profile, callback) {
+             editProfile: function (profile, successCallback,errorCallback) {
                  $http.post("api/user/editprofile", profile)
-                 .success(function () {
-                 })
-                 .error(function () {
-                 });
+                 .success(successCallback)
+                 .error(errorCallback);
              },
              postPicture: function (file, profile, callback) {
 

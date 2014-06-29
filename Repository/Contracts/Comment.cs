@@ -4,19 +4,24 @@ using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace Repository.Controllers
 {
-     [DataContract]
+     [Serializable]
+    [DataContract]
     public class Comment
-    {
-        [DataMember]
+    {        
         public int Id { get; set; }
-        [DataMember]
-        public string Text { get; set; }
-        [DataMember]
-        public User IdUser { get; set; }
-        [DataMember]
-        public Book IdBook { get; set; }
+
+        [DataMember(IsRequired = true)]  
+        [DataType(DataType.Text)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 1)]
+        public string Text { get; set; }       
+         
+        public User IdUser { get; set; }        
+       
+         [DataMember(IsRequired=true)]       
+        public int IdBook { get; set; }
     }
 }

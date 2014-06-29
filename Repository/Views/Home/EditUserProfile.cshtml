@@ -21,41 +21,37 @@
                   </div>
                  <div class="row">
                  <div class="col-sm-10">     
-                 <div class="form-group input-group">
+                 <div class="form-group input-group" data-ng-class="{ 'has-error' : seeFirstNameError }">
                      <input type="text" class="form-control" name="FirstName" data-ng-model="profile.firstName" placeholder="Firstname">                                        
                  </div> 
-                  <div class="form-group input-group">
+                  <div class="form-group input-group" data-ng-class="{ 'has-error' : seeLastNameError }">
                      <input type="text" name="LastName" class="form-control" data-ng-model="profile.lastName" placeholder="Lastname">                                        
                  </div>  
-                  <div class="form-group input-group">
+                  <div class="form-group input-group" data-ng-class="{ 'has-error' : seeEmailError }">
                      <input type="text" name="Email" class="form-control" data-ng-model="profile.email" placeholder="Email">                                        
                  </div> 
                  <div class="form-group input-group">
                      {{'year' | translate}}:
-                     <select class="form-control" data-ng-model="profile.year">
-                         <option value="Prva">Prva</option>
-                         <option value="Druga">Druga</option>
-                         <option value="Treca">Treca</option>
-                         <option value="Četvrta">Četvrta</option>
-                         <option value="Peta">Peta</option>
+                     <select class="form-control" data-ng-model="profile.year" >
+                         <option value="{{year}}" data-ng-repeat="year in years">{{year}}</option>                        
                      </select>                                                           
                  </div> 
                <div class="form-group input-group">
                    {{'depart' | translate}}:
                      <select class="form-control" data-ng-model="profile.department">
-                         <option value="Racunarstvo i informatika">Racunarstvo i informatika</option>
-                         <option value="Energetika">Energetika</option>
-                         <option value="Automatika i elektronika">Automatika i Elektronika</option>
-                         <option value="Telekomunikacije">Telekomunikacije</option>                         
+                         <option value="RI">RI</option>
+                         <option value="EE">EE</option>
+                         <option value="AIE">AIE</option>
+                         <option value="TK">TK</option>                         
                      </select>                                                           
                  </div> 
                  </div>
                 </div>
                  <div class="row">
                  <div class="col-sm-12">
-                 <div class="form-group input-group">
+                 <div class="form-group input-group" data-ng-class="{ 'has-error' : seeAboutMeError }">
                      <label>About me:</label>
-                     <textarea class="form-control" data-ng-model="profile.aboutMe" name="AboutMe" rows="5"></textarea>                                        
+                     <textarea  class="form-control" data-ng-model="profile.aboutMe" name="AboutMe" rows="5"></textarea>                                        
                  </div>
                  </div> 
                  </div>                                            

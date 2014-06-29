@@ -15,7 +15,7 @@
       <p class="text-muted">{{'Rate' | translate}}<br/>   
      <rating ng-model="Userrate" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="false"></rating>
      <div class="form-group"><input type="button" class="btn btn-default" data-ng-click ="rate()" value="Rate" />
-         <button class="btn btn-sm btn-danger" ng-click="Userrate = 0" ng-disabled="isReadonly">{{'clear' | translate}}</button>
+         <button class="btn btn-sm btn-danger" data-ng-click="Userrate = 0" data-ng-disabled="isReadonly">{{'clear' | translate}}</button>
      </div>                            
      
       </p>
@@ -24,7 +24,7 @@
 <div class="col-lg-6" id="g/ć">     
     <h3>{{book.details.title}}</h3>         
          <br />        
-     <rating ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
+     <rating data-ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
      <p>{{'rated' | translate}}{{book.people}}</p> 
      
     @*<p>

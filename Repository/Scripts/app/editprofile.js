@@ -1,6 +1,18 @@
 ﻿angular.module('main')
     .controller('EditProfileController', ['$scope', 'userRepository', '$modalInstance', 'userRepository', 'aut', 'fileReader', function ($scope, userRepository, $modalInstance, userRepository, aut, fileReader) {
 
+        $scope.seeFirstNameError = false;
+        $scope.seeLastNameError = false;
+        $scope.seeEmailError = false;
+        $scope.seeAboutMeError = false;
+
+        var today = new Date();
+        var year = today.getFullYear();
+        var years = [];
+        for (i = 1999; i <= year; i++)
+            years[i - 1999] = i;
+        $scope.years = years;
+
        function getUser() {
             userRepository.getUser(aut.username, function (results) {
                 $scope.profile = results;
@@ -11,11 +23,32 @@
 
         $scope.ok = function (file) {
             userRepository.editProfile($scope.profile, function (results) {
+                $modalInstance.close($scope.userDetails);
+            }, function (result) {
+                if (result.modelState["profile.FirstName"] != null)
+                    $scope.seeFirstNameError = true;
+                else
+                    $scope.seeFirstNameError = false;
 
-            });
-            $modalInstance.close($scope.userDetails);
+                if (result.modelState["profile.LastName"] != null)
+                    $scope.seeLastNameError = true;
+                else
+                    $scope.seeLastNameError = false;
+
+                if (result.modelState["profile.Email"] != null)
+                    $scope.seeEmailError = true;
+                else
+                    $scope.seeEmailError = false;
+
+                if (result.modelState["profile.AboutMe"] != null)
+                    $scope.seeAboutMeError = true;
+                else
+                    $scope.seeAboutMeError = false;                
+            }
+            );
+           
         };
-
+        
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };

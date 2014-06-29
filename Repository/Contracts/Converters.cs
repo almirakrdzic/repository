@@ -56,11 +56,7 @@ namespace Repository.Controllers
                     LastName = comment.users.last_name,
                     Image = System.Convert.ToBase64String(comment.users.image)
                 },
-                IdBook = new Book() 
-                { 
-                    Id=comment.idBook
-                }
-
+                IdBook = comment.idBook
             };
             return newComment;
         }

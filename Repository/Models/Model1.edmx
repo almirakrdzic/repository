@@ -167,7 +167,7 @@
           <Property Name="image" Type="varbinary(max)" />
           <Property Name="isConfirmed" Type="bit" />
           <Property Name="confirmationToken" Type="varchar" MaxLength="64" />
-          <Property Name="year" Type="varchar" MaxLength="10" />
+          <Property Name="year" Type="int" />
           <Property Name="department" Type="varchar" MaxLength="70" />
           <Property Name="aboutme" Type="varchar(max)" />
         </EntityType>
@@ -380,7 +380,7 @@
           <NavigationProperty Name="user_types" Relationship="digital_libraryModel.FK_user_type" FromRole="users" ToRole="user_types" />
           <NavigationProperty Name="books1" Relationship="digital_libraryModel.downloaded_books" FromRole="users" ToRole="books" />
           <NavigationProperty Name="comments" Relationship="digital_libraryModel.FK_comments_users" FromRole="users" ToRole="comments" />
-          <Property Type="String" Name="year" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="year" />
           <Property Type="String" Name="department" MaxLength="70" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="aboutme" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
