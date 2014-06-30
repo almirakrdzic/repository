@@ -286,7 +286,7 @@ class MyAPI extends API
 			$out = $tmpdir.$ds.$basename.$ds;
 			$zip->extractTo($out);
 			$zip->close();
-			$metapath = $out."custom\\plain.xml";
+			$metapath = $out."custom/plain.xml";
 			if( !file_exists($metapath) )
 				throw new Exception("File not found", 404);
 			
@@ -346,7 +346,7 @@ class MyAPI extends API
 			$zip->extractTo($out);
 			$zip->close();
 			
-			$imagePath = $out."meta\\cover.jpg";
+			$imagePath = $out."meta/cover.jpg";
 			if( !file_exists($imagePath) )
 				$imagePath = getcwd().$ds."image".$ds."imagenotavailable_320.jpg";
 			
