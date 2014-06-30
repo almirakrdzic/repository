@@ -22,7 +22,7 @@ using System.Web.Http.Filters;
 
 namespace Repository.Controllers
 {
-   [Authorize]
+   //[Authorize]
     public class UserController : ApiController
     {
 
@@ -115,6 +115,10 @@ namespace Repository.Controllers
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
         }
 
-       
+        [HttpGet]
+        public int GetYear()
+        {
+            return DateTime.Now.Year;
+        }
  }    
 }

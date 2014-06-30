@@ -6,12 +6,15 @@
         $scope.seeEmailError = false;
         $scope.seeAboutMeError = false;
 
-        var today = new Date();
-        var year = today.getFullYear();
-        var years = [];
-        for (i = 1999; i <= year; i++)
-            years[i - 1999] = i;
-        $scope.years = years;
+        userRepository.getYear(function(result){
+            var year = result;
+            var years = [];
+            for (i = 1999; i <= year; i++)
+                years[i - 1999] = i;
+            $scope.years = years;
+        });
+       
+       
 
        function getUser() {
             userRepository.getUser(aut.username, function (results) {

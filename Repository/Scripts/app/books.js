@@ -7,43 +7,32 @@ appRoot.controller('BooksController', function ($scope, $location, $resource, es
     $scope.currentPage = 1;
     $scope.itemsPerPage = 4;
     $scope.rate = 7;
-
+    
     $translate('title')
          .then(function (translatedValue) {
              $scope.field = translatedValue;
          });
 
-    function getAllBooks() {
-        bookRepository.searchBooks("", function (response) {
+   /* function getAllBooks() {
+        bookRepository.searchBooks("*","data", function (response) {
             data = response.results;
             data1 = data;
             $scope.books = data1.slice(0, $scope.itemsPerPage);
             $scope.booksSize = data.length;
         });
     };
-    getAllBooks();
+    getAllBooks();*/
 
     $scope.search = function () {
         var field = $scope.field;
-        es.search({
-            index: 'books',
-            size: 50,
-            body: {
-                "query": {
-                    "query_string": {
-                        "query": $scope.query,
-                        "fields": [field.toLowerCase()]
-                    }
-                }
-            }
-
-        }).then(function (response) {
-            data = response.hits.hits;
+        bookRepository.searchBooks($scope.query, $scope.field, function (response) {
+            data = response.results;
             data1 = data;
             $scope.books = data1.slice(0, $scope.itemsPerPage);
             $scope.booksSize = data.length;
-        });
+        });       
     };
+
     $scope.translateText = function () {
         bookRepository.translateQuery($scope.query, function (response) {
             $scope.translations = response;

@@ -22,9 +22,8 @@
                    {{'searchby' | translate}} 
            <select data-ng-model="field"  class="btn btn-default dropdown-toggle">
                                                 <option>{{'title' | translate}}</option>
-                                                <option>{{'data' | translate}}</option>
-                                                <option>ISBN</option>
-                                                <option>{{'description' | translate}}</option>                                               
+                                                <option>{{'data' | translate}}</option>                                               
+                                                <option>{{'author' | translate}}</option>                                               
                                             </select>            
             </div> 
                  </div>   
@@ -42,7 +41,7 @@
            <div class="thumbnail">     
             <img data-ng-src="{{book.imgurl}}" class="img-rounded img-responsive" />
            </div>       
-        <h4 style="text-align:center">{{book.details.title}}</h4>       
+        <h4 style="text-align:center">{{book.title}}</h4>       
      </div>          
     <div class="col-lg-6">
         <p data-ng-bind-html="book.highlight"></p>

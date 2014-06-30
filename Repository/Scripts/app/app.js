@@ -22,7 +22,7 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'edition': 'Year of publication:',
         'title': 'Title',
         'data': 'Data',
-        'description': 'Description',
+        'author': 'Author',
         'rated': 'Rated:',
         'about': 'About this book:',
         'comment': 'Comment',
@@ -35,7 +35,9 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'year': 'Year',
         'depart': 'Department',
         'score': 'Score',
-        'searchby':'Search by:'
+        'searchby': 'Search by:',
+        'aboutme': 'About me',
+        'upload':'Upload resource'
     });
 
     $translateProvider.translations('ba', {
@@ -57,7 +59,7 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'edition': 'Godina izdavanja:',
         'title': 'Naslov',
         'data': 'Podaci',
-        'description': 'Opis',
+        'author': 'Autor',
         'rated': 'Ocijenilo:',
         'about': 'O knjizi:',
         'comment': 'Komentar',
@@ -71,7 +73,9 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'year': 'Godina upisa studija',
         'depart': 'Odsjek',
         'score': 'Nivo bitnosti',
-        'searchby': 'Traži po:'
+        'searchby': 'Traži po:',
+        'aboutme': 'O meni',
+        'upload':'Dodaj resurs'
     }).preferredLanguage('ba');
 
 
@@ -150,8 +154,8 @@ appRoot
             getCommentsForBook: function (id, callback) {
                 $http.get("api/resource/getcommentsforbook/?id=" + id).success(callback);
             },
-            searchBooks: function (query, callback) {
-                $http.get("api/resource/searchbooks/?query=*").success(callback);
+            searchBooks: function (query,field, callback) {
+                $http.get("api/resource/searchbooks/?query="+query+"&field="+field).success(callback);
             },
             translateQuery: function (query, callback) {
                 $http.get("api/resource/translatetext/?text=" + query).success(callback);
@@ -202,6 +206,9 @@ appRoot
                  })
                  .error(function () {
                  });
+             },
+             getYear: function (callback) {
+                 $http.get("api/user/getyear").success(callback);
              }
          }
      })
