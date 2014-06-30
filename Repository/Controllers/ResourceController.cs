@@ -13,8 +13,12 @@ namespace Repository.Controllers
     [Authorize]
     public class ResourceController : ApiController
     {
+
+        const string elastic_service = "http://192.168.1.13/nwt/elasticservice/elasticservice.php?";
+        //string elastic_service = "http://10.102.216.70/elasticservice.php?";
+
         [HttpPost]
-       
+
         public HttpResponseMessage AddKomentar(Comment comment)
         {
             if (ModelState.IsValid)
@@ -30,7 +34,7 @@ namespace Repository.Controllers
                 db.SaveChanges();
 
                 return Request.CreateResponse(HttpStatusCode.OK, "success!");
-           }
+            }
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
         }
 
@@ -53,7 +57,7 @@ namespace Repository.Controllers
             {
                 using (var wb = new WebClient())
                 {
-                    string response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=getdetail&id="+id);
+                    string response = wb.DownloadString(elastic_service + "request=getdetail&id=" + id);
                     //string response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
 
                     Details result = new Details();
@@ -70,7 +74,7 @@ namespace Repository.Controllers
 
         [HttpGet]
         public IEnumerable<Comment> GetCommentsForBook(string id)
-        {           
+        {
             List<Comment> comments = new List<Comment>();
             var db = new Models.digital_libraryEntities();
 
@@ -104,8 +108,8 @@ namespace Repository.Controllers
             {
                 using (var wb = new WebClient())
                 {
-                    Resource resource = new Resource();                   
-                    string response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=getdetail&id=" + id);
+                    Resource resource = new Resource();
+                    string response = wb.DownloadString(elastic_service + "request=getdetail&id=" + id);
                     //string response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
 
                     Details result = new Details();
@@ -123,7 +127,7 @@ namespace Repository.Controllers
 
         [HttpGet]
         public IEnumerable<Resource> GetDownloads(string username)
-        {            
+        {
             var db = new Models.digital_libraryEntities();
 
             List<Resource> resources = new List<Resource>();
@@ -148,7 +152,7 @@ namespace Repository.Controllers
                 using (var wb = new WebClient())
                 {
                     Resource resource = new Resource();
-                    string response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=getdetail&id=" + id);
+                    string response = wb.DownloadString(elastic_service + "request=getdetail&id=" + id);
                     //string response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
 
                     Details result = new Details();
@@ -160,7 +164,7 @@ namespace Repository.Controllers
                     resources.Add(resource);
                 }
             }
-           
+
             return resources;
         }
 
@@ -176,17 +180,17 @@ namespace Repository.Controllers
             db.SaveChanges();
             return (double)(book.ratingscore / book.ratingpeople);
         }
-        
+
         [HttpGet]
         public Resource Get(string id)
-        {           
+        {
             Resource resource = new Resource();
             string response;
             using (var wb = new WebClient())
             {
-                response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=getdetail&id=" + id);
-               // response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
-                   
+                response = wb.DownloadString(elastic_service + "request=getdetail&id=" + id);
+                // response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
+
                 Details result = new Details();
                 System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
                 result = (Details)converter.Deserialize(response, typeof(Details));
@@ -227,56 +231,60 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
-        public EResult SearchBooks(string query,string field)
+        public EResult SearchBooks(string query, string field)
         {
             EResult result = new EResult();
             string downloadString = "";
+
+            //string elastic_service = "http://192.168.1.13/nwt/elasticservice/elasticservice.php?";
+            //string elastic_service = "http://10.102.216.70/elasticservice.php?";
+
             switch (field)
             {
                 case "Data":
                     {
-                        downloadString = "http://10.102.216.70/elasticservice.php?request=search&query=" + query;
+                        downloadString = elastic_service + "request=search&query=" + query;
                         break;
                     }
                 case "Title":
                     {
-                        downloadString = "http://10.102.216.70/elasticservice.php?request=search&query=title:" + query;
+                        downloadString = elastic_service + "request=search&query=title:" + query;
                         break;
                     }
                 case "Author":
                     {
-                        downloadString = "http://10.102.216.70/elasticservice.php?request=search&query=author:" + query;
+                        downloadString = elastic_service + "request=search&query=author:" + query;
                         break;
                     }
                 case "Podaci":
                     {
-                        downloadString = "http://10.102.216.70/elasticservice.php?request=search&query=" + query;
+                        downloadString = elastic_service + "request=search&query=" + query;
                         break;
                     }
                 case "Naslov":
                     {
-                        downloadString = "http://10.102.216.70/elasticservice.php?request=search&query=title:" + query;
+                        downloadString = elastic_service + "request=search&query=title:" + query;
                         break;
                     }
                 case "Autor":
                     {
-                        downloadString = "http://10.102.216.70/elasticservice.php?request=search&query=author:" + query;
+                        downloadString = elastic_service + "request=search&query=author:" + query;
                         break;
                     }
-                default :
+                default:
                     {
-                        return result;                       
+                        return result;
                     }
 
             }
-            
+
             string response;
             using (var wb = new WebClient())
             {
 
                 response = wb.DownloadString(downloadString);
                 //response = "{\"took\":30,\"timed_out\":false,\"num_results\":17,\"results\":[{\"id\":\"ARV60YFERbmL-QgWnGVemg\",\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"score\":0.1530751,\"isbn\":\"04432234\",\"highlight\":\"I E E E TRANSACTIONS ON\n\n<em>WIRELESS</em> C O M M U N I C AT I O N S\nA PUBLICATION OF THE IEEE COMMUNICATIONS\"}]}";
-                  
+
                 System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
                 EResult result1 = (EResult)converter.Deserialize(response, typeof(EResult));
 
@@ -285,7 +293,7 @@ namespace Repository.Controllers
                 {
                     response = wb.DownloadString(resource.detailurl);
                     //response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
-                 
+
                     Details details = (Details)converter.Deserialize(response, typeof(Details));
                     resource.title = details.title;
                     result.results.Add(resource);
@@ -305,7 +313,7 @@ namespace Repository.Controllers
             book.ratingscore = 0;
             book.rating = 0;
             book.date = DateTime.Now;
-           
+
             var db = new digital_libraryEntities();
             var user = db.users.Where(us => us.username == User.Identity.Name).FirstOrDefault();
             book.added_by = user.id;

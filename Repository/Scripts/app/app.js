@@ -173,8 +173,8 @@ appRoot
 
                 $http.get("api/resource/getu").success(callback);
             },
-            kreirajKomentar: function (text, idBook, callback) {
-                $http.post("api/resource/addkomentar/",text,idBook)
+            kreirajKomentar: function (comment, callback) {
+                $http.post("api/resource/addkomentar",comment)
                 .success(callback)
                  .error(function () {
                  });

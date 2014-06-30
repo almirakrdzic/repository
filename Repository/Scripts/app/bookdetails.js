@@ -25,7 +25,14 @@
 
         $scope.kreirajKomentar = function (id) {
 
-            commentRepository.kreirajKomentar($scope.tekstKomentara, $scope.book.id, function (results) {
+            var komentar =
+            {
+                Text: '',
+                IdBook:''
+            }
+            komentar.Text = $scope.tekstKomentara;
+            komentar.IdBook = $scope.book.id;
+            commentRepository.kreirajKomentar(komentar, function (results) {
                 getCommentsForBook();
                 $scope.tekstKomentara = '';
             })
