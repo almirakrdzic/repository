@@ -77,7 +77,7 @@ namespace Repository.Controllers
             var book = db.books.Where(boo => boo.elastic_id == id).FirstOrDefault();
             if (book == null)
             {
-                throw new Exception("Book with selected ID does not exist!");
+                return comments;
             }
             comments = book.comments.Select(comment => comment.ToContract()).ToList();
             return comments;
@@ -185,7 +185,7 @@ namespace Repository.Controllers
             using (var wb = new WebClient())
             {
                 response = wb.DownloadString("http://10.102.216.70/elasticservice.php?request=getdetail&id=" + id);
-                //response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
+               // response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
                    
                 Details result = new Details();
                 System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -194,6 +194,20 @@ namespace Repository.Controllers
             }
             var db = new Models.digital_libraryEntities();
             var book = db.books.Where(boo => boo.elastic_id == id).FirstOrDefault();
+            if (book == null)
+            {
+                books b = new books();
+                b.elastic_id = id;
+                var user = db.users.Where(us => us.username == User.Identity.Name).FirstOrDefault();
+                b.added_by = user.id;
+                b.date = DateTime.Now;
+                b.ratingpeople = 0;
+                b.ratingscore = 0;
+                b.rating = 0;
+                db.books.Add(b);
+                db.SaveChanges();
+            }
+            book = db.books.Where(boo => boo.elastic_id == id).FirstOrDefault();
             resource.addedby = book.users.first_name + " " + book.users.last_name;
             resource.id = book.id;
             resource.people = (int)book.ratingpeople;
