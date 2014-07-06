@@ -19,6 +19,7 @@ using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
+using Microsoft.Security.Application;
 
 namespace Repository.Controllers
 {
@@ -36,6 +37,8 @@ namespace Repository.Controllers
             bool authenticated = false;
             try
             {
+                user.Username = Sanitizer.GetSafeHtmlFragment(user.Username);
+                user.Password = Sanitizer.GetSafeHtmlFragment(user.Password);
                 Validation validation = new Validation();
                 authenticated = validation.ValidateUser(user.Username, user.Password);               
             }
@@ -73,17 +76,18 @@ namespace Repository.Controllers
         [HttpGet]
         public UserProfileModel UserDetails(string username)
         {
+            username = Sanitizer.GetSafeHtmlFragment(username);
             var database = new Models.digital_libraryEntities();
             var user = database.users.Where(us => us.username == username).FirstOrDefault();
           
             UserProfileModel profile = new UserProfileModel();
-            profile.Username = username;
-            profile.FirstName = user.first_name;
-            profile.LastName = user.last_name;
-            profile.Email = user.email;
+            profile.Username = Sanitizer.GetSafeHtmlFragment(username);
+            profile.FirstName = Sanitizer.GetSafeHtmlFragment(user.first_name);
+            profile.LastName = Sanitizer.GetSafeHtmlFragment(user.last_name);
+            profile.Email = Sanitizer.GetSafeHtmlFragment(user.email);
             profile.Year = (int)user.year;
-            profile.Department = user.department;
-            profile.AboutMe = user.aboutme;
+            profile.Department = Sanitizer.GetSafeHtmlFragment(user.department);
+            profile.AboutMe = Sanitizer.GetSafeHtmlFragment(user.aboutme);
             profile.Image = Convert.ToBase64String(user.image);
 
             return profile;
@@ -95,14 +99,15 @@ namespace Repository.Controllers
         {
             if (ModelState.IsValid)
             {
+                profile.Username = Sanitizer.GetSafeHtmlFragment(profile.Username);
                 var database = new Models.digital_libraryEntities();
                 var user = database.users.Where(us => us.username == profile.Username).FirstOrDefault();
-                user.first_name = profile.FirstName;
-                user.last_name = profile.LastName;
-                user.email = profile.Email;
+                user.first_name = Sanitizer.GetSafeHtmlFragment(profile.FirstName);
+                user.last_name = Sanitizer.GetSafeHtmlFragment(profile.LastName);
+                user.email = Sanitizer.GetSafeHtmlFragment(profile.Email);
                 user.year = profile.Year;
-                user.department = profile.Department;
-                user.aboutme = profile.AboutMe;
+                user.department = Sanitizer.GetSafeHtmlFragment(profile.Department);
+                user.aboutme = Sanitizer.GetSafeHtmlFragment(profile.AboutMe);
 
                 int comaPoint = profile.Image.IndexOf(",");
                 user.image = Convert.FromBase64String(profile.Image.Substring(comaPoint + 1));

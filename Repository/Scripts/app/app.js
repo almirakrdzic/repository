@@ -289,6 +289,11 @@ appRoot
 
         return user;
     })
+    .directive('ncgRequestVerificationToken', function ($http) {
+        return function (scope, element, attrs) {
+            $http.defaults.headers.common['RequestVerificationToken'] = attrs.ncgRequestVerificationToken || "no request verification token";
+    };
+        })
     .controller('RootController', ['$scope', '$route', '$routeParams', '$location', 'aut', '$modal', '$translate', function ($scope, $route, $routeParams, $location, aut, $modal, $translate) {
 
         $scope.changeLanguage = function (key) {

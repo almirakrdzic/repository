@@ -6,7 +6,10 @@ using System.Net.Http;
 using System.Web.Http;
 using Repository.Models;
 using System.IO;
-
+using System.Web.Http.Filters;
+using System.Web.Security;
+using Microsoft.Security.Application;
+using Repository.Filters;
 
 namespace Repository.Controllers
 {
@@ -18,9 +21,11 @@ namespace Repository.Controllers
         //string elastic_service = "http://10.102.216.70/elasticservice.php?";
 
         [HttpPost]
-
+        
         public HttpResponseMessage AddKomentar(Comment comment)
-        {
+        {      
+            
+            
             if (ModelState.IsValid)
             {
                 var db = new Models.digital_libraryEntities();
@@ -29,7 +34,7 @@ namespace Repository.Controllers
                 _comment.active = true;
                 _comment.idBook = comment.IdBook;
                 _comment.idUser = user.id;
-                _comment.text = comment.Text;
+                _comment.text = Sanitizer.GetSafeHtmlFragment(comment.Text);
                 db.comments.Add(_comment);
                 db.SaveChanges();
 
@@ -75,6 +80,8 @@ namespace Repository.Controllers
         [HttpGet]
         public IEnumerable<Comment> GetCommentsForBook(string id)
         {
+            id = Sanitizer.GetSafeHtmlFragment(id);
+
             List<Comment> comments = new List<Comment>();
             var db = new Models.digital_libraryEntities();
 
@@ -91,6 +98,8 @@ namespace Repository.Controllers
         [HttpGet]
         public IEnumerable<Resource> GetUploads(string username)
         {
+            username = Sanitizer.GetSafeHtmlFragment(username);
+
             var db = new Models.digital_libraryEntities();
             var _user = db.users.Where(user => user.username == username).FirstOrDefault();
             var id = _user.id;
@@ -128,6 +137,8 @@ namespace Repository.Controllers
         [HttpGet]
         public IEnumerable<Resource> GetDownloads(string username)
         {
+            username = Sanitizer.GetSafeHtmlFragment(username);
+
             var db = new Models.digital_libraryEntities();
 
             List<Resource> resources = new List<Resource>();
@@ -182,6 +193,7 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
+        [AntiForgeryValidate]
         public Resource Get(string id)
         {
             Resource resource = new Resource();
@@ -233,6 +245,7 @@ namespace Repository.Controllers
         [HttpGet]
         public EResult SearchBooks(string query, string field)
         {
+            query = Sanitizer.GetSafeHtmlFragment(query);
             EResult result = new EResult();
             string downloadString = "";
 
@@ -302,28 +315,11 @@ namespace Repository.Controllers
 
             return result;
         }
-
-        [HttpGet]
-
-        public void insertBook(string id)
-        {
-            books book = new books();
-            book.elastic_id = id;
-            book.ratingpeople = 0;
-            book.ratingscore = 0;
-            book.rating = 0;
-            book.date = DateTime.Now;
-
-            var db = new digital_libraryEntities();
-            var user = db.users.Where(us => us.username == User.Identity.Name).FirstOrDefault();
-            book.added_by = user.id;
-            db.books.Add(book);
-            db.SaveChanges();
-        }
-
+       
         [HttpGet]
         public List<string> translateText(string text)
         {
+            text = Sanitizer.GetSafeHtmlFragment(text);
             List<string> response = new List<string>();
             using (var wb = new WebClient())
             {
