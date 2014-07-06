@@ -21,7 +21,7 @@ namespace Repository.Controllers
         //string elastic_service = "http://10.102.216.70/elasticservice.php?";
 
         [HttpPost]
-        
+        [AntiForgeryValidate]
         public HttpResponseMessage AddKomentar(Comment comment)
         {      
             
@@ -45,6 +45,7 @@ namespace Repository.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [AntiForgeryValidate]
         public IEnumerable<Details> Get()
         {
             DateTime today = DateTime.Now;
@@ -78,6 +79,7 @@ namespace Repository.Controllers
 
 
         [HttpGet]
+        [AntiForgeryValidate]
         public IEnumerable<Comment> GetCommentsForBook(string id)
         {
             id = Sanitizer.GetSafeHtmlFragment(id);
@@ -96,6 +98,7 @@ namespace Repository.Controllers
 
 
         [HttpGet]
+        [AntiForgeryValidate]
         public IEnumerable<Resource> GetUploads(string username)
         {
             username = Sanitizer.GetSafeHtmlFragment(username);
@@ -135,6 +138,7 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
+        [AntiForgeryValidate]
         public IEnumerable<Resource> GetDownloads(string username)
         {
             username = Sanitizer.GetSafeHtmlFragment(username);
@@ -181,6 +185,7 @@ namespace Repository.Controllers
 
 
         [HttpGet]
+        [AntiForgeryValidate]
         public Double Rate(int rate, int id)
         {
             var db = new Models.digital_libraryEntities();
@@ -232,6 +237,7 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
+        [AntiForgeryValidate]
         public User GetU(int id)
         {
             var db = new Models.digital_libraryEntities();
@@ -243,6 +249,7 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
+        [AntiForgeryValidate]
         public EResult SearchBooks(string query, string field)
         {
             query = Sanitizer.GetSafeHtmlFragment(query);
@@ -317,6 +324,7 @@ namespace Repository.Controllers
         }
        
         [HttpGet]
+        [AntiForgeryValidate]
         public List<string> translateText(string text)
         {
             text = Sanitizer.GetSafeHtmlFragment(text);

@@ -29,6 +29,7 @@ namespace Repository.Controllers
 
         [HttpPost]        
         [AllowAnonymous]
+        [AntiForgeryValidate]
         public HttpResponseMessage Login(LoginModel user)
         {            
            
@@ -56,6 +57,7 @@ namespace Repository.Controllers
         return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
     }
         [HttpPost]
+        [AntiForgeryValidate]
         public HttpResponseMessage SignOut()
         {           
                 var response = this.Request.CreateResponse(HttpStatusCode.Created, true);              
@@ -64,6 +66,7 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
+        [AntiForgeryValidate]
         public HttpResponseMessage IsLogged()
         {
             if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated) {
@@ -74,6 +77,7 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
+        [AntiForgeryValidate]
         public UserProfileModel UserDetails(string username)
         {
             username = Sanitizer.GetSafeHtmlFragment(username);
@@ -95,6 +99,7 @@ namespace Repository.Controllers
 
       
         [HttpPost]
+        [AntiForgeryValidate]
         public HttpResponseMessage EditProfile(UserProfileModel profile)
         {
             if (ModelState.IsValid)
@@ -121,6 +126,7 @@ namespace Repository.Controllers
         }
 
         [HttpGet]
+        [AntiForgeryValidate]
         public int GetYear()
         {
             return DateTime.Now.Year;
