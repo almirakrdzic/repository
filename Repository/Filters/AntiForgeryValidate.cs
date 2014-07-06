@@ -23,8 +23,9 @@ namespace Repository.Filters
                     cookieToken = tokens[0].Trim();
                     formToken = tokens[1].Trim();
                 }
+                System.Web.Helpers.AntiForgery.Validate(cookieToken, formToken);
             }
-            System.Web.Helpers.AntiForgery.Validate(cookieToken, formToken);
+           
 
             base.OnActionExecuting(actionContext);
         }

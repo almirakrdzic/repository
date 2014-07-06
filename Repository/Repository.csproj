@@ -54,6 +54,9 @@
     <Reference Include="AsyncBridge">
       <HintPath>..\packages\AsyncBridge.0.1.1\lib\net40-Client\AsyncBridge.dll</HintPath>
     </Reference>
+    <Reference Include="AWSSDK">
+      <HintPath>..\packages\AWSSDK.1.5.60.0\lib\AWSSDK.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetOpenAuth.AspNet">
       <HintPath>..\packages\DotNetOpenAuth.AspNet.4.0.4.12182\lib\net40-full\DotNetOpenAuth.AspNet.dll</HintPath>
     </Reference>
@@ -100,6 +103,18 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Postal">
+      <HintPath>..\packages\postal.0.8.2\lib\net40\Postal.dll</HintPath>
+    </Reference>
+    <Reference Include="Postal.Amazon">
+      <HintPath>..\packages\Postal.AmazonSES.0.0.1\lib\net40\Postal.Amazon.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\packages\RazorEngine.3.2.0\lib\net40\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Recaptcha">
+      <HintPath>..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -358,10 +373,12 @@
     <Content Include="Scripts\angular-translate.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\app\angular-recaptcha.js" />
     <Content Include="Scripts\app\bookdetails.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\comments.js" />
     <Content Include="Scripts\app\editprofile.js" />
+    <Content Include="Scripts\app\recaptcha_ajax.js" />
     <Content Include="Scripts\app\userdownloads.js" />
     <Content Include="Scripts\app\userprofile.js" />
     <Content Include="Scripts\app\books.js" />
@@ -507,6 +524,7 @@
     <Content Include="Views\Home\UserUploads.cshtml" />
     <Content Include="Views\Home\UserDownloads.cshtml" />
     <Content Include="Views\Home\Comments.cshtml" />
+    <Content Include="Views\Emails\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

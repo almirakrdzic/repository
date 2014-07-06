@@ -20,6 +20,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
 using Microsoft.Security.Application;
+using Postal;
+using Recaptcha;
 
 namespace Repository.Controllers
 {
@@ -117,6 +119,33 @@ namespace Repository.Controllers
                 int comaPoint = profile.Image.IndexOf(",");
                 user.image = Convert.FromBase64String(profile.Image.Substring(comaPoint + 1));
 
+                database.SaveChanges();
+
+                return Request.CreateResponse(HttpStatusCode.OK, "success!");
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
+        }
+
+        [HttpPost]
+        [AntiForgeryValidate]
+        [RecaptchaControlMvc.CaptchaValidatorAttribute]
+        public HttpResponseMessage Register(RegisterModel profile)
+        {
+          
+            if (ModelState.IsValid)
+            {
+                profile.UserName = Sanitizer.GetSafeHtmlFragment(profile.UserName);
+                var database = new Models.digital_libraryEntities();
+                users user = new users();
+                user.user_types = new user_types { id = 2 };
+                user.username = profile.UserName;
+                user.password = Sanitizer.GetSafeHtmlFragment(profile.Password);
+                user.first_name = Sanitizer.GetSafeHtmlFragment(profile.FirstName);
+                user.last_name = Sanitizer.GetSafeHtmlFragment(profile.LastName);
+                user.email = Sanitizer.GetSafeHtmlFragment(profile.Email);            
+
+               
                 database.SaveChanges();
 
                 return Request.CreateResponse(HttpStatusCode.OK, "success!");

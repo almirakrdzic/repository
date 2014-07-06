@@ -27,7 +27,9 @@ namespace Repository
                         "~/Scripts/angular-route.js",
                         "~/Scripts/angular-animate.js",
                         "~/Scripts/app/ngAutocomplete.js",
-                        "~/Scripts/angular-translate.min.js"));
+                        "~/Scripts/angular-translate.min.js",
+                        "~/Scripts/app/recaptcha_ajax.js",
+                        "~/Scripts/app/angular-recaptcha.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                         "~/Scripts/app/app.js",

@@ -1,6 +1,6 @@
 ﻿// Main configuration file. Sets up AngularJS module and routes and any other config objects
 
-var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'ngResource', 'elasticsearch', 'angularStart.services', 'angularStart.directives', 'pascalprecht.translate'], ['$translateProvider', function ($translateProvider) {
+var appRoot = angular.module('main', ['vcRecaptcha','ngRoute', 'ngSanitize', 'ui.bootstrap', 'ngResource', 'elasticsearch', 'angularStart.services', 'angularStart.directives', 'pascalprecht.translate'], ['$translateProvider', function ($translateProvider) {
 
     // register translation table
     $translateProvider.translations('en', {
@@ -37,7 +37,10 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'score': 'Score',
         'searchby': 'Search by:',
         'aboutme': 'About me',
-        'upload':'Upload resource'
+        'upload': 'Upload resource',
+        'register': 'Register',
+        'firstname': 'FirstName',
+        'lastname':'LastName'
     });
 
     $translateProvider.translations('ba', {
@@ -75,7 +78,10 @@ var appRoot = angular.module('main', ['ngRoute', 'ngSanitize', 'ui.bootstrap', '
         'score': 'Nivo bitnosti',
         'searchby': 'Traži po:',
         'aboutme': 'O meni',
-        'upload':'Dodaj resurs'
+        'upload': 'Dodaj resurs',
+        'register': 'Registruj se',
+        'firstname': 'Ime',
+        'lastname': 'Prezime'
     }).preferredLanguage('ba');
 
 
@@ -206,6 +212,10 @@ appRoot
                  })
                  .error(function () {
                  });
+             },
+             register:function(profile,captcha,successCallback,errorCallback)
+             {
+                 $http.post("api/user/register", profile, captcha).success(successCallback).error(errorCallback);
              },
              getYear: function (callback) {
                  $http.get("api/user/getyear").success(callback);
