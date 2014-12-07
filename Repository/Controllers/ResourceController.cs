@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Repository.Models;
 using System.IO;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http.Filters;
 using System.Web.Security;
 using Microsoft.Security.Application;
@@ -16,10 +20,6 @@ namespace Repository.Controllers
     [Authorize]
     public class ResourceController : ApiController
     {
-
-        const string elastic_service = "http://192.168.1.13/nwt/elasticservice/elasticservice.php?";
-        //string elastic_service = "http://10.102.216.70/elasticservice.php?";
-
         [HttpPost]
         [AntiForgeryValidate]
         public HttpResponseMessage AddKomentar(Comment comment)
@@ -46,140 +46,60 @@ namespace Repository.Controllers
         [HttpGet]
         [AllowAnonymous]
         [AntiForgeryValidate]
-        public IEnumerable<Details> Get()
+        public IEnumerable<Book> Get()
         {
-            DateTime today = DateTime.Now;
-            List<Details> resources = new List<Details>();
             var db = new Models.digital_libraryEntities();
-            var _data = db.books.ToList().Where(book => today.Subtract((DateTime)book.date).TotalDays < 7).ToList();
-            if (_data == null)
-            {
-                throw new Exception("There are no books present!");
-            }
-            List<string> elasticIds = (from e in _data
-                                       select e.elastic_id).ToList();
-
-            foreach (string id in elasticIds)
-            {
-                using (var wb = new WebClient())
-                {
-                    //string response = wb.DownloadString(elastic_service + "request=getdetail&id=" + id);
-                    string response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
-
-                    Details result = new Details();
-                    System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    result = (Details)converter.Deserialize(response, typeof(Details));
-                    resources.Add(result);
-                }
-            }
-
-            return resources;
+            var data = db.books.ToList().Where(book => DateTime.Now.Subtract((DateTime)book.date).TotalDays < 7).ToList();
+            return data.Any() ? data.Select(book => book.ToContract()).ToList() : new List<Book>();
         }
 
 
 
         [HttpGet]
         [AntiForgeryValidate]
-        public IEnumerable<Comment> GetCommentsForBook(string id)
+        public IEnumerable<Comment> GetCommentsForBook(int id)
         {
-            id = Sanitizer.GetSafeHtmlFragment(id);
-
-            List<Comment> comments = new List<Comment>();
             var db = new Models.digital_libraryEntities();
 
-            var book = db.books.Where(boo => boo.elastic_id == id).FirstOrDefault();
-            if (book == null)
-            {
-                return comments;
-            }
-            comments = book.comments.Select(comment => comment.ToContract()).ToList();
-            return comments;
+            books book = db.books.Where(boo => boo.id == id).FirstOrDefault();
+
+            return (book != null && book.comments != null && book.comments.Any())
+                ? book.comments.Select(cooment => cooment.ToContract()).ToList()
+                : new List<Comment>();
         }
 
 
         [HttpGet]
         [AntiForgeryValidate]
-        public IEnumerable<Resource> GetUploads(string username)
+        public IEnumerable<Book> GetUploads(int userId)
         {
-            username = Sanitizer.GetSafeHtmlFragment(username);
+            List<Book> resources = new List<Book>();
 
             var db = new Models.digital_libraryEntities();
-            var _user = db.users.Where(user => user.username == username).FirstOrDefault();
-            var id = _user.id;
-            List<Resource> resources = new List<Resource>();
+            users user = db.users.Where(u => u.id == userId).FirstOrDefault();
 
-            var _books = db.books.ToList().Where(book => book.added_by == id).ToList();
-            if (_books == null)
+            if (user.books1 != null)
             {
-                throw new Exception("There are no books present!");
+                resources = user.books1.Select(book => book.ToContract()).ToList();
             }
-            List<string> elasticIds = (from e in _books
-                                       select e.elastic_id).ToList();
-
-            foreach (string eId in elasticIds)
-            {
-                using (var wb = new WebClient())
-                {
-                    Resource resource = new Resource();
-                    //string response = wb.DownloadString(elastic_service + "request=getdetail&id=" + id);
-                    string response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
-
-                    Details result = new Details();
-                    System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    result = (Details)converter.Deserialize(response, typeof(Details));
-                    resource.details = result;
-                    var book = db.books.Where(boo => boo.elastic_id == eId).FirstOrDefault();
-                    resource.rating = (double)book.rating;
-                    resources.Add(resource);
-                }
-            }
-
+           
             return resources;
         }
 
         [HttpGet]
         [AntiForgeryValidate]
-        public IEnumerable<Resource> GetDownloads(string username)
+        public IEnumerable<Book> GetDownloads(int userId)
         {
-            username = Sanitizer.GetSafeHtmlFragment(username);
+            List<Book> resources = new List<Book>();
 
             var db = new Models.digital_libraryEntities();
+            users user = db.users.Where(u => u.id == userId).FirstOrDefault();
 
-            List<Resource> resources = new List<Resource>();
-
-            var _user = db.users.Where(user => user.username == username).FirstOrDefault();
-            var id = _user.id;
-            if (_user == null)
+            if (user.books != null)
             {
-                throw new Exception("User with selected username does not exist!");
+                resources = user.books.Select(book => book.ToContract()).ToList();
             }
-            var _books = _user.books1.ToList();
-
-            if (_books == null)
-            {
-                throw new Exception("There are no books present!");
-            }
-            List<string> elasticIds = (from e in _books
-                                       select e.elastic_id).ToList();
-
-            foreach (string eId in elasticIds)
-            {
-                using (var wb = new WebClient())
-                {
-                    Resource resource = new Resource();
-                    //string response = wb.DownloadString(elastic_service + "request=getdetail&id=" + id);
-                    string response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
-
-                    Details result = new Details();
-                    System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    result = (Details)converter.Deserialize(response, typeof(Details));
-                    resource.details = result;
-                    var book = db.books.Where(boo => boo.elastic_id == eId).FirstOrDefault();
-                    resource.rating = (double)book.rating;
-                    resources.Add(resource);
-                }
-            }
-
+           
             return resources;
         }
 
@@ -199,41 +119,12 @@ namespace Repository.Controllers
 
         [HttpGet]
         [AntiForgeryValidate]
-        public Resource Get(string id)
+        public Book Get(int id)
         {
-            Resource resource = new Resource();
-            string response;
-            using (var wb = new WebClient())
-            {
-                //response = wb.DownloadString(elastic_service + "request=getdetail&id=" + id);
-                 response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
-
-                Details result = new Details();
-                System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
-                result = (Details)converter.Deserialize(response, typeof(Details));
-                resource.details = result;
-            }
             var db = new Models.digital_libraryEntities();
-            var book = db.books.Where(boo => boo.elastic_id == id).FirstOrDefault();
-            if (book == null)
-            {
-                books b = new books();
-                b.elastic_id = id;
-                var user = db.users.Where(us => us.username == User.Identity.Name).FirstOrDefault();
-                b.added_by = user.id;
-                b.date = DateTime.Now;
-                b.ratingpeople = 0;
-                b.ratingscore = 0;
-                b.rating = 0;
-                db.books.Add(b);
-                db.SaveChanges();
-            }
-            book = db.books.Where(boo => boo.elastic_id == id).FirstOrDefault();
-            resource.addedby = book.users.first_name + " " + book.users.last_name;
-            resource.id = book.id;
-            resource.people = (int)book.ratingpeople;
-            resource.rating = (double)book.rating;
-            return resource;
+            var book = db.books.Where(boo => boo.id == id).FirstOrDefault();
+
+            return book != null ? book.ToContract() : new Book();
         }
 
         [HttpGet]
@@ -250,77 +141,29 @@ namespace Repository.Controllers
 
         [HttpGet]
         [AntiForgeryValidate]
-        public EResult SearchBooks(string query, string field)
+        public List<Book> SearchBooks(string query, string field)
         {
             query = Sanitizer.GetSafeHtmlFragment(query);
-            EResult result = new EResult();
-            string downloadString = "";
 
-            //string elastic_service = "http://192.168.1.13/nwt/elasticservice/elasticservice.php?";
-            //string elastic_service = "http://10.102.216.70/elasticservice.php?";
-
+            var db = new Models.digital_libraryEntities();
+            List<Book> results = new List<Book>();
+ 
             switch (field)
             {
-                case "Data":
+                
+                case "Title": case "Naslov":
                     {
-                        downloadString = elastic_service + "request=search&query=" + query;
+                        results = db.books.Where(boo => boo.title.Contains(query)).ToList().Select(book => book.ToContract()).ToList();
                         break;
                     }
-                case "Title":
+                case "Description": case "Opis":
                     {
-                        downloadString = elastic_service + "request=search&query=title:" + query;
+                        results = db.books.Where(boo => boo.description.Contains(query)).ToList().Select(book => book.ToContract()).ToList();
                         break;
                     }
-                case "Author":
-                    {
-                        downloadString = elastic_service + "request=search&query=author:" + query;
-                        break;
-                    }
-                case "Podaci":
-                    {
-                        downloadString = elastic_service + "request=search&query=" + query;
-                        break;
-                    }
-                case "Naslov":
-                    {
-                        downloadString = elastic_service + "request=search&query=title:" + query;
-                        break;
-                    }
-                case "Autor":
-                    {
-                        downloadString = elastic_service + "request=search&query=author:" + query;
-                        break;
-                    }
-                default:
-                    {
-                        return result;
-                    }
-
             }
 
-            string response;
-            using (var wb = new WebClient())
-            {
-
-                //response = wb.DownloadString(downloadString);
-                response = "{\"took\":30,\"timed_out\":false,\"num_results\":17,\"results\":[{\"id\":\"ARV60YFERbmL-QgWnGVemg\",\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"score\":0.1530751,\"isbn\":\"04432234\",\"highlight\":\"I E E E TRANSACTIONS ON\n\n<em>WIRELESS</em> C O M M U N I C AT I O N S\nA PUBLICATION OF THE IEEE COMMUNICATIONS\"}]}";
-
-                System.Web.Script.Serialization.JavaScriptSerializer converter = new System.Web.Script.Serialization.JavaScriptSerializer();
-                EResult result1 = (EResult)converter.Deserialize(response, typeof(EResult));
-
-                result.results = new List<EResource>();
-                foreach (EResource resource in result1.results)
-                {
-                    //response = wb.DownloadString(resource.detailurl);
-                    response = "{\"download\":\"localhost/nwt//elasticservice//elasticservice.php?request=getbook&id=Ey3EmpVVSvqElHMu-MNSBg\",\"imgurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getimage&id=Ey3EmpVVSvqElHMu-MNSBg\",\"detailurl\":\"localhost/nwt//elasticservice//elasticservice.php?request=getdetail&id=Ey3EmpVVSvqElHMu-MNSBg\",\"isbn\":\"04432245\",\"title\":\"Rate and Power Allocation for Multiuser OFDM: An Effective Heuristic Verified by Branch-and-Bound: \",\"description\":\"The present correspondence deals with the rate and power allocation problem in multiuser orthogonal frequency division multiple (OFDM) access systems. We first derive the solution of the single user OFDM power allocation problem explicitly for a class of general rate-power functions by means of directional derivatives. This solution is employed for both designing a new heuristic and obtaining bounds in a branch-and-bound algorithm for allocating power to subcarriers. The branch-and-bound algorithm is used for performance evaluation of our new and two known power allocation heuristics by computing the exact optimum, given the number of allocated subcarriers per user.\",\"elasticid\":\"ARV60YFERbmL-QgWnGVemg\",\"numofpages\":\"\",\"pubdate\":\"\",\"publisher\":\"Wireless Communications, IEEE Transactions on\",\"institution\":\"IEEE\"}";
-
-                    Details details = (Details)converter.Deserialize(response, typeof(Details));
-                    resource.title = details.title;
-                    result.results.Add(resource);
-                }
-            }
-
-            return result;
+            return results;
         }
        
         [HttpGet]
@@ -342,5 +185,65 @@ namespace Repository.Controllers
             return response;
         }
 
+        [HttpPost]
+        [AntiForgeryValidate]
+        public async Task<HttpResponseMessage> AddBook()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            string root = HttpContext.Current.Server.MapPath("~/App_Data");
+            var provider = new MultipartFormDataStreamProvider(root);
+
+            try
+            {
+                await Request.Content.ReadAsMultipartAsync(provider);
+
+                var db = new Models.digital_libraryEntities();
+                books book = new books();
+
+                book.date = DateTime.Now;
+                book.title = provider.FormData.GetValues("Title").FirstOrDefault();
+                book.description = provider.FormData.GetValues("Description").FirstOrDefault();
+                book.edition = provider.FormData.GetValues("Edition").FirstOrDefault();
+                book.isbn = provider.FormData.GetValues("ISBN").FirstOrDefault();
+                book.path = provider.FileData != null && provider.FileData.Any()
+                    ? provider.FileData.First().LocalFileName
+                    : null;
+                book.active = true;
+                book.rating = 0;
+                book.ratingpeople = 0;
+                book.ratingscore = 0;
+                book.added_by = db.users.Where(us => us.username == User.Identity.Name).FirstOrDefault().id;
+
+                db.books.Add(book);
+                db.SaveChanges();
+
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (System.Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
+            }
+        }
+
+        [HttpGet]
+        [AntiForgeryValidate]
+        public HttpResponseMessage DownloadBook(int id)
+        {
+            var db = new Models.digital_libraryEntities();
+            books book = db.books.Where(boo => boo.id == id).FirstOrDefault();
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            result.Content = new ByteArrayContent(File.ReadAllBytes(book.path));
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+            result.Content.Headers.ContentDisposition.FileName = book.title;
+            return result;
+           
+
+        }
     }
 }

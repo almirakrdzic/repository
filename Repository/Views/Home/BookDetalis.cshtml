@@ -4,10 +4,10 @@
 
  <div class="col-lg-3">
      <div class="thumbnail">     
-     <img data-ng-src="{{book.details.imgurl}}" class="img-rounded img-responsive" />
+     <img data-src="holder.js/300x200" alt="..." src="~/Images/book.png" class="img-rounded img-responsive" />
      </div>
      <br />
-     <a href="{{book.details.download}}" download="proposed_file_name.zip">
+     <a target="_self" href="/api/resource/downloadbook/?id={{book.id}}" download="proposed_file_name.zip">
          <button type="button" class="btn btn-primary btn-lg btn-block"><i class="fa fa-download fa-fw"></i>Download</button>
      </a>
      
@@ -22,31 +22,23 @@
  </div>  
 
 <div class="col-lg-6" id="g/ć">     
-    <h3>{{book.details.title}}</h3>         
+    <h3>{{book.title}}</h3>         
          <br />        
      <rating data-ng-model="book.rating" max="5" state-on="'fa fa-star fa-fw'" state-off="'fa fa-star-o fa-fw'" readonly="true"></rating>
      <p>{{'rated' | translate}}{{book.people}}</p> 
-     
-    @*<p>
-        {{book.details.description}}
-    </p>*@
     <p style="text-align: right">{{'Dodano' | translate}}
-         
-             {{book.addedby}}  
-         
-              
-        
+             {{book.addedBy.firstName + ' ' + book.addedBy.lastName}}  
     </p>
     <br />
     <hr /> 
   
-    ISBN: <b>{{book.details.isbn}} </b>  | 
-     {{'edition' | translate}}<b>{{book.eresource.details.pubdate}}</b>
+    ISBN: <b>{{book.isbn}} </b>  | 
+     {{'edition' | translate}}<b>{{book.edition}}</b>
  
     <br /><br />
     
         <b>{{'about' | translate}}</b>
-        <p>{{book.details.description}}</p>
+        <p>{{book.description}}</p>
         
     <hr />  
     

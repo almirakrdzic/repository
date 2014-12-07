@@ -13,20 +13,10 @@ appRoot.controller('BooksController', function ($scope, $location, $resource, es
              $scope.field = translatedValue;
          });
 
-   /* function getAllBooks() {
-        bookRepository.searchBooks("*","data", function (response) {
-            data = response.results;
-            data1 = data;
-            $scope.books = data1.slice(0, $scope.itemsPerPage);
-            $scope.booksSize = data.length;
-        });
-    };
-    getAllBooks();*/
-
     $scope.search = function () {
         var field = $scope.field;
         bookRepository.searchBooks($scope.query, $scope.field, function (response) {
-            data = response.results;
+            data = response;
             data1 = data;
             $scope.books = data1.slice(0, $scope.itemsPerPage);
             $scope.booksSize = data.length;

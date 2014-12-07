@@ -27,7 +27,6 @@ namespace Repository.Models
         public string isbn { get; set; }
         public string edition { get; set; }
         public string description { get; set; }
-        public byte[] data { get; set; }
         public int added_by { get; set; }
         public Nullable<bool> active { get; set; }
         public Nullable<System.DateTime> date { get; set; }
@@ -35,6 +34,7 @@ namespace Repository.Models
         public Nullable<int> ratingscore { get; set; }
         public Nullable<int> ratingpeople { get; set; }
         public string elastic_id { get; set; }
+        public string path { get; set; }
     
         public virtual users users { get; set; }
         public virtual ICollection<authors> authors { get; set; }

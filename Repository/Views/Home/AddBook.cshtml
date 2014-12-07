@@ -1,0 +1,46 @@
+﻿@{
+    Layout = null;
+}
+
+<link href="~/Content/sb-admin.css" rel="stylesheet"/>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-offset-4 col-sm-4">
+            <form method="post">
+				<div class="form-group">
+					<div class="input-group">
+						<input type="text" class="form-control" name="validate-text" data-ng-model="book.title" placeholder="Title" required>
+						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group">
+						<input type="text" class="form-control" name="validate-optional" data-ng-model="book.isbn" placeholder="ISBN">
+						<span class="input-group-addon info"><span class="glyphicon glyphicon-asterisk"></span></span>
+					</div>
+				</div>
+    			<div class="form-group">
+    				<div class="input-group">
+						<input type="text" class="form-control" name="validate-text" data-ng-model="book.edition" placeholder="Edition" required>
+						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+					</div>
+				</div>
+                <div class="form-group">
+                    <div class="input-group" data-validate="length" data-length="5">
+                        <textarea type="text" class="form-control" name="validate-length" data-ng-model="book.description" placeholder="Description" required></textarea>
+                        <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+                    </div>
+                </div>
+              <div class="form-group">
+                <div class="controls">
+                    <span class="btn btn-success fileinput-button">
+                        <div file-input="file" on-change="switchTitle(file)" name="Image"></div>  
+                    </span>
+                </div>
+            </div>
+                <button type="submit" class="btn btn-primary col-xs-12" data-ng-click="addBook()">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

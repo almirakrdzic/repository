@@ -23,7 +23,6 @@ namespace Repository.Controllers
                 Edition = book.edition,
                 ISBN = book.isbn,
                 Title = book.title,
-                Content = book.data,
                 Rating = (double)book.rating,
                 Datum = (DateTime)book.date,
                 People = (int)book.ratingpeople

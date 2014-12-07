@@ -27,8 +27,9 @@
                 <a style="color:black" class="navbar-brand" href="#/" translate="DR"></a>
             </div>           
             <ul class="nav navbar-top-links navbar-right">
-                <li data-ng-show="authenticated" data-ng-class="{active : activeViewPath==='/books'}"><a href='#/books' translate="B"></a></li>             
-               <li data-ng-show="authenticated" class="dropdown">
+                <li data-ng-show="authenticated" data-ng-class="{active : activeViewPath==='/books'}"><a href='#/books' translate="B"></a></li>
+                <li data-ng-show="authenticated" data-ng-class="{active : activeViewPath==='/addBook'}"><a href='#/addBook' translate="B"></a></li> 
+                <li data-ng-show="authenticated" class="dropdown">
                 <a href="#" style="color:black" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
                 <i class="fa fa-user fa-fw"></i>
                   {{username}} <i class="caret"></i></a>

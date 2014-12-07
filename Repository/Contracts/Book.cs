@@ -20,8 +20,6 @@ namespace Repository.Controllers
         [DataMember]
         public string Description { get; set; }
         [DataMember]
-        public byte[] Content { get; set; }
-        [DataMember]
         public User AddedBy { get; set; }
         [DataMember]
         public Double Rating { get; set; }
@@ -29,6 +27,9 @@ namespace Repository.Controllers
         public int People { get; set; }
         [DataMember]
         public DateTime Datum { get; set; }
+
+        [DataMember]
+        public byte[] Content { get; set; }
 
     }
 }

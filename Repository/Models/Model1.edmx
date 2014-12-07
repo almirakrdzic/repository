@@ -105,7 +105,7 @@
           <Property Name="isbn" Type="varchar" MaxLength="13" />
           <Property Name="edition" Type="varchar" MaxLength="10" />
           <Property Name="description" Type="varchar(max)" />
-          <Property Name="data" Type="varbinary(max)" />
+          <Property Name="path" Type="varchar(max)" />
           <Property Name="added_by" Type="int" Nullable="false" />
           <Property Name="active" Type="bit" />
           <Property Name="date" Type="date" />
@@ -328,7 +328,6 @@
           <Property Name="isbn" Type="String" MaxLength="13" Unicode="false" FixedLength="false" />
           <Property Name="edition" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
           <Property Name="description" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="data" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="added_by" Type="Int32" Nullable="false" />
           <Property Name="active" Type="Boolean" />
           <NavigationProperty Name="users" Relationship="digital_libraryModel.FK_books_added" FromRole="books" ToRole="users" />
@@ -341,6 +340,7 @@
           <Property Type="Int32" Name="ratingpeople" />
           <NavigationProperty Name="comments" Relationship="digital_libraryModel.FK_comments_books" FromRole="books" ToRole="comments" />
           <Property Type="String" Name="elastic_id" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="path" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="genre">
           <Key>
@@ -477,6 +477,7 @@
           <EntitySetMapping Name="books">
             <EntityTypeMapping TypeName="digital_libraryModel.books">
               <MappingFragment StoreEntitySet="books">
+                <ScalarProperty Name="path" ColumnName="path" />
                 <ScalarProperty Name="elastic_id" ColumnName="elastic_id" />
                 <ScalarProperty Name="ratingpeople" ColumnName="ratingpeople" />
                 <ScalarProperty Name="ratingscore" ColumnName="ratingscore" />
@@ -487,7 +488,6 @@
                 <ScalarProperty Name="isbn" ColumnName="isbn" />
                 <ScalarProperty Name="edition" ColumnName="edition" />
                 <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="data" ColumnName="data" />
                 <ScalarProperty Name="added_by" ColumnName="added_by" />
                 <ScalarProperty Name="active" ColumnName="active" />
               </MappingFragment>

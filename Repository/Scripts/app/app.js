@@ -2,6 +2,7 @@
 
 var appRoot = angular.module('main', ['vcRecaptcha','ngRoute', 'ngSanitize', 'ui.bootstrap', 'ngResource', 'elasticsearch', 'angularStart.services', 'angularStart.directives', 'pascalprecht.translate'], ['$translateProvider', function ($translateProvider) {
 
+
     // register translation table
     $translateProvider.translations('en', {
         'NEWBOOKS': 'New resources',
@@ -106,6 +107,11 @@ appRoot
                 controller: 'BooksController',
                 access: { isPublic: false }
             })
+            .when('/addBook', {
+                templateUrl: '/home/addbook',
+                controller: 'AddBookController',
+                access: { isPublic: false }
+            })
             .when('/comments', {
                 templateUrl: '/home/comments',
                 controller: 'CommentsController',
@@ -139,6 +145,23 @@ appRoot
             getBook: function (id, callback) {
 
                 $http.get("api/resource/get/?id=" + id).success(callback);
+            },
+            addBook: function (book,file, callback) {
+                var fd = new FormData();
+                fd.append('Content', file);
+                fd.append('Title', book.title);
+                fd.append('ISBN', book.isbn);
+                fd.append('Description', book.description);
+                fd.append('Edition', book.edition);
+
+                $http.post("api/resource/addbook", fd, {
+                    transformRequest: angular.identity,
+                    headers: { 'Content-Type': undefined }
+                })
+                .success(callback)
+                 .error(function () {
+                 });
+
             },
             getUploads: function (id, callback) {
 
@@ -270,8 +293,18 @@ appRoot
              return deferred.promise;
          };
 
+         var readAsBinaryString = function (file, scope) {
+             var deferred = $q.defer();
+
+             var reader = getReader(deferred, scope);
+             reader.readAsBinaryString(file);
+
+             return deferred.promise;
+         };
+
          return {
-             readAsDataUrl: readAsDataURL
+             readAsDataUrl: readAsDataURL,
+             readAsBinaryString: readAsBinaryString
          };
      })
     .factory('aut', function ($http) {

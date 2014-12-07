@@ -285,6 +285,7 @@
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\user.png" />
+    <Content Include="Content\jasny-bootstrap.min.css" />
     <Content Include="Content\plugins\dataTables\dataTables.bootstrap.css" />
     <Content Include="Content\plugins\morris\morris-0.4.3.min.css" />
     <Content Include="Content\plugins\social-buttons\social-buttons.css" />
@@ -373,6 +374,7 @@
     <Content Include="Scripts\angular-translate.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\app\addbook.js" />
     <Content Include="Scripts\app\angular-recaptcha.js" />
     <Content Include="Scripts\app\bookdetails.js" />
     <Content Include="Scripts\app\app.js" />
@@ -451,6 +453,7 @@
     <None Include=".bin\git.cmd" />
     <None Include=".bin\node.cmd" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jasny-bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
@@ -525,6 +528,7 @@
     <Content Include="Views\Home\UserDownloads.cshtml" />
     <Content Include="Views\Home\Comments.cshtml" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Home\AddBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

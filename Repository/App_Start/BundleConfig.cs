@@ -29,7 +29,8 @@ namespace Repository
                         "~/Scripts/app/ngAutocomplete.js",
                         "~/Scripts/angular-translate.min.js",
                         "~/Scripts/app/recaptcha_ajax.js",
-                        "~/Scripts/app/angular-recaptcha.js"));
+                        "~/Scripts/app/angular-recaptcha.js",
+                        "~/Scripts/jasny-bootstrap.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                         "~/Scripts/app/app.js",
@@ -42,7 +43,8 @@ namespace Repository
                         "~/Scripts/app/useruploads.js",
                         "~/Scripts/app/userdownloads.js",
                         "~/Scripts/app/comments.js",
-                        "~/Scripts/app/editprofile.js"
+                        "~/Scripts/app/editprofile.js",
+                         "~/Scripts/app/addbook.js"
                         ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
@@ -52,7 +54,8 @@ namespace Repository
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                 "~/Content/bootstrap.css",
-                "~/Content/bootstrap-responsive.css"
+                "~/Content/bootstrap-responsive.css",
+                "~/Content/jasny-bootstrap.min.css"
                 ));
 
 

@@ -55,6 +55,11 @@ namespace Repository.Controllers
             return View();
         }
 
+        public ActionResult AddBook()
+        {
+            return View();
+        }
+
 
 
     }
